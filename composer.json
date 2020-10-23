@@ -5,7 +5,13 @@
   "keywords":[
     "openapi", "merge"
   ],
-  "licence": "MIT",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marcel Thole",
+      "role": "Creator"
+    }
+  ],
   "require": {
     "php": "^7.4 || ^8.0",
     "cebe/php-openapi": "^1.3"
