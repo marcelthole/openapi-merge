@@ -1,0 +1,26 @@
+openapi: 3.0.2
+info:
+  title: Example OpenAPI Definition for routes
+  description: This is the routes description
+  version: '1.1'
+paths: {}
+components:
+  schemas:
+    ProblemResponse:
+      title: ProblemResponse
+      type: object
+      description: Default Problem Response
+      properties:
+        type:
+          type: string
+          description: type of the problem
+          example: ValidationError
+        title:
+          type: string
+          example: Your request parameters didn't validate.
+      required:
+        - type
+        - title
+tags:
+  - name: Route
+  - name: Base Route

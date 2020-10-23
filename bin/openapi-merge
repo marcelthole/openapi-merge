@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+(static function () {
+    $composerAutoload = [
+        __DIR__ . '/../vendor/autoload.php',
+        __DIR__ . '/../../../autoload.php',
+    ];
+    foreach ($composerAutoload as $autoload) {
+        if (file_exists($autoload)) {
+            require $autoload;
+            break;
+        }
+    }
+})();
+
+$application = new \OpenApiMerge\Console\Application();
+exit($application->run($argv));
