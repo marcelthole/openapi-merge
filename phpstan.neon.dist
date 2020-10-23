@@ -1,0 +1,7 @@
+parameters:
+  level: max
+  paths:
+    - bin
+    - src
+    - tests
+  tipsOfTheDay: false
