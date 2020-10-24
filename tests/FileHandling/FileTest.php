@@ -19,9 +19,7 @@ class FileTest extends TestCase
         self::assertSame($expectedExtension, $sut->getFileExtension());
     }
 
-    /**
-     * @return iterable<int, array<int, string>>
-     */
+    /** @return Generator<array<int, string>> */
     public function fileExtensionProvider(): Generator
     {
         yield ['base.yml', 'yml'];

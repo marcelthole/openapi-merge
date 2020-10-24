@@ -25,6 +25,7 @@ class ApplicationTest extends TestCase
         self::assertStringStartsWith('Usage:', $dummyWriter->getMessages()[0]);
     }
 
+    /** @return Generator<array<int, string>> */
     public function printsHelpDataProvider(): Generator
     {
         yield ['-h'];
@@ -46,6 +47,7 @@ class ApplicationTest extends TestCase
         self::assertStringStartsWith('Error:', $dummyWriter->getMessages()[0]);
     }
 
+    /** @return Generator<array<int, string>> */
     public function wrongArgumentsDataProvider(): Generator
     {
         yield [''];
