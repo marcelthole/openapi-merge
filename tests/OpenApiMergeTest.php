@@ -10,6 +10,8 @@ use OpenApiMerge\OpenApiMerge;
 use OpenApiMerge\Reader\FileReader;
 use PHPUnit\Framework\TestCase;
 
+use function assert;
+
 class OpenApiMergeTest extends TestCase
 {
     public function testMergePaths(): void
@@ -19,9 +21,9 @@ class OpenApiMergeTest extends TestCase
         );
 
         $result = $sut->mergeFiles(
-            new File(__DIR__.'/Fixtures/base.yml'),
-            new File(__DIR__.'/Fixtures/routes.yml'),
-            new File(__DIR__.'/Fixtures/errors.yml')
+            new File(__DIR__ . '/Fixtures/base.yml'),
+            new File(__DIR__ . '/Fixtures/routes.yml'),
+            new File(__DIR__ . '/Fixtures/errors.yml')
         )->getOpenApiSpecificationObject();
         assert($result instanceof OpenApi);
 

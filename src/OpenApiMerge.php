@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace OpenApiMerge;
 
+use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Paths;
 use OpenApiMerge\FileHandling\File;
 use OpenApiMerge\FileHandling\SpecificationFile;
 use OpenApiMerge\Reader\FileReader;
 
 use function array_merge;
+use function assert;
 
 class OpenApiMerge
 {
@@ -23,9 +25,11 @@ class OpenApiMerge
     public function mergeFiles(File $baseFile, File ...$additionalFiles): SpecificationFile
     {
         $mergedOpenApiDefinition = $this->openApiReader->readFile($baseFile)->getOpenApiSpecificationObject();
+        assert($mergedOpenApiDefinition instanceof OpenApi);
 
         foreach ($additionalFiles as $additionalFile) {
             $additionalDefinition = $this->openApiReader->readFile($additionalFile)->getOpenApiSpecificationObject();
+            assert($additionalDefinition instanceof OpenApi);
 
             $mergedOpenApiDefinition->paths = new Paths(
                 array_merge(
@@ -33,7 +37,9 @@ class OpenApiMerge
                     $additionalDefinition->paths->getPaths()
                 )
             );
+        }
 
+        if ($mergedOpenApiDefinition->components !== null) {
             $mergedOpenApiDefinition->components->schemas = [];
         }
 
