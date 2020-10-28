@@ -2,3 +2,4 @@
 /vendor/
 /.phpunit.result.cache
 /clover.xml
+/php-coveralls.phar

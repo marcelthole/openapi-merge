@@ -40,8 +40,10 @@ script:
   - composer ci
   - if [[ $TEST_COVERAGE == 'true' ]]; then composer phpunit-coverage ; fi
 
-after_script:
-  - if [[ $TEST_COVERAGE == 'true' ]]; then vendor/bin/php-coveralls -v ; fi
+after_success:
+  - if [[ $TEST_COVERAGE == 'true' ]]; then wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.2/php-coveralls.phar ; fi
+  - if [[ $TEST_COVERAGE == 'true' ]]; then chmod +x php-coveralls.phar ; fi
+  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry php php-coveralls.phar -v -x clover.xml -o ./coveralls.json ; fi
 
 notifications:
   email: false
