@@ -9,7 +9,9 @@ use OpenApiMerge\FileHandling\Exception\IOException;
 use function getcwd;
 use function pathinfo;
 use function realpath;
+use function strpos;
 
+use const DIRECTORY_SEPARATOR;
 use const PATHINFO_EXTENSION;
 
 final class File
@@ -30,9 +32,20 @@ final class File
     {
         $fullFilename = realpath($this->filename);
         if ($fullFilename === false) {
-            throw IOException::createWithNonExistingFile(getcwd() . '/' . $this->filename);
+            throw IOException::createWithNonExistingFile(
+                $this->createAbsoluteFilePath($this->filename)
+            );
         }
 
         return $fullFilename;
+    }
+
+    private function createAbsoluteFilePath(string $filename): string
+    {
+        if (strpos($filename, '/') === 0) {
+            return $filename;
+        }
+
+        return getcwd() . DIRECTORY_SEPARATOR . $filename;
     }
 }
