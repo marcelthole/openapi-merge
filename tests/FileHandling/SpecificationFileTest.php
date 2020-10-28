@@ -9,6 +9,9 @@ use OpenApiMerge\FileHandling\File;
 use OpenApiMerge\FileHandling\SpecificationFile;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \OpenApiMerge\FileHandling\SpecificationFile
+ */
 class SpecificationFileTest extends TestCase
 {
     public function testGetter(): void

@@ -9,6 +9,9 @@ use OpenApiMerge\Console\Application;
 use OpenApiMerge\Console\IO\DummyWriter;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \OpenApiMerge\Console\Application
+ */
 class ApplicationTest extends TestCase
 {
     /**

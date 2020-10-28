@@ -5,9 +5,16 @@ declare(strict_types=1);
 namespace OpenApiMerge\Tests\FileHandling;
 
 use Generator;
+use OpenApiMerge\FileHandling\Exception\IOException;
 use OpenApiMerge\FileHandling\File;
 use PHPUnit\Framework\TestCase;
 
+use function getcwd;
+use function str_replace;
+
+/**
+ * @covers \OpenApiMerge\FileHandling\File
+ */
 class FileTest extends TestCase
 {
     /**
@@ -28,5 +35,46 @@ class FileTest extends TestCase
         yield ['base.v2.json', 'json'];
         yield ['no-extension', ''];
         yield ['./../file.dat', 'dat'];
+    }
+
+    public function testGetAbsolutePathWithRelativeInvalidFile(): void
+    {
+        $sut = new File('dummyfile');
+
+        $this->expectException(IOException::class);
+        $this->expectExceptionMessageMatches('~/dummyfile~');
+
+        $sut->getAbsolutePath();
+    }
+
+    public function testGetAbsolutePathWithAbsoluteInvalidFile(): void
+    {
+        $invalidFilename = __FILE__ . '-nonexisting.dat';
+        $sut             = new File($invalidFilename);
+
+        $this->expectException(IOException::class);
+        $this->expectExceptionMessageMatches('~' . $invalidFilename . '~');
+
+        $sut->getAbsolutePath();
+    }
+
+    public function testGetAbsolutePath(): void
+    {
+        $filename = str_replace(
+            getcwd() ?: '',
+            '.',
+            __FILE__
+        );
+
+        self::assertNotSame(
+            __FILE__,
+            $filename
+        );
+
+        $sut = new File($filename);
+        self::assertSame(
+            __FILE__,
+            $sut->getAbsolutePath()
+        );
     }
 }

@@ -12,6 +12,9 @@ use PHPUnit\Framework\TestCase;
 
 use function assert;
 
+/**
+ * @covers \OpenApiMerge\OpenApiMerge
+ */
 class OpenApiMergeTest extends TestCase
 {
     public function testMergePaths(): void
