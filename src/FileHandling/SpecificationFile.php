@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace OpenApiMerge\FileHandling;
 
-use cebe\openapi\SpecObjectInterface;
+use cebe\openapi\spec\OpenApi;
 
 final class SpecificationFile
 {
     private File $file;
 
-    private SpecObjectInterface $openApiSpecificationObject;
+    private OpenApi $openApi;
 
-    public function __construct(File $filename, SpecObjectInterface $openApiSpecificationObject)
+    public function __construct(File $filename, OpenApi $openApiSpecificationObject)
     {
-        $this->file                       = $filename;
-        $this->openApiSpecificationObject = $openApiSpecificationObject;
+        $this->file    = $filename;
+        $this->openApi = $openApiSpecificationObject;
     }
 
     public function getFile(): File
@@ -23,8 +23,8 @@ final class SpecificationFile
         return $this->file;
     }
 
-    public function getOpenApiSpecificationObject(): SpecObjectInterface
+    public function getOpenApi(): OpenApi
     {
-        return $this->openApiSpecificationObject;
+        return $this->openApi;
     }
 }

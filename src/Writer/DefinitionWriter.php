@@ -8,7 +8,7 @@ use cebe\openapi\Writer;
 use OpenApiMerge\FileHandling\SpecificationFile;
 use OpenApiMerge\Writer\Exception\InvalidFileTypeException;
 
-final class DefinitionWriter
+final class DefinitionWriter implements DefinitionWriterInterface
 {
     public function write(SpecificationFile $specFile): string
     {
@@ -27,11 +27,11 @@ final class DefinitionWriter
 
     public function writeToJson(SpecificationFile $specFile): string
     {
-        return Writer::writeToJson($specFile->getOpenApiSpecificationObject());
+        return Writer::writeToJson($specFile->getOpenApi());
     }
 
     public function writeToYaml(SpecificationFile $specFile): string
     {
-        return Writer::writeToYaml($specFile->getOpenApiSpecificationObject());
+        return Writer::writeToYaml($specFile->getOpenApi());
     }
 }

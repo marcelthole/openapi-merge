@@ -1,6 +1,12 @@
 #!/usr/bin/env php
 <?php
 
+use OpenApiMerge\Console\Application;
+use OpenApiMerge\Console\Command\MergeCommand;
+use OpenApiMerge\OpenApiMerge;
+use OpenApiMerge\Reader\FileReader;
+use OpenApiMerge\Writer\DefinitionWriter;
+
 (static function () {
     $composerAutoload = [
         __DIR__ . '/../vendor/autoload.php',
@@ -14,5 +20,10 @@
     }
 })();
 
-$application = new \OpenApiMerge\Console\Application();
+$application = new Application(
+    new MergeCommand(
+        new OpenApiMerge(new FileReader()),
+        new DefinitionWriter()
+    )
+);
 exit($application->run($argv));

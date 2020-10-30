@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace OpenApiMerge\Console;
 
+use OpenApiMerge\Console\Command\CommandInterface;
 use OpenApiMerge\Console\IO\PrintWriter;
 use OpenApiMerge\Console\IO\WriterInterface;
 use OpenApiMerge\FileHandling\File;
-use OpenApiMerge\OpenApiMerge;
-use OpenApiMerge\Reader\FileReader;
-use OpenApiMerge\Writer\DefinitionWriter;
 
 use function array_map;
 use function array_slice;
@@ -20,9 +18,14 @@ class Application
 {
     private WriterInterface $io;
 
-    public function __construct(?WriterInterface $io = null)
-    {
-        $this->io = $io ?? new PrintWriter();
+    private CommandInterface $command;
+
+    public function __construct(
+        CommandInterface $command,
+        ?WriterInterface $io = null
+    ) {
+        $this->io      = $io ?? new PrintWriter();
+        $this->command = $command;
     }
 
     /**
@@ -53,17 +56,14 @@ class Application
             return 1;
         }
 
-        $merger       = new OpenApiMerge(new FileReader());
-        $mergedResult = $merger->mergeFiles(
+        $this->command->run(
+            $this->io,
             new File($baseFile),
-            ...array_map(
+            array_map(
                 static fn (string $file): File => new File($file),
                 $additionalFiles
             )
         );
-
-        $writer = new DefinitionWriter();
-        $this->io->write($writer->write($mergedResult));
 
         return 0;
     }

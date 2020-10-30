@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace OpenApiMerge\Reader;
 
 use cebe\openapi\Reader;
+use cebe\openapi\spec\OpenApi;
 use OpenApiMerge\FileHandling\File;
 use OpenApiMerge\FileHandling\SpecificationFile;
 use OpenApiMerge\Reader\Exception\InvalidFileTypeException;
+
+use function assert;
 
 final class FileReader
 {
@@ -24,6 +27,8 @@ final class FileReader
             default:
                 throw InvalidFileTypeException::createFromExtension($inputFile->getFileExtension());
         }
+
+        assert($spec instanceof OpenApi);
 
         return new SpecificationFile(
             $inputFile,

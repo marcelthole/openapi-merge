@@ -27,7 +27,7 @@ class OpenApiMergeTest extends TestCase
             new File(__DIR__ . '/Fixtures/base.yml'),
             new File(__DIR__ . '/Fixtures/routes.yml'),
             new File(__DIR__ . '/Fixtures/errors.yml')
-        )->getOpenApiSpecificationObject();
+        )->getOpenApi();
         assert($result instanceof OpenApi);
 
         self::assertCount(1, $result->paths->getPaths());
