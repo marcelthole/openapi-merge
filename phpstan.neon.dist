@@ -5,3 +5,4 @@ parameters:
     - src
     - tests
   tipsOfTheDay: false
+  tmpDir: build

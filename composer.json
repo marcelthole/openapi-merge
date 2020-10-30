@@ -17,10 +17,11 @@
     "cebe/php-openapi": "^1.4.2"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-master",
-    "phpunit/phpunit": "^9.4",
+    "doctrine/coding-standard": "^8.1",
+    "infection/infection": "^0.19.2",
     "phpstan/phpstan": "^0.12.51",
-    "doctrine/coding-standard": "^8.1"
+    "phpunit/phpunit": "^9.4",
+    "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "psr-4": {
@@ -38,11 +39,16 @@
       "@phpunit",
       "@phpstan"
     ],
+    "ci-coverage": [
+      "@phpunit-coverage",
+      "@infection"
+    ],
     "cs-check": "phpcs",
     "cs-fix": "phpcbf",
-    "phpunit": "phpunit --colors=always",
-    "phpunit-coverage": "phpunit --colors=always --coverage-clover clover.xml",
-    "phpstan": "phpstan analyse"
+    "phpunit": "phpunit --no-coverage",
+    "phpunit-coverage": "phpunit",
+    "phpstan": "phpstan analyse",
+    "infection": "infection --threads=4 --coverage=build/coverage"
   },
   "config": {
     "sort-packages": true

@@ -5,7 +5,8 @@
          colors="true"
          defaultTimeLimit="5"
          executionOrder="random"
-         enforceTimeLimit="false"
+         enforceTimeLimit="true"
+         cacheResultFile="build/.phpunit.result.cache"
          >
 
     <testsuites>
@@ -18,5 +19,13 @@
         <include>
             <directory>./src</directory>
         </include>
+        <report>
+            <clover outputFile="build/coverage/clover.xml" />
+            <xml outputDirectory="build/coverage/coverage-xml/"/>
+        </report>
     </coverage>
+
+    <logging>
+        <junit outputFile="build/coverage/junit.xml"/>
+    </logging>
 </phpunit>
