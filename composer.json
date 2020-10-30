@@ -14,7 +14,8 @@
   ],
   "require": {
     "php": "^7.4 || ^8.0",
-    "cebe/php-openapi": "^1.4.2"
+    "cebe/php-openapi": "^1.4.2",
+    "symfony/yaml": "^v4.0 || ^v5.0"
   },
   "require-dev": {
     "doctrine/coding-standard": "^8.1",
