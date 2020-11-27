@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\Console\Command;
+namespace Mthole\OpenApiMerge\Tests\Console\Command;
 
 use cebe\openapi\spec\OpenApi;
-use OpenApiMerge\Console\Command\MergeCommand;
-use OpenApiMerge\Console\IO\DummyWriter;
-use OpenApiMerge\FileHandling\File;
-use OpenApiMerge\FileHandling\SpecificationFile;
-use OpenApiMerge\OpenApiMergeInterface;
-use OpenApiMerge\Writer\DefinitionWriterInterface;
+use Mthole\OpenApiMerge\Console\Command\MergeCommand;
+use Mthole\OpenApiMerge\Console\IO\DummyWriter;
+use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
+use Mthole\OpenApiMerge\OpenApiMergeInterface;
+use Mthole\OpenApiMerge\Writer\DefinitionWriterInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenApiMerge\Console\Command\MergeCommand
+ * @covers \Mthole\OpenApiMerge\Console\Command\MergeCommand
  */
 class MergeCommandTest extends TestCase
 {

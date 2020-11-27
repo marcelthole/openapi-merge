@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\Console\IO;
+namespace Mthole\OpenApiMerge\Tests\Console\IO;
 
-use OpenApiMerge\Console\IO\PrintWriter;
+use Mthole\OpenApiMerge\Console\IO\PrintWriter;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenApiMerge\Console\IO\PrintWriter
+ * @covers \Mthole\OpenApiMerge\Console\IO\PrintWriter
  */
 class PrintWriterTest extends TestCase
 {

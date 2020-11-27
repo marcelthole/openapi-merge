@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Console;
+namespace Mthole\OpenApiMerge\Console;
 
-use OpenApiMerge\Console\Command\CommandInterface;
-use OpenApiMerge\Console\IO\PrintWriter;
-use OpenApiMerge\Console\IO\WriterInterface;
-use OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\Console\Command\CommandInterface;
+use Mthole\OpenApiMerge\Console\IO\PrintWriter;
+use Mthole\OpenApiMerge\Console\IO\WriterInterface;
+use Mthole\OpenApiMerge\FileHandling\File;
 
 use function array_map;
 use function array_slice;
@@ -49,7 +49,7 @@ class Application
                 <<<'ERR'
             Error:
                 Basefile or additional files are missing!
-            
+
             ERR
             );
 
@@ -74,10 +74,10 @@ class Application
             <<<USAGE
         Usage:
             $cmd basefile.yml additionalFileA.yml additionalFileB.yml additionalFileC.yml [...]  > combined.yml
-            
+
         Allowed extensions:
             Only .yml, .yaml and .json files are supported
-        
+
         Outputformat:
             The output format is determined by the basefile extension.
 

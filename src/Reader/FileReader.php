@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Reader;
+namespace Mthole\OpenApiMerge\Reader;
 
 use cebe\openapi\Reader;
 use cebe\openapi\spec\OpenApi;
-use OpenApiMerge\FileHandling\File;
-use OpenApiMerge\FileHandling\SpecificationFile;
-use OpenApiMerge\Reader\Exception\InvalidFileTypeException;
+use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
+use Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException;
 
 use function assert;
 

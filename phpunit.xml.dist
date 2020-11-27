@@ -10,8 +10,12 @@
          >
 
     <testsuites>
-        <testsuite name="Test Suite">
+        <testsuite name="Unit Test Suite">
             <directory>./tests</directory>
+            <exclude>./tests/Acceptance</exclude>
+        </testsuite>
+        <testsuite name="Acceptance Test Suite">
+            <directory>./tests/Acceptance</directory>
         </testsuite>
     </testsuites>
 

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\Console;
+namespace Mthole\OpenApiMerge\Tests\Console;
 
 use Generator;
-use OpenApiMerge\Console\Application;
-use OpenApiMerge\Console\Command\CommandInterface;
-use OpenApiMerge\Console\IO\DummyWriter;
-use OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\Console\Application;
+use Mthole\OpenApiMerge\Console\Command\CommandInterface;
+use Mthole\OpenApiMerge\Console\IO\DummyWriter;
+use Mthole\OpenApiMerge\FileHandling\File;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenApiMerge\Console\Application
+ * @covers \Mthole\OpenApiMerge\Console\Application
  */
 class ApplicationTest extends TestCase
 {

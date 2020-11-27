@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\Console\IO;
+namespace Mthole\OpenApiMerge\Tests\Console\IO;
 
-use OpenApiMerge\Console\IO\DummyWriter;
+use Mthole\OpenApiMerge\Console\IO\DummyWriter;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenApiMerge\Console\IO\DummyWriter
+ * @covers \Mthole\OpenApiMerge\Console\IO\DummyWriter
  */
 class DummyWriterTest extends TestCase
 {

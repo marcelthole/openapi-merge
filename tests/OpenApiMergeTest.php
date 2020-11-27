@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests;
+namespace Mthole\OpenApiMerge\Tests;
 
 use cebe\openapi\spec\OpenApi;
-use OpenApiMerge\FileHandling\File;
-use OpenApiMerge\OpenApiMerge;
-use OpenApiMerge\Reader\FileReader;
+use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\OpenApiMerge;
+use Mthole\OpenApiMerge\Reader\FileReader;
 use PHPUnit\Framework\TestCase;
 
 use function assert;
 
 /**
- * @covers \OpenApiMerge\OpenApiMerge
+ * @covers \Mthole\OpenApiMerge\OpenApiMerge
  */
 class OpenApiMergeTest extends TestCase
 {

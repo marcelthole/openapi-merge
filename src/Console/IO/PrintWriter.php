@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Console\IO;
+namespace Mthole\OpenApiMerge\Console\IO;
 
 class PrintWriter implements WriterInterface
 {

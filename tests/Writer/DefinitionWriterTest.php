@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\Writer;
+namespace Mthole\OpenApiMerge\Tests\Writer;
 
 use cebe\openapi\spec\OpenApi;
 use Generator;
-use OpenApiMerge\FileHandling\File;
-use OpenApiMerge\FileHandling\SpecificationFile;
-use OpenApiMerge\Writer\DefinitionWriter;
-use OpenApiMerge\Writer\Exception\InvalidFileTypeException;
+use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
+use Mthole\OpenApiMerge\Writer\DefinitionWriter;
+use Mthole\OpenApiMerge\Writer\Exception\InvalidFileTypeException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenApiMerge\Writer\DefinitionWriter
+ * @covers \Mthole\OpenApiMerge\Writer\DefinitionWriter
  */
 class DefinitionWriterTest extends TestCase
 {
@@ -96,7 +96,7 @@ class DefinitionWriterTest extends TestCase
         self::assertEquals(
             <<<'YML'
             openapi: 3.0.0
-            
+
             YML,
             $sut->writeToYaml($specificationFile)
         );

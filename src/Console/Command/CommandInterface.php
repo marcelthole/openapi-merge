@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Console\Command;
+namespace Mthole\OpenApiMerge\Console\Command;
 
-use OpenApiMerge\Console\IO\WriterInterface;
-use OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\Console\IO\WriterInterface;
+use Mthole\OpenApiMerge\FileHandling\File;
 
 interface CommandInterface
 {

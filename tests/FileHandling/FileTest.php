@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\FileHandling;
+namespace Mthole\OpenApiMerge\Tests\FileHandling;
 
 use Generator;
-use OpenApiMerge\FileHandling\Exception\IOException;
-use OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\Exception\IOException;
+use Mthole\OpenApiMerge\FileHandling\File;
 use PHPUnit\Framework\TestCase;
 
 use function getcwd;
 use function str_replace;
 
 /**
- * @covers \OpenApiMerge\FileHandling\File
+ * @covers \Mthole\OpenApiMerge\FileHandling\File
  */
 class FileTest extends TestCase
 {

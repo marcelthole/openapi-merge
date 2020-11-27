@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Writer;
+namespace Mthole\OpenApiMerge\Writer;
 
-use OpenApiMerge\FileHandling\SpecificationFile;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 
 interface DefinitionWriterInterface
 {

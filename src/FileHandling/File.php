@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\FileHandling;
+namespace Mthole\OpenApiMerge\FileHandling;
 
-use OpenApiMerge\FileHandling\Exception\IOException;
+use Mthole\OpenApiMerge\FileHandling\Exception\IOException;
 
 use function getcwd;
 use function pathinfo;

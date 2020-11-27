@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Writer\Exception;
+namespace Mthole\OpenApiMerge\Writer\Exception;
 
 use Exception;
 

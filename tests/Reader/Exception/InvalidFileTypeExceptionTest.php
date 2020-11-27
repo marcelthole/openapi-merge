@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\Reader\Exception;
+namespace Mthole\OpenApiMerge\Tests\Reader\Exception;
 
-use OpenApiMerge\Reader\Exception\InvalidFileTypeException;
+use Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenApiMerge\Reader\Exception\InvalidFileTypeException
+ * @covers \Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException
  */
 class InvalidFileTypeExceptionTest extends TestCase
 {

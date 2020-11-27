@@ -13,7 +13,7 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ^8.0",
+    "php": "^7.4 || ~8.0.0",
     "cebe/php-openapi": "^1.4.2",
     "symfony/yaml": "^v4.0 || ^v5.0"
   },
@@ -26,12 +26,12 @@
   },
   "autoload": {
     "psr-4": {
-      "OpenApiMerge\\": "src/"
+      "Mthole\\OpenApiMerge\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "OpenApiMerge\\Tests\\": "tests"
+      "Mthole\\OpenApiMerge\\Tests\\": "tests"
     }
   },
   "scripts": {
