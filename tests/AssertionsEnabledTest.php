@@ -17,7 +17,7 @@ class AssertionsEnabledTest extends TestCase
     public function testAssertionsWillThrowAnException(): void
     {
         self::expectException(Throwable::class);
-        assert(false);
+        assert(false); // @phpstan-ignore-line
         $this->fail('php `assert` didn\'t throw an exception. Set the `zend.assertions` to `1` in the php.ini');
     }
 }

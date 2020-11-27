@@ -22,6 +22,7 @@
     "doctrine/coding-standard": "^8.1",
     "infection/infection": "^0.20.0",
     "phpstan/phpstan": "^0.12.51",
+    "phpstan/phpstan-phpunit": "^0.12.16",
     "phpunit/phpunit": "^9.4",
     "roave/security-advisories": "dev-master"
   },

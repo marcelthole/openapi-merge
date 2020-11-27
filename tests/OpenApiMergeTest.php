@@ -31,6 +31,7 @@ class OpenApiMergeTest extends TestCase
         assert($result instanceof OpenApi);
 
         self::assertCount(1, $result->paths->getPaths());
+        self::assertNotNull($result->components);
         self::assertIsArray($result->components->schemas);
     }
 
