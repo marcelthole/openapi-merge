@@ -1,18 +1,19 @@
 {
-    "minMsi": 80,
-    "source": {
-        "directories": [
-            "src"
-        ]
+  "minMsi": 80,
+  "source": {
+    "directories": [
+      "src"
+    ]
+  },
+  "timeout": 10,
+  "logs": {
+    "text": "build/infection.log",
+    "badge": {
+      "branch": "main"
     },
-    "timeout": 10,
-    "logs": {
-        "text": "build/infection.log",
-        "badge": {
-            "branch": "main"
-        }
-    },
-    "mutators": {
-        "@default": true
-    }
+    "github": false
+  },
+  "mutators": {
+    "@default": true
+  }
 }

@@ -11,7 +11,6 @@ info:
     name: MIT
     url: https://tldrlegal.com/license/mit-license
 paths: { }
-components: { }
 security: [ ]
 servers:
   - url: "https://api.base.example.org"

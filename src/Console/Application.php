@@ -41,10 +41,10 @@ class Application
             return 0;
         }
 
-        $baseFile        = $argv[1] ?? false;
+        $baseFile        = $argv[1] ?? null;
         $additionalFiles = array_slice($argv, 2);
 
-        if (! $baseFile || empty($additionalFiles)) {
+        if ($baseFile === null || empty($additionalFiles)) {
             $this->io->write(
                 <<<'ERR'
             Error:

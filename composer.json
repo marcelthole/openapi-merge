@@ -2,8 +2,9 @@
   "name": "marcelthole/openapi-merge",
   "description": "Merge multiple OpenAPI YML/JSON files into one",
   "type": "application",
-  "keywords":[
-    "openapi", "merge"
+  "keywords": [
+    "openapi",
+    "merge"
   ],
   "license": "MIT",
   "authors": [
@@ -19,7 +20,7 @@
   },
   "require-dev": {
     "doctrine/coding-standard": "^8.1",
-    "infection/infection": "^0.19.2",
+    "infection/infection": "^0.20.0",
     "phpstan/phpstan": "^0.12.51",
     "phpunit/phpunit": "^9.4",
     "roave/security-advisories": "dev-master"

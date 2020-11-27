@@ -10,6 +10,7 @@ use Mthole\OpenApiMerge\FileHandling\File;
 use PHPUnit\Framework\TestCase;
 
 use function getcwd;
+use function preg_quote;
 use function str_replace;
 
 /**
@@ -42,7 +43,7 @@ class FileTest extends TestCase
         $sut = new File('dummyfile');
 
         $this->expectException(IOException::class);
-        $this->expectExceptionMessageMatches('~/dummyfile~');
+        $this->expectExceptionMessageMatches('~\w+/dummyfile"~');
 
         $sut->getAbsolutePath();
     }
@@ -53,7 +54,7 @@ class FileTest extends TestCase
         $sut             = new File($invalidFilename);
 
         $this->expectException(IOException::class);
-        $this->expectExceptionMessageMatches('~' . $invalidFilename . '~');
+        $this->expectExceptionMessageMatches('~"' . preg_quote($invalidFilename, '~') . '"~');
 
         $sut->getAbsolutePath();
     }

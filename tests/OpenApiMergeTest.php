@@ -31,5 +31,20 @@ class OpenApiMergeTest extends TestCase
         assert($result instanceof OpenApi);
 
         self::assertCount(1, $result->paths->getPaths());
+        self::assertIsArray($result->components->schemas);
+    }
+
+    public function testMergeFileWithoutComponents(): void
+    {
+        $sut = new OpenApiMerge(
+            new FileReader()
+        );
+
+        $result = $sut->mergeFiles(
+            new File(__DIR__ . '/Fixtures/base-without-components.yml')
+        )->getOpenApi();
+        assert($result instanceof OpenApi);
+
+        self::assertNull($result->components);
     }
 }
