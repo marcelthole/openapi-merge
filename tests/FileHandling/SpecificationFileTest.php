@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\FileHandling;
+namespace Mthole\OpenApiMerge\Tests\FileHandling;
 
 use cebe\openapi\spec\OpenApi;
-use OpenApiMerge\FileHandling\File;
-use OpenApiMerge\FileHandling\SpecificationFile;
+use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenApiMerge\FileHandling\SpecificationFile
+ * @covers \Mthole\OpenApiMerge\FileHandling\SpecificationFile
  */
 class SpecificationFileTest extends TestCase
 {

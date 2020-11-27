@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge;
+namespace Mthole\OpenApiMerge;
 
-use OpenApiMerge\FileHandling\File;
-use OpenApiMerge\FileHandling\SpecificationFile;
+use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 
 interface OpenApiMergeInterface
 {

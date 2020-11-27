@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\Console;
+namespace Mthole\OpenApiMerge\Tests\Console;
 
 use Generator;
-use OpenApiMerge\Console\Application;
-use OpenApiMerge\Console\Command\CommandInterface;
-use OpenApiMerge\Console\IO\DummyWriter;
-use OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\Console\Application;
+use Mthole\OpenApiMerge\Console\Command\CommandInterface;
+use Mthole\OpenApiMerge\Console\IO\DummyWriter;
+use Mthole\OpenApiMerge\FileHandling\File;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenApiMerge\Console\Application
+ * @covers \Mthole\OpenApiMerge\Console\Application
  */
 class ApplicationTest extends TestCase
 {
@@ -41,12 +41,12 @@ class ApplicationTest extends TestCase
     /**
      * @dataProvider wrongArgumentsDataProvider
      */
-    public function testWrongUsage(string $argument): void
+    public function testWrongUsage(string ...$arguments): void
     {
         $dummyWriter = new DummyWriter();
         $application = new Application($this->createStub(CommandInterface::class), $dummyWriter);
 
-        $exitCode = $application->run(['binary', $argument]);
+        $exitCode = $application->run($arguments);
 
         self::assertSame(1, $exitCode);
         self::assertCount(1, $dummyWriter->getMessages());
@@ -56,8 +56,9 @@ class ApplicationTest extends TestCase
     /** @return Generator<array<int, string>> */
     public function wrongArgumentsDataProvider(): Generator
     {
-        yield [''];
-        yield ['singlefile-only.yml'];
+        yield ['appbinary'];
+        yield ['appbinary', ''];
+        yield ['appbinary', 'singlefile-only.yml'];
     }
 
     public function testDelegateCommand(): void

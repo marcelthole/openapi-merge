@@ -1,11 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-use OpenApiMerge\Console\Application;
-use OpenApiMerge\Console\Command\MergeCommand;
-use OpenApiMerge\OpenApiMerge;
-use OpenApiMerge\Reader\FileReader;
-use OpenApiMerge\Writer\DefinitionWriter;
+use Mthole\OpenApiMerge\Console\Application;
+use Mthole\OpenApiMerge\Console\Command\MergeCommand;
+use Mthole\OpenApiMerge\OpenApiMerge;
+use Mthole\OpenApiMerge\Reader\FileReader;
+use Mthole\OpenApiMerge\Writer\DefinitionWriter;
 
 (static function () {
     $composerAutoload = [

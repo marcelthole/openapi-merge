@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\FileHandling\Exception;
+namespace Mthole\OpenApiMerge\Tests\FileHandling\Exception;
 
-use OpenApiMerge\FileHandling\Exception\IOException;
+use Mthole\OpenApiMerge\FileHandling\Exception\IOException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenApiMerge\FileHandling\Exception\IOException
+ * @covers \Mthole\OpenApiMerge\FileHandling\Exception\IOException
  */
 class IOExceptionTest extends TestCase
 {

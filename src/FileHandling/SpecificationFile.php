@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\FileHandling;
+namespace Mthole\OpenApiMerge\FileHandling;
 
 use cebe\openapi\spec\OpenApi;
 

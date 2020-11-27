@@ -32,7 +32,14 @@ jobs:
         with:
           coverage: "none"
           php-version: "${{ matrix.php-version }}"
+          ini-values: zend.assertions=1
           tools: composer:v2
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: "Cache dependencies"
         uses: "actions/cache@v2"
@@ -59,7 +66,7 @@ jobs:
         run: "composer run-script ci"
 
   tests-with-coverage:
-    name: "Tests with coverage"
+    name: "Tests with coverage and PR Comments"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -74,7 +81,14 @@ jobs:
         with:
           coverage: "xdebug"
           php-version: "${{ matrix.php-version }}"
+          ini-values: zend.assertions=1
           tools: composer:v2
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: "Cache dependencies"
         uses: "actions/cache@v2"
@@ -101,5 +115,8 @@ jobs:
         uses: codecov/codecov-action@v1.0.15
         with:
           directory: ./build/coverage/
-          path_to_write_report: ./build/codecov_report.txt
-          fail_ci_if_error: true
+
+      - name: Run Infection for added files
+        run: |
+          git fetch --depth=1 origin $GITHUB_BASE_REF
+          composer run-script infection -- --git-diff-filter=AM --git-diff-base=origin/$GITHUB_BASE_REF --logger-github --ignore-msi-with-no-mutations --only-covered

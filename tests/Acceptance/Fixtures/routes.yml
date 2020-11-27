@@ -1,0 +1,42 @@
+openapi: 3.0.2
+info:
+  title: Example OpenAPI Definition for routes
+  description: This is the routes description
+  version: '1.1'
+paths:
+  /ping:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Base Route
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                required:
+                  - response
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'errors.yml#/components/schemas/ProblemResponse'
+      operationId: get-ping
+      description: Description of Ping
+      parameters:
+        - schema:
+            type: string
+            minLength: 0
+            maxLength: 20
+          in: query
+          name: responseWith
+          description: response with this message
+tags:
+  - name: Route
+  - name: Base Route

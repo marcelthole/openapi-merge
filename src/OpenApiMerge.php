@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge;
+namespace Mthole\OpenApiMerge;
 
 use cebe\openapi\spec\Paths;
-use OpenApiMerge\FileHandling\File;
-use OpenApiMerge\FileHandling\SpecificationFile;
-use OpenApiMerge\Reader\FileReader;
+use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
+use Mthole\OpenApiMerge\Reader\FileReader;
 
 use function array_merge;
 

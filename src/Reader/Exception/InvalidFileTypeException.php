@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Reader\Exception;
+namespace Mthole\OpenApiMerge\Reader\Exception;
 
 use Exception;
 

@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Tests\FileHandling;
+namespace Mthole\OpenApiMerge\Tests\FileHandling;
 
 use Generator;
-use OpenApiMerge\FileHandling\Exception\IOException;
-use OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\Exception\IOException;
+use Mthole\OpenApiMerge\FileHandling\File;
 use PHPUnit\Framework\TestCase;
 
 use function getcwd;
+use function preg_quote;
 use function str_replace;
 
 /**
- * @covers \OpenApiMerge\FileHandling\File
+ * @covers \Mthole\OpenApiMerge\FileHandling\File
  */
 class FileTest extends TestCase
 {
@@ -42,7 +43,7 @@ class FileTest extends TestCase
         $sut = new File('dummyfile');
 
         $this->expectException(IOException::class);
-        $this->expectExceptionMessageMatches('~/dummyfile~');
+        $this->expectExceptionMessageMatches('~\w+/dummyfile"~');
 
         $sut->getAbsolutePath();
     }
@@ -53,7 +54,7 @@ class FileTest extends TestCase
         $sut             = new File($invalidFilename);
 
         $this->expectException(IOException::class);
-        $this->expectExceptionMessageMatches('~' . $invalidFilename . '~');
+        $this->expectExceptionMessageMatches('~"' . preg_quote($invalidFilename, '~') . '"~');
 
         $sut->getAbsolutePath();
     }

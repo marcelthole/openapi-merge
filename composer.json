@@ -2,8 +2,9 @@
   "name": "marcelthole/openapi-merge",
   "description": "Merge multiple OpenAPI YML/JSON files into one",
   "type": "application",
-  "keywords":[
-    "openapi", "merge"
+  "keywords": [
+    "openapi",
+    "merge"
   ],
   "license": "MIT",
   "authors": [
@@ -13,25 +14,26 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ^8.0",
+    "php": "^7.4 || ~8.0.0",
     "cebe/php-openapi": "^1.4.2",
     "symfony/yaml": "^v4.0 || ^v5.0"
   },
   "require-dev": {
     "doctrine/coding-standard": "^8.1",
-    "infection/infection": "^0.19.2",
+    "infection/infection": "^0.20.0",
     "phpstan/phpstan": "^0.12.51",
+    "phpstan/phpstan-phpunit": "^0.12.16",
     "phpunit/phpunit": "^9.4",
     "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "psr-4": {
-      "OpenApiMerge\\": "src/"
+      "Mthole\\OpenApiMerge\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "OpenApiMerge\\Tests\\": "tests"
+      "Mthole\\OpenApiMerge\\Tests\\": "tests"
     }
   },
   "scripts": {

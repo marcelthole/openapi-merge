@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Console\Command;
+namespace Mthole\OpenApiMerge\Console\Command;
 
-use OpenApiMerge\Console\IO\WriterInterface;
-use OpenApiMerge\FileHandling\File;
-use OpenApiMerge\OpenApiMergeInterface;
-use OpenApiMerge\Writer\DefinitionWriterInterface;
+use Mthole\OpenApiMerge\Console\IO\WriterInterface;
+use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\OpenApiMergeInterface;
+use Mthole\OpenApiMerge\Writer\DefinitionWriterInterface;
 
 final class MergeCommand implements CommandInterface
 {

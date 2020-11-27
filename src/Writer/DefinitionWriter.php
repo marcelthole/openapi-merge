@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace OpenApiMerge\Writer;
+namespace Mthole\OpenApiMerge\Writer;
 
 use cebe\openapi\Writer;
-use OpenApiMerge\FileHandling\SpecificationFile;
-use OpenApiMerge\Writer\Exception\InvalidFileTypeException;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
+use Mthole\OpenApiMerge\Writer\Exception\InvalidFileTypeException;
 
 final class DefinitionWriter implements DefinitionWriterInterface
 {

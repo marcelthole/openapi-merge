@@ -7,11 +7,19 @@
          executionOrder="random"
          enforceTimeLimit="true"
          cacheResultFile="build/.phpunit.result.cache"
-         >
+>
+
+    <php>
+        <ini name="assert.exception" value="1" />
+    </php>
 
     <testsuites>
-        <testsuite name="Test Suite">
+        <testsuite name="Unit Test Suite">
             <directory>./tests</directory>
+            <exclude>./tests/Acceptance</exclude>
+        </testsuite>
+        <testsuite name="Acceptance Test Suite">
+            <directory>./tests/Acceptance</directory>
         </testsuite>
     </testsuites>
 
@@ -20,7 +28,7 @@
             <directory>./src</directory>
         </include>
         <report>
-            <clover outputFile="build/coverage/clover.xml" />
+            <clover outputFile="build/coverage/clover.xml"/>
             <xml outputDirectory="build/coverage/coverage-xml/"/>
         </report>
     </coverage>
