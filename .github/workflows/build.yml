@@ -1,0 +1,105 @@
+# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+
+name: "Tests"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  tests:
+    name: "PHP Tests"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - php-version: "7.4"
+            composer-deps: lowest
+          - php-version: "7.4"
+            composer-deps: latest
+          - php-version: "8.0"
+            composer-deps: lowest
+          - php-version: "8.0"
+            composer-deps: latest
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "none"
+          php-version: "${{ matrix.php-version }}"
+          tools: composer:v2
+
+      - name: "Cache dependencies"
+        uses: "actions/cache@v2"
+        with:
+          path: "~/.composer/cache"
+          key: "php-${{ matrix.php-version }}-composer-${{ matrix.composer-deps }}-${{ hashFiles('**/composer.json') }}"
+          restore-keys: "php-${{ matrix.php-version }}-composer-${{ matrix.composer-deps }}"
+
+      - name: "Install dependencies"
+        run: "composer install --no-interaction --no-progress --no-suggest --ignore-platform-reqs"
+
+      - name: "Update dependencies (lowest)"
+        run: "composer update --no-interaction --no-progress --no-suggest --prefer-lowest --prefer-stable"
+        if: ${{ matrix.composer-deps == 'lowest' }}
+
+      - name: "Update dependencies (latest)"
+        run: "composer update --no-interaction --no-progress --no-suggest"
+        if: ${{ matrix.composer-deps == 'latest' }}
+
+      - name: "Show dependencies"
+        run: "composer show"
+
+      - name: "Run CI"
+        run: "composer run-script ci"
+
+  tests-with-coverage:
+    name: "Tests with coverage"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version:
+          - "7.4"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "xdebug"
+          php-version: "${{ matrix.php-version }}"
+          tools: composer:v2
+
+      - name: "Cache dependencies"
+        uses: "actions/cache@v2"
+        with:
+          path: "~/.composer/cache"
+          key: "php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}"
+          restore-keys: "php-${{ matrix.php-version }}-composer-"
+
+      - name: "Install dependencies"
+        run: "composer install --no-interaction --no-progress --no-suggest --ignore-platform-reqs"
+
+      - name: "Update dependencies (latest)"
+        run: "composer update --no-interaction --no-progress --no-suggest"
+
+      - name: "Show dependencies"
+        run: "composer show"
+
+      - name: "Run CI with coverage"
+        env:
+          INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
+        run: "composer run-script ci-coverage"
+
+      - name: Codecov
+        uses: codecov/codecov-action@v1.0.15
+        with:
+          directory: ./build/coverage/
+          path_to_write_report: ./build/codecov_report.txt
+          fail_ci_if_error: true
