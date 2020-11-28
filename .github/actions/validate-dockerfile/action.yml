@@ -1,0 +1,6 @@
+name: 'Dockerfile provides all Dependencies'
+description: 'Run tests in the Dockerfile to validate the Dockerfile provides all required dependencies'
+runs:
+  using: 'docker'
+  image: './../../../docker/Dockerfile'
+  entrypoint: .github/actions/validate-dockerfile/entrypoint.sh

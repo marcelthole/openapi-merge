@@ -1,6 +1,6 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 
-name: "Tests"
+name: Tests
 
 on:
   pull_request:
@@ -120,3 +120,13 @@ jobs:
         run: |
           git fetch --depth=1 origin $GITHUB_BASE_REF
           composer run-script infection -- --git-diff-filter=AM --git-diff-base=origin/$GITHUB_BASE_REF --logger-github --ignore-msi-with-no-mutations --only-covered
+
+  test-runs-on-docker:
+    name: "Test if tests pass in the Docker container"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test Dockerfile
+        uses: ./.github/actions/validate-dockerfile

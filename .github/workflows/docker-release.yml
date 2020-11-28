@@ -2,7 +2,7 @@
 # https://www.docker.com/blog/docker-github-actions/
 # https://github.com/metcalfc/docker-action-examples
 
-name: Build Docker Container Image
+name: Docker-Build
 
 on:
   push:
@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Test Dockerfile
+        uses: ./.github/actions/validate-dockerfile
 
       - name: Set up Docker Buildx
         id: buildx
@@ -48,4 +51,4 @@ jobs:
           build-args: |
             COMPOSER_REQUIRE_VERSION=${{ steps.get_version.outputs.VERSION }}
           push: true
-          tags: ghcr.io/marcelthole/openapi-merge:latest,ghcr.io/marcelthole/openapi-merge:${{ steps.get_version.outputs.VERSION }}
+          tags: ghcr.io/${{ github.repository }}:latest,ghcr.io/${{ github.repository }}:${{ steps.get_version.outputs.VERSION }}
