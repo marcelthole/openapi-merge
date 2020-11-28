@@ -2,7 +2,7 @@
 
 
 [![Test Status](https://github.com/marcelthole/openapi-merge/workflows/Tests/badge.svg)](https://github.com/marcelthole/openapi-merge/actions)
-[![Docker Build Status](https://github.com/marcelthole/openapi-merge/workflows/Docker%20Build/badge.svg)](https://github.com/marcelthole/openapi-merge/actions)
+[![Docker Build Status](https://github.com/marcelthole/openapi-merge/workflows/Docker-Build/badge.svg)](https://github.com/marcelthole/openapi-merge/actions)
 [![codecov](https://codecov.io/gh/marcelthole/openapi-merge/branch/main/graph/badge.svg?token=dffVbhqxvg)](https://codecov.io/gh/marcelthole/openapi-merge)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fmarcelthole%2Fopenapi-merge%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/marcelthole/openapi-merge/main)
 [![Latest Stable Version](https://poser.pugx.org/marcelthole/openapi-merge/v)](//packagist.org/packages/marcelthole/openapi-merge)
