@@ -14,6 +14,8 @@ use function preg_quote;
 use function str_replace;
 
 /**
+ * @uses \Mthole\OpenApiMerge\FileHandling\Exception\IOException
+ *
  * @covers \Mthole\OpenApiMerge\FileHandling\File
  */
 class FileTest extends TestCase

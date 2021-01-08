@@ -15,7 +15,8 @@
   ],
   "require": {
     "php": "^7.4 || ~8.0.0",
-    "cebe/php-openapi": "^1.5.0"
+    "cebe/php-openapi": "^1.5.0",
+    "symfony/console": "^v5.1.9"
   },
   "require-dev": {
     "doctrine/coding-standard": "^8.1",
@@ -48,7 +49,7 @@
     "cs-check": "phpcs",
     "cs-fix": "phpcbf",
     "phpunit": "@php -dzend.assertions=1 ./vendor/bin/phpunit --no-coverage",
-    "phpunit-coverage": "@php -dzend.assertions=1 ./vendor/bin/phpunit",
+    "phpunit-coverage": "@php -dxdebug.mode=coverage -dzend.assertions=1 ./vendor/bin/phpunit",
     "phpstan": "phpstan analyse",
     "infection": "infection --threads=4 --coverage=build/coverage"
   },

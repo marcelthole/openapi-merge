@@ -13,6 +13,10 @@ use Mthole\OpenApiMerge\Writer\Exception\InvalidFileTypeException;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @uses \Mthole\OpenApiMerge\FileHandling\File
+ * @uses \Mthole\OpenApiMerge\FileHandling\SpecificationFile
+ * @uses \Mthole\OpenApiMerge\Writer\Exception\InvalidFileTypeException
+ *
  * @covers \Mthole\OpenApiMerge\Writer\DefinitionWriter
  */
 class DefinitionWriterTest extends TestCase

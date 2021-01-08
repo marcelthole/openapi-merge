@@ -10,6 +10,8 @@ use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @uses \Mthole\OpenApiMerge\FileHandling\File
+ *
  * @covers \Mthole\OpenApiMerge\FileHandling\SpecificationFile
  */
 class SpecificationFileTest extends TestCase

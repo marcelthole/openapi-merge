@@ -11,6 +11,10 @@ use Mthole\OpenApiMerge\Reader\FileReader;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @uses \Mthole\OpenApiMerge\FileHandling\File
+ * @uses \Mthole\OpenApiMerge\FileHandling\SpecificationFile
+ * @uses \Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException
+ *
  * @covers \Mthole\OpenApiMerge\Reader\FileReader
  */
 class FileReaderTest extends TestCase
