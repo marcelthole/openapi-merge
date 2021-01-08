@@ -13,6 +13,10 @@ use PHPUnit\Framework\TestCase;
 use function assert;
 
 /**
+ * @uses \Mthole\OpenApiMerge\FileHandling\File
+ * @uses \Mthole\OpenApiMerge\FileHandling\SpecificationFile
+ * @uses \Mthole\OpenApiMerge\Reader\FileReader
+ *
  * @covers \Mthole\OpenApiMerge\OpenApiMerge
  */
 class OpenApiMergeTest extends TestCase

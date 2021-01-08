@@ -1,11 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-use Mthole\OpenApiMerge\Console\Application;
 use Mthole\OpenApiMerge\Console\Command\MergeCommand;
 use Mthole\OpenApiMerge\OpenApiMerge;
 use Mthole\OpenApiMerge\Reader\FileReader;
 use Mthole\OpenApiMerge\Writer\DefinitionWriter;
+use Symfony\Component\Console\Application;
 
 (static function () {
     $composerAutoload = [
@@ -20,10 +20,11 @@ use Mthole\OpenApiMerge\Writer\DefinitionWriter;
     }
 })();
 
-$application = new Application(
-    new MergeCommand(
-        new OpenApiMerge(new FileReader()),
-        new DefinitionWriter()
-    )
-);
-exit($application->run($argv));
+
+$application = new Application();
+$application->add(new MergeCommand(
+    new OpenApiMerge(new FileReader()),
+    new DefinitionWriter()
+));
+$application->setDefaultCommand(MergeCommand::COMMAND_NAME, true);
+$application->run();

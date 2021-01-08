@@ -6,6 +6,8 @@
          defaultTimeLimit="5"
          executionOrder="random"
          enforceTimeLimit="true"
+         beStrictAboutCoversAnnotation="true"
+         forceCoversAnnotation="true"
          cacheResultFile="build/.phpunit.result.cache"
 >
 
