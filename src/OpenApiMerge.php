@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace Mthole\OpenApiMerge;
 
 use cebe\openapi\spec\Paths;
+use Mthole\OpenApiMerge\Config\ConfigAwareInterface;
+use Mthole\OpenApiMerge\Config\HasConfig;
 use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\Reader\FileReader;
 
 use function array_merge;
 
-class OpenApiMerge implements OpenApiMergeInterface
+class OpenApiMerge implements OpenApiMergeInterface, ConfigAwareInterface
 {
+    use HasConfig;
+
     private FileReader $openApiReader;
 
     public function __construct(FileReader $openApiReader)
@@ -22,6 +26,7 @@ class OpenApiMerge implements OpenApiMergeInterface
 
     public function mergeFiles(File $baseFile, File ...$additionalFiles): SpecificationFile
     {
+        $this->openApiReader->setConfig($this->getConfig());
         $mergedOpenApiDefinition = $this->openApiReader->readFile($baseFile)->getOpenApi();
 
         foreach ($additionalFiles as $additionalFile) {
