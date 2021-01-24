@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Mthole\OpenApiMerge;
 
 use cebe\openapi\spec\PathItem;
-use cebe\openapi\spec\Paths;
 use Mthole\OpenApiMerge\Config\ConfigAwareInterface;
 use Mthole\OpenApiMerge\Config\HasConfig;
 use Mthole\OpenApiMerge\FileHandling\File;
@@ -34,14 +33,16 @@ class OpenApiMerge implements OpenApiMergeInterface, ConfigAwareInterface
             $additionalDefinition = $this->openApiReader->readFile($additionalFile)->getOpenApi();
 
             foreach ($additionalDefinition->paths->getPaths() as $name => $path) {
-                if (!$mergedOpenApiDefinition->paths->hasPath($name)) {
+                $mergedPath = $mergedOpenApiDefinition->paths->getPath($name);
+
+                if ($mergedPath === null) {
                     $mergedOpenApiDefinition->paths->addPath($name, $path);
 
                     continue;
                 }
 
                 $operations = array_merge(
-                    $mergedOpenApiDefinition->paths->getPath($name)->getOperations(),
+                    $mergedPath->getOperations(),
                     $path->getOperations()
                 );
 

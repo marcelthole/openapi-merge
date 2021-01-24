@@ -111,7 +111,7 @@ final class MergeCommand extends Command
 
         if ($this->merger instanceof ConfigAwareInterface) {
             $config = (new Config())
-                ->resetComponents($input->getOption('reset-components') === 'true')
+                ->resetComponents($input->getOption('reset-components') !== 'false')
                 ->skipResolvingReferences((bool) $input->getOption('skip-resolving-references'));
 
             $this->merger->setConfig($config);
