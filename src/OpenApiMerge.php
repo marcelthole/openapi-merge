@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge;
 
+use cebe\openapi\spec\PathItem;
 use cebe\openapi\spec\Paths;
 use Mthole\OpenApiMerge\Config\ConfigAwareInterface;
 use Mthole\OpenApiMerge\Config\HasConfig;
@@ -32,15 +33,24 @@ class OpenApiMerge implements OpenApiMergeInterface, ConfigAwareInterface
         foreach ($additionalFiles as $additionalFile) {
             $additionalDefinition = $this->openApiReader->readFile($additionalFile)->getOpenApi();
 
-            $mergedOpenApiDefinition->paths = new Paths(
-                array_merge(
-                    $mergedOpenApiDefinition->paths->getPaths(),
-                    $additionalDefinition->paths->getPaths()
-                )
-            );
+            foreach ($additionalDefinition->paths->getPaths() as $name => $path) {
+                if (!$mergedOpenApiDefinition->paths->hasPath($name)) {
+                    $mergedOpenApiDefinition->paths->addPath($name, $path);
+
+                    continue;
+                }
+
+                $operations = array_merge(
+                    $mergedOpenApiDefinition->paths->getPath($name)->getOperations(),
+                    $path->getOperations()
+                );
+
+                $mergedOpenApiDefinition->paths->removePath($name);
+                $mergedOpenApiDefinition->paths->addPath($name, new PathItem($operations));
+            }
         }
 
-        if ($mergedOpenApiDefinition->components !== null) {
+        if ($this->getConfig()->isResetComponentsEnabled() && $mergedOpenApiDefinition->components !== null) {
             $mergedOpenApiDefinition->components->schemas = [];
         }
 
