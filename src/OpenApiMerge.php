@@ -33,6 +33,12 @@ class OpenApiMerge implements OpenApiMergeInterface, ConfigAwareInterface
             $additionalDefinition = $this->openApiReader->readFile($additionalFile)->getOpenApi();
 
             foreach ($additionalDefinition->paths->getPaths() as $name => $path) {
+                if (null === $mergedOpenApiDefinition->paths) {
+                    $mergedOpenApiDefinition->paths = $additionalDefinition->paths;
+
+                    continue;
+                }
+
                 $mergedPath = $mergedOpenApiDefinition->paths->getPath($name);
 
                 if ($mergedPath === null) {
