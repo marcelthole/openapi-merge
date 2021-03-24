@@ -14,7 +14,6 @@ use Mthole\OpenApiMerge\Writer\DefinitionWriterInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\TrimmedBufferOutput;
-use Throwable;
 
 use function sprintf;
 use function sys_get_temp_dir;
@@ -42,7 +41,7 @@ class MergeCommandTest extends TestCase
 
         $output = new TrimmedBufferOutput(1024);
 
-        self::expectException(Throwable::class);
+        self::expectExceptionMessage('Invalid arguments given');
         $sut->run($input, $output);
     }
 
