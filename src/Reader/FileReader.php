@@ -10,8 +10,6 @@ use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException;
 
-use function assert;
-
 final class FileReader
 {
     public function readFile(File $inputFile): SpecificationFile
@@ -27,8 +25,6 @@ final class FileReader
             default:
                 throw InvalidFileTypeException::createFromExtension($inputFile->getFileExtension());
         }
-
-        assert($spec instanceof OpenApi);
 
         return new SpecificationFile(
             $inputFile,
