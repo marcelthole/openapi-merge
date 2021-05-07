@@ -6,6 +6,7 @@ namespace Mthole\OpenApiMerge\Tests;
 
 use cebe\openapi\spec\OpenApi;
 use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\Merge\PathMerger;
 use Mthole\OpenApiMerge\OpenApiMerge;
 use Mthole\OpenApiMerge\Reader\FileReader;
 use PHPUnit\Framework\TestCase;
@@ -16,6 +17,7 @@ use function assert;
  * @uses \Mthole\OpenApiMerge\FileHandling\File
  * @uses \Mthole\OpenApiMerge\FileHandling\SpecificationFile
  * @uses \Mthole\OpenApiMerge\Reader\FileReader
+ * @uses \Mthole\OpenApiMerge\Merge\PathMerger
  *
  * @covers \Mthole\OpenApiMerge\OpenApiMerge
  */
@@ -24,7 +26,8 @@ class OpenApiMergeTest extends TestCase
     public function testMergePaths(): void
     {
         $sut = new OpenApiMerge(
-            new FileReader()
+            new FileReader(),
+            new PathMerger()
         );
 
         $result = $sut->mergeFiles(
@@ -42,7 +45,8 @@ class OpenApiMergeTest extends TestCase
     public function testMergeFileWithoutComponents(): void
     {
         $sut = new OpenApiMerge(
-            new FileReader()
+            new FileReader(),
+            new PathMerger()
         );
 
         $result = $sut->mergeFiles(

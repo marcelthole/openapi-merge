@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge;
 
-use cebe\openapi\spec\Paths;
 use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
+use Mthole\OpenApiMerge\Merge\PathMergerInterface;
 use Mthole\OpenApiMerge\Reader\FileReader;
-
-use function array_merge;
 
 class OpenApiMerge implements OpenApiMergeInterface
 {
     private FileReader $openApiReader;
 
-    public function __construct(FileReader $openApiReader)
-    {
+    private PathMergerInterface $pathMerger;
+
+    public function __construct(
+        FileReader $openApiReader,
+        PathMergerInterface $pathMerger
+    ) {
         $this->openApiReader = $openApiReader;
+        $this->pathMerger    = $pathMerger;
     }
 
     public function mergeFiles(File $baseFile, File ...$additionalFiles): SpecificationFile
@@ -25,13 +28,10 @@ class OpenApiMerge implements OpenApiMergeInterface
         $mergedOpenApiDefinition = $this->openApiReader->readFile($baseFile)->getOpenApi();
 
         foreach ($additionalFiles as $additionalFile) {
-            $additionalDefinition = $this->openApiReader->readFile($additionalFile)->getOpenApi();
-
-            $mergedOpenApiDefinition->paths = new Paths(
-                array_merge(
-                    $mergedOpenApiDefinition->paths->getPaths(),
-                    $additionalDefinition->paths->getPaths()
-                )
+            $additionalDefinition           = $this->openApiReader->readFile($additionalFile)->getOpenApi();
+            $mergedOpenApiDefinition->paths = $this->pathMerger->mergePaths(
+                $mergedOpenApiDefinition->paths,
+                $additionalDefinition->paths
             );
         }
 
