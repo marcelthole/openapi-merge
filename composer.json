@@ -19,11 +19,11 @@
     "symfony/console": "^v5.1.9"
   },
   "require-dev": {
-    "doctrine/coding-standard": "^8.1",
+    "doctrine/coding-standard": "^9.0.0",
     "infection/infection": "^0.20.0",
-    "phpstan/phpstan": "^0.12.51",
-    "phpstan/phpstan-phpunit": "^0.12.16",
-    "phpunit/phpunit": "^9.4",
+    "phpstan/phpstan": "^0.12.85",
+    "phpstan/phpstan-phpunit": "^0.12.18",
+    "phpunit/phpunit": "^9.5.0",
     "roave/security-advisories": "dev-master"
   },
   "autoload": {
