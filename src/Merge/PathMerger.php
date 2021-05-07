@@ -31,14 +31,16 @@ class PathMerger implements PathMergerInterface
             }
 
             foreach (self::MERGE_METHODS as $method) {
-                if ($existingPath->{$method} !== null || $newPath->{$method} === null) {
+                if ($existingPath->{$method} !== null) {
+                    continue;
+                }
+
+                if ($newPath->{$method} === null) {
                     continue;
                 }
 
                 $existingPath->{$method} = $newPath->{$method};
             }
-
-            $pathCopy->addPath($pathName, $existingPath);
         }
 
         return $pathCopy;
