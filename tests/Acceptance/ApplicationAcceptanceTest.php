@@ -6,6 +6,7 @@ namespace Mthole\OpenApiMerge\Tests\Acceptance;
 
 use PHPUnit\Framework\TestCase;
 
+use function implode;
 use function shell_exec;
 use function sprintf;
 
@@ -17,11 +18,14 @@ class ApplicationAcceptanceTest extends TestCase
     public function testApplicationRuns(): void
     {
         $output = shell_exec(sprintf(
-            'php %s %s %s %s',
+            'php %s %s',
             __DIR__ . '/../../bin/openapi-merge',
-            __DIR__ . '/Fixtures/base.yml',
-            __DIR__ . '/Fixtures/routes.yml',
-            __DIR__ . '/Fixtures/errors.yml'
+            implode(' ', [
+                __DIR__ . '/Fixtures/base.yml',
+                __DIR__ . '/Fixtures/routes.yml',
+                __DIR__ . '/Fixtures/routes_merge.yml',
+                __DIR__ . '/Fixtures/errors.yml',
+            ])
         ));
 
         self::assertSame(
@@ -90,6 +94,22 @@ class ApplicationAcceptanceTest extends TestCase
                                 type: string
                                 example: 'Your request parameters didn''t validate.'
                             description: 'Default Problem Response'
+                post:
+                  summary: 'Your POST endpoint'
+                  description: 'Description of post Ping'
+                  operationId: post-ping
+                  responses:
+                    '200':
+                      description: OK
+                      content:
+                        application/json:
+                          schema:
+                            required:
+                              - response
+                            type: object
+                            properties:
+                              response:
+                                type: string
             components:
               schemas: []
             security: []

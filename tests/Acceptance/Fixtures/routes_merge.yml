@@ -1,0 +1,22 @@
+openapi: 3.0.2
+info:
+  title: This file should be merged with the same route but different method
+  version: '1.1'
+paths:
+  /ping:
+    post:
+      operationId: post-ping
+      description: Description of post Ping
+      summary: Your POST endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                required:
+                  - response
