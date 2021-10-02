@@ -13,3 +13,7 @@ trim_trailing_whitespace = false
 
 [*.{yaml, yml, neon, neon.dist, json, json.dist}]
 indent_size = 2
+
+[tests/*/Fixtures/expected/*.json]
+indent_size = 4
+insert_final_newline = false

@@ -1,0 +1,44 @@
+{
+  "openapi": "3.0.0",
+  "info": {},
+  "paths": {
+    "/dummy": {},
+    "/reference": {
+      "get": {
+        "responses": {
+          "100": {
+            "$ref": "./responseModel.json#/components/responses/reference-100"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/html": {
+                "schema": {
+
+                }
+              },
+              "text/csv": {
+                "schema": {},
+                "examples": {
+                  "csv-1": {
+                    "value": "foo,bar"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "./referenceModel.json#/components/schemas/referenceModel"
+                },
+                "examples": {
+                  "example-1": {
+                    "$ref": "./sub/examples/referenceModel.json#/components/examples/referenceModelExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

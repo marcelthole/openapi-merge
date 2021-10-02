@@ -18,6 +18,7 @@ use function assert;
  * @uses \Mthole\OpenApiMerge\FileHandling\SpecificationFile
  * @uses \Mthole\OpenApiMerge\Reader\FileReader
  * @uses \Mthole\OpenApiMerge\Merge\PathMerger
+ * @uses \Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper
  *
  * @covers \Mthole\OpenApiMerge\OpenApiMerge
  */

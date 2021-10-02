@@ -1,0 +1,18 @@
+{
+  "openapi": "3.0.0",
+  "info": {},
+  "paths": {
+  },
+  "components": {
+    "schemas": {
+      "referenceArrayItem": {
+        "type": "object",
+        "properties": {
+          "isReferenceInList": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
