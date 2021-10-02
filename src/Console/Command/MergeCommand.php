@@ -88,10 +88,10 @@ final class MergeCommand extends Command
                 $mergedResult->getOpenApi()
             );
             file_put_contents(
-                $outputFile->getAbsolutePath(),
+                $outputFile->getAbsoluteFile(),
                 $this->definitionWriter->write($specificationFile)
             );
-            $output->writeln(sprintf('File successfully written to %s', $outputFile->getAbsolutePath()));
+            $output->writeln(sprintf('File successfully written to %s', $outputFile->getAbsoluteFile()));
         } else {
             $output->write($this->definitionWriter->write($mergedResult));
         }

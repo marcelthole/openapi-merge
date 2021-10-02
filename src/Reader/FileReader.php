@@ -17,10 +17,10 @@ final class FileReader
         switch ($inputFile->getFileExtension()) {
             case 'yml':
             case 'yaml':
-                $spec = Reader::readFromYamlFile($inputFile->getAbsolutePath(), OpenApi::class);
+                $spec = Reader::readFromYamlFile($inputFile->getAbsoluteFile(), OpenApi::class);
                 break;
             case 'json':
-                $spec = Reader::readFromJsonFile($inputFile->getAbsolutePath(), OpenApi::class);
+                $spec = Reader::readFromJsonFile($inputFile->getAbsoluteFile(), OpenApi::class);
                 break;
             default:
                 throw InvalidFileTypeException::createFromExtension($inputFile->getFileExtension());

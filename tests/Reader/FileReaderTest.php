@@ -44,7 +44,7 @@ class FileReaderTest extends TestCase
         $sut  = new FileReader();
         $file = new File('openapi.neon');
 
-        self::expectException(InvalidFileTypeException::class);
+        $this->expectException(InvalidFileTypeException::class);
         $sut->readFile($file);
     }
 }
