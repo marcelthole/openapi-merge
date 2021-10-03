@@ -7,10 +7,13 @@ namespace Mthole\OpenApiMerge\Tests;
 use cebe\openapi\spec\OpenApi;
 use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\Merge\PathMerger;
+use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
+use Mthole\OpenApiMerge\Merge\ReferenceResolverResult;
 use Mthole\OpenApiMerge\OpenApiMerge;
 use Mthole\OpenApiMerge\Reader\FileReader;
 use PHPUnit\Framework\TestCase;
 
+use function array_keys;
 use function assert;
 
 /**
@@ -19,6 +22,7 @@ use function assert;
  * @uses \Mthole\OpenApiMerge\Reader\FileReader
  * @uses \Mthole\OpenApiMerge\Merge\PathMerger
  * @uses \Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper
+ * @uses \Mthole\OpenApiMerge\Merge\ReferenceResolverResult
  *
  * @covers \Mthole\OpenApiMerge\OpenApiMerge
  */
@@ -28,13 +32,16 @@ class OpenApiMergeTest extends TestCase
     {
         $sut = new OpenApiMerge(
             new FileReader(),
-            new PathMerger()
+            new PathMerger(),
+            new ReferenceNormalizer()
         );
 
         $result = $sut->mergeFiles(
             new File(__DIR__ . '/Fixtures/base.yml'),
-            new File(__DIR__ . '/Fixtures/routes.yml'),
-            new File(__DIR__ . '/Fixtures/errors.yml')
+            [
+                new File(__DIR__ . '/Fixtures/routes.yml'),
+                new File(__DIR__ . '/Fixtures/errors.yml'),
+            ]
         )->getOpenApi();
         assert($result instanceof OpenApi);
 
@@ -47,14 +54,76 @@ class OpenApiMergeTest extends TestCase
     {
         $sut = new OpenApiMerge(
             new FileReader(),
-            new PathMerger()
+            new PathMerger(),
+            new ReferenceNormalizer()
         );
 
         $result = $sut->mergeFiles(
-            new File(__DIR__ . '/Fixtures/base-without-components.yml')
+            new File(__DIR__ . '/Fixtures/base-without-components.yml'),
+            []
         )->getOpenApi();
         assert($result instanceof OpenApi);
 
         self::assertNull($result->components);
+    }
+
+    public function testReferenceNormalizer(): void
+    {
+        $referenceNormalizer = $this->createMock(ReferenceNormalizer::class);
+        $referenceNormalizer->expects(
+            self::exactly(2)
+        )->method('normalizeInlineReferences')->willReturnCallback(static function (
+            File $openApiFile,
+            OpenApi $openApiDefinition
+        ) {
+            $foundReferences = [];
+            if ($openApiFile->getAbsoluteFile() === __DIR__ . '/Fixtures/errors.yml') {
+                $foundReferences[] = new File(__DIR__ . '/Fixtures/routes.yml');
+            }
+
+            return new ReferenceResolverResult(
+                $openApiDefinition,
+                $foundReferences
+            );
+        });
+
+        $sut = new OpenApiMerge(
+            new FileReader(),
+            new PathMerger(),
+            $referenceNormalizer
+        );
+
+        $mergedResult = $sut->mergeFiles(
+            new File(__DIR__ . '/Fixtures/base.yml'),
+            [
+                new File(__DIR__ . '/Fixtures/errors.yml'),
+            ],
+            false
+        );
+
+        self::assertCount(1, $mergedResult->getOpenApi()->paths);
+        self::assertSame(
+            ['ProblemResponse', 'pingResponse'],
+            array_keys($mergedResult->getOpenApi()->components->schemas)
+        );
+    }
+
+    public function testReferenceNormalizerWillNotBeExecuted(): void
+    {
+        $referenceNormalizer = $this->createMock(ReferenceNormalizer::class);
+        $referenceNormalizer->expects(self::never(2))->method('normalizeInlineReferences');
+
+        $sut = new OpenApiMerge(
+            new FileReader(),
+            new PathMerger(),
+            $referenceNormalizer
+        );
+
+        $sut->mergeFiles(
+            new File(__DIR__ . '/Fixtures/base.yml'),
+            [
+                new File(__DIR__ . '/Fixtures/errors.yml'),
+            ]
+        );
     }
 }

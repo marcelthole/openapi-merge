@@ -13,7 +13,7 @@ final class FileReader
 {
     private OpenApiReaderWrapper $openApiReader;
 
-    public function __construct(OpenApiReaderWrapper $openApiReader = null)
+    public function __construct(?OpenApiReaderWrapper $openApiReader = null)
     {
         $this->openApiReader = $openApiReader ?? new OpenApiReaderWrapper();
     }
@@ -23,10 +23,18 @@ final class FileReader
         switch ($inputFile->getFileExtension()) {
             case 'yml':
             case 'yaml':
-                $spec = $this->openApiReader->readFromYamlFile($inputFile->getAbsoluteFile(), OpenApi::class, $resolveReferences);
+                $spec = $this->openApiReader->readFromYamlFile(
+                    $inputFile->getAbsoluteFile(),
+                    OpenApi::class,
+                    $resolveReferences
+                );
                 break;
             case 'json':
-                $spec = $this->openApiReader->readFromJsonFile($inputFile->getAbsoluteFile(), OpenApi::class, $resolveReferences);
+                $spec = $this->openApiReader->readFromJsonFile(
+                    $inputFile->getAbsoluteFile(),
+                    OpenApi::class,
+                    $resolveReferences
+                );
                 break;
             default:
                 throw InvalidFileTypeException::createFromExtension($inputFile->getFileExtension());

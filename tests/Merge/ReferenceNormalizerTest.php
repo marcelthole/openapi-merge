@@ -23,9 +23,9 @@ class ReferenceNormalizerTest extends TestCase
 {
     public function testReadFileWithResolvedReference(): void
     {
-        $file                          = new File(__DIR__ . '/Fixtures/openapi-with-reference.json');
-        $fileReader                    = new FileReader();
-        $openApi                       = $fileReader->readFile($file, false)->getOpenApi();
+        $file       = new File(__DIR__ . '/Fixtures/openapi-with-reference.json');
+        $fileReader = new FileReader();
+        $openApi    = $fileReader->readFile($file, false)->getOpenApi();
 
         $sut = new ReferenceNormalizer();
 

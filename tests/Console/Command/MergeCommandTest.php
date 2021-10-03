@@ -85,7 +85,7 @@ class MergeCommandTest extends TestCase
         $mergeMock = $this->createMock(OpenApiMergeInterface::class);
         $mergeMock->expects(self::once())
             ->method('mergeFiles')
-            ->with($baseFile, $secondFile)
+            ->with($baseFile, [$secondFile])
             ->willReturn($mergeResultStub);
 
         $definitionWriterMock = $this->createMock(DefinitionWriterInterface::class);
@@ -118,8 +118,12 @@ class MergeCommandTest extends TestCase
             }
         };
         $openApiMergeInterface = new class implements OpenApiMergeInterface {
-            public function mergeFiles(File $baseFile, File ...$additionalFiles): SpecificationFile
-            {
+            /** @param array<int, File> $additionalFiles */
+            public function mergeFiles(
+                File $baseFile,
+                array $additionalFiles,
+                bool $resolveReference = true
+            ): SpecificationFile {
                 return new SpecificationFile(
                     new File('dummy'),
                     new OpenApi([])
@@ -150,5 +154,63 @@ class MergeCommandTest extends TestCase
         } finally {
             @unlink($tmpFile);
         }
+    }
+
+    /**
+     * @return array<string, array<int, mixed>>
+     */
+    public function resolveReferenceArgumentDataProvider(): iterable
+    {
+        yield 'default-param' => [null, true];
+        yield 'one as string' => ['1', true];
+        yield 'zero as string' => ['0', false];
+        yield 'true' => [true, true];
+        yield 'false' => [false, false];
+    }
+
+    /**
+     * @param string|bool|null $resolveReferenceValue
+     *
+     * @dataProvider resolveReferenceArgumentDataProvider
+     */
+    public function testResolveReferencesArgument(
+        $resolveReferenceValue,
+        bool $expectedResolveReferenceValue
+    ): void {
+        $basefile              = 'basefile.yml';
+        $additionalFile        = 'secondfile.yml';
+        $definitionWriterMock  = new class implements DefinitionWriterInterface {
+            public function write(SpecificationFile $specFile): string
+            {
+                return 'dummy-data';
+            }
+        };
+        $openApiMergeInterface = $this->createMock(OpenApiMergeInterface::class);
+        $openApiMergeInterface->method('mergeFiles')->with(
+            new File($basefile),
+            [new File($additionalFile)],
+            $expectedResolveReferenceValue
+        )->willReturn(new SpecificationFile(
+            new File($basefile),
+            new OpenApi([])
+        ));
+
+        $sut = new MergeCommand(
+            $openApiMergeInterface,
+            $definitionWriterMock
+        );
+
+        $arguments = [
+            'basefile'             => $basefile,
+            'additionalFiles'      => [$additionalFile],
+        ];
+
+        if ($resolveReferenceValue !== null) {
+            $arguments['--resolve-references'] = $resolveReferenceValue;
+        }
+
+        $input  = new ArrayInput($arguments);
+        $output = new TrimmedBufferOutput(1024);
+        self::assertEquals(0, $sut->run($input, $output));
     }
 }

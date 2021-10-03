@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Mthole\OpenApiMerge\Tests\Reader;
 
 use cebe\openapi\spec\OpenApi;
@@ -18,7 +20,7 @@ class OpenApiReaderWrapperTest extends TestCase
         self::assertInstanceOf(
             SpecObjectInterface::class,
             $sut->readFromJsonFile(
-                __DIR__.'/Fixtures/valid-openapi.json',
+                __DIR__ . '/Fixtures/valid-openapi.json',
                 OpenApi::class,
                 true
             )
@@ -26,11 +28,10 @@ class OpenApiReaderWrapperTest extends TestCase
         self::assertInstanceOf(
             SpecObjectInterface::class,
             $sut->readFromYamlFile(
-                __DIR__.'/Fixtures/valid-openapi.yml',
+                __DIR__ . '/Fixtures/valid-openapi.yml',
                 OpenApi::class,
                 true
             )
         );
-
     }
 }

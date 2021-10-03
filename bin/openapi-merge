@@ -4,6 +4,7 @@
 use Mthole\OpenApiMerge\Console\Command\MergeCommand;
 use Mthole\OpenApiMerge\Merge\PathMerger;
 use Mthole\OpenApiMerge\OpenApiMerge;
+use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
 use Mthole\OpenApiMerge\Reader\FileReader;
 use Mthole\OpenApiMerge\Writer\DefinitionWriter;
 use Symfony\Component\Console\Application;
@@ -24,7 +25,11 @@ use Symfony\Component\Console\Application;
 
 $application = new Application();
 $application->add(new MergeCommand(
-    new OpenApiMerge(new FileReader(), new PathMerger()),
+    new OpenApiMerge(
+        new FileReader(),
+        new PathMerger(),
+        new ReferenceNormalizer()
+    ),
     new DefinitionWriter()
 ));
 $application->setDefaultCommand(MergeCommand::COMMAND_NAME, true);
