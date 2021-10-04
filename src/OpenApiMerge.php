@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge;
 
+use cebe\openapi\spec\Components;
 use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\Merge\PathMergerInterface;
@@ -56,6 +57,10 @@ class OpenApiMerge implements OpenApiMergeInterface
 
             if ($additionalDefinition->components === null) {
                 continue;
+            }
+
+            if ($mergedOpenApiDefinition->components === null) {
+                $mergedOpenApiDefinition->components = new Components([]);
             }
 
             $mergedOpenApiDefinition->components->schemas = array_merge(

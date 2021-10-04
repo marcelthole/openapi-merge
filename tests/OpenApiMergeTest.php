@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Tests;
 
+use cebe\openapi\spec\Components;
 use cebe\openapi\spec\OpenApi;
 use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\Merge\PathMerger;
@@ -101,17 +102,22 @@ class OpenApiMergeTest extends TestCase
             false
         );
 
-        self::assertCount(1, $mergedResult->getOpenApi()->paths);
+        $mergedDefinition = $mergedResult->getOpenApi();
+        if ($mergedDefinition->components === null) {
+            $mergedDefinition->components = new Components([]);
+        }
+
+        self::assertCount(1, $mergedDefinition->paths);
         self::assertSame(
             ['ProblemResponse', 'pingResponse'],
-            array_keys($mergedResult->getOpenApi()->components->schemas)
+            array_keys($mergedDefinition->components->schemas)
         );
     }
 
     public function testReferenceNormalizerWillNotBeExecuted(): void
     {
         $referenceNormalizer = $this->createMock(ReferenceNormalizer::class);
-        $referenceNormalizer->expects(self::never(2))->method('normalizeInlineReferences');
+        $referenceNormalizer->expects(self::never())->method('normalizeInlineReferences');
 
         $sut = new OpenApiMerge(
             new FileReader(),

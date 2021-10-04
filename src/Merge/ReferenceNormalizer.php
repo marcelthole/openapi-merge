@@ -26,6 +26,7 @@ class ReferenceNormalizer
         $refFileCollection = [];
         foreach ($openApiDefinition->paths as $path) {
             foreach ($path->getOperations() as $operation) {
+                assert($operation->responses !== null);
                 foreach ($operation->responses->getResponses() as $statusCode => $response) {
                     if ($response instanceof Reference) {
                         $operation->responses->addResponse(
@@ -54,7 +55,7 @@ class ReferenceNormalizer
                                     $example,
                                     $refFileCollection
                                 );
-                            } else {
+                            } elseif ($example !== null) {
                                 $newExamples[$key] = $example;
                             }
                         }
@@ -78,12 +79,8 @@ class ReferenceNormalizer
     /**
      * @param array<int, string> $refFileCollection
      */
-    private function normalizeReference(?Reference $reference, array &$refFileCollection): ?Reference
+    private function normalizeReference(Reference $reference, array &$refFileCollection): Reference
     {
-        if ($reference === null) {
-            return null;
-        }
-
         $matches       = [];
         $referenceFile = $reference->getReference();
         if (preg_match('~^(?<referenceFile>.*)(?<referenceString>#/.*)~', $referenceFile, $matches) === 1) {
