@@ -55,6 +55,13 @@ final class MergeCommand extends Command
             ->addArgument('basefile', InputArgument::REQUIRED)
             ->addArgument('additionalFiles', InputArgument::IS_ARRAY)
             ->addOption(
+                'resolve-references',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Resolve the "$refs" in the given files',
+                true
+            )
+            ->addOption(
                 'outputfile',
                 'o',
                 InputOption::VALUE_OPTIONAL,
@@ -71,12 +78,15 @@ final class MergeCommand extends Command
             throw new Exception('Invalid arguments given');
         }
 
+        $shouldResolveReferences = (bool) $input->getOption('resolve-references');
+
         $mergedResult = $this->merger->mergeFiles(
             new File($baseFile),
-            ...array_map(
+            array_map(
                 static fn (string $file): File => new File($file),
                 $additionalFiles
-            )
+            ),
+            $shouldResolveReferences,
         );
 
         $outputFileName = $input->getOption('outputfile');
@@ -88,10 +98,10 @@ final class MergeCommand extends Command
                 $mergedResult->getOpenApi()
             );
             file_put_contents(
-                $outputFile->getAbsolutePath(),
+                $outputFile->getAbsoluteFile(),
                 $this->definitionWriter->write($specificationFile)
             );
-            $output->writeln(sprintf('File successfully written to %s', $outputFile->getAbsolutePath()));
+            $output->writeln(sprintf('File successfully written to %s', $outputFile->getAbsoluteFile()));
         } else {
             $output->write($this->definitionWriter->write($mergedResult));
         }

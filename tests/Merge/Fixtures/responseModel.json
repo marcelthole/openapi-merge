@@ -1,0 +1,13 @@
+{
+  "openapi": "3.0.0",
+  "info": {},
+  "paths": {
+  },
+  "components": {
+    "responses": {
+      "reference-100": {
+        "description": "OK"
+      }
+    }
+  }
+}

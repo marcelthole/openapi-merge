@@ -61,6 +61,10 @@ jobs:
       - name: "Show dependencies"
         run: "composer show"
 
+      - name: "Run code style check"
+        run: "composer run-script cs-check"
+        if: ${{ matrix.composer-deps == 'latest' && matrix.php-version == '7.4' }}
+
       - name: "Run CI"
         run: "composer run-script ci"
 
