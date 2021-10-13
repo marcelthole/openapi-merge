@@ -14,7 +14,7 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ~8.0.0",
+    "php": "^7.4 || ~8.0.0 || ~8.1.0",
     "cebe/php-openapi": "^1.5.2",
     "symfony/console": "^v5.1.9"
   },
