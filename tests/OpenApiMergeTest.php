@@ -40,6 +40,7 @@ class OpenApiMergeTest extends TestCase
         $result = $sut->mergeFiles(
             new File(__DIR__ . '/Fixtures/base.yml'),
             [
+                new File(__DIR__ . '/Fixtures/empty.yml'),
                 new File(__DIR__ . '/Fixtures/routes.yml'),
                 new File(__DIR__ . '/Fixtures/errors.yml'),
             ]

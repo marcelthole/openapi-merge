@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Tests\FileHandling;
 
-use Generator;
 use Mthole\OpenApiMerge\FileHandling\Exception\IOException;
 use Mthole\OpenApiMerge\FileHandling\File;
 use PHPUnit\Framework\TestCase;
@@ -29,8 +28,8 @@ class FileTest extends TestCase
         self::assertSame($expectedExtension, $sut->getFileExtension());
     }
 
-    /** @return Generator<array<int, string>> */
-    public function fileExtensionProvider(): Generator
+    /** @return list<list<string>> */
+    public function fileExtensionProvider(): iterable
     {
         yield ['base.yml', 'yml'];
         yield ['base.yaml', 'yaml'];

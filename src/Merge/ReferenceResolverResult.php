@@ -10,11 +10,11 @@ use Mthole\OpenApiMerge\FileHandling\File;
 final class ReferenceResolverResult
 {
     private OpenApi $openApiSpecification;
-    /** @var array<int, File> */
+    /** @var list<File> */
     private array $foundReferenceFiles;
 
     /**
-     * @param array<int, File> $foundReferenceFiles
+     * @param list<File> $foundReferenceFiles
      */
     public function __construct(
         OpenApi $openApiSpecification,
@@ -29,7 +29,7 @@ final class ReferenceResolverResult
         return $this->openApiSpecification;
     }
 
-    /** @return array<int, File> */
+    /** @return list<File> */
     public function getFoundReferenceFiles(): array
     {
         return $this->foundReferenceFiles;

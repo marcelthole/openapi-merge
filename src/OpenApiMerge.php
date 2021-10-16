@@ -32,7 +32,7 @@ class OpenApiMerge implements OpenApiMergeInterface
         $this->referenceNormalizer = $referenceResolver;
     }
 
-    /** @param array<int, File> $additionalFiles */
+    /** @param list<File> $additionalFiles */
     public function mergeFiles(File $baseFile, array $additionalFiles, bool $resolveReference = true): SpecificationFile
     {
         $mergedOpenApiDefinition = $this->openApiReader->readFile($baseFile, $resolveReference)->getOpenApi();

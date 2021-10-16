@@ -2,6 +2,7 @@
 <?php
 
 use Mthole\OpenApiMerge\Console\Command\MergeCommand;
+use Mthole\OpenApiMerge\FileHandling\RegexFinder;
 use Mthole\OpenApiMerge\Merge\PathMerger;
 use Mthole\OpenApiMerge\OpenApiMerge;
 use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
@@ -30,7 +31,8 @@ $application->add(new MergeCommand(
         new PathMerger(),
         new ReferenceNormalizer()
     ),
-    new DefinitionWriter()
+    new DefinitionWriter(),
+    new RegexFinder()
 ));
 $application->setDefaultCommand(MergeCommand::COMMAND_NAME, true);
 $application->run();
