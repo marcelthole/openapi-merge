@@ -6,7 +6,6 @@ namespace Mthole\OpenApiMerge\Tests\Merge;
 
 use cebe\openapi\spec\PathItem;
 use cebe\openapi\spec\Paths;
-use Generator;
 use Mthole\OpenApiMerge\Merge\PathMerger;
 use PHPUnit\Framework\TestCase;
 
@@ -61,9 +60,9 @@ class PathMergerTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array<int, mixed>>
+     * @return iterable<string, list<mixed>>
      */
-    public function pathCombinationDataProvider(): Generator
+    public function pathCombinationDataProvider(): iterable
     {
         yield 'simple routes' => [
             new Paths(['/route1' => new PathItem([])]),

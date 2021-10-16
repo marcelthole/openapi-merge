@@ -27,6 +27,14 @@ Usage:
 
 ```
 
+### Arguments
+| Argument | Meaning |
+| --- | ---  |
+| --match[=MATCH] | Use a RegEx pattern to determine the additionalFiles. If this option is set the additionalFiles could be omitted (multiple values allowed) |
+| --resolve-references[=RESOLVE-REFERENCES] | Resolve the "$refs" in the given files [default: true] |
+| -o, --outputfile[=OUTPUTFILE] | Defines the output file for the result. Defaults the result will printed to stdout |
+
+
 ## Docker
 Run the `openapi-merge` command within a docker container
 ```

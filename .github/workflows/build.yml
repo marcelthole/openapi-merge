@@ -62,11 +62,11 @@ jobs:
         run: "composer show"
 
       - name: "Run code style check"
-        run: "composer run-script cs-check"
+        run:  "composer run-script cs-check"
         if: ${{ matrix.composer-deps == 'latest' && matrix.php-version == '7.4' }}
 
       - name: "Run CI"
-        run: "composer run-script ci"
+        run: "composer run-script phpunit"
 
   tests-with-coverage:
     name: "Tests with coverage and PR Comments"
@@ -123,6 +123,9 @@ jobs:
         run: |
           git fetch --depth=1 origin $GITHUB_BASE_REF
           composer run-script infection -- --git-diff-filter=AM --git-diff-base=origin/$GITHUB_BASE_REF --logger-github --ignore-msi-with-no-mutations --only-covered
+
+      - name: Run PHPStan
+        run: composer run-script phpstan -- --error-format=github
 
   test-runs-on-docker:
     name: "Test if tests pass in the Docker container"

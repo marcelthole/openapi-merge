@@ -55,7 +55,7 @@ class ReferenceNormalizer
                                     $example,
                                     $refFileCollection
                                 );
-                            } elseif ($example !== null) {
+                            } else {
                                 $newExamples[$key] = $example;
                             }
                         }
@@ -77,7 +77,7 @@ class ReferenceNormalizer
     }
 
     /**
-     * @param array<int, string> $refFileCollection
+     * @param list<string> $refFileCollection
      */
     private function normalizeReference(Reference $reference, array &$refFileCollection): Reference
     {
@@ -95,9 +95,9 @@ class ReferenceNormalizer
     }
 
     /**
-     * @param array<int, string> $refFileCollection
+     * @param list<string> $refFileCollection
      *
-     * @return array<int, File>
+     * @return list<File>
      */
     private function normalizeFilePaths(File $openApiFile, array $refFileCollection): array
     {
