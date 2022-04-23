@@ -25,6 +25,9 @@ class RegexFinderTest extends TestCase
         foreach (array_keys($files) as $key) {
             self::assertIsNumeric($key);
         }
+        foreach ($files as $value) {
+            self::assertIsString($value);
+        }
     }
 
     /**

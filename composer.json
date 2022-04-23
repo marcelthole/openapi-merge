@@ -14,15 +14,15 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ~8.0.0",
-    "cebe/php-openapi": "^1.5.2",
+    "php": "^7.4 || ~8.0.0 || ~8.1.0",
+    "cebe/php-openapi": "^1.7.0",
     "symfony/console": "^v5.1.9"
   },
   "require-dev": {
     "doctrine/coding-standard": "^9.0.0",
-    "infection/infection": "^0.20.0",
-    "phpstan/phpstan": "^0.12.85",
-    "phpstan/phpstan-phpunit": "^0.12.18",
+    "infection/infection": "^0.26.0",
+    "phpstan/phpstan": "^1.5.0",
+    "phpstan/phpstan-phpunit": "^1.1.0",
     "phpunit/phpunit": "^9.5.0",
     "roave/security-advisories": "dev-master"
   },

@@ -111,7 +111,7 @@ class ApplicationAcceptanceTest extends TestCase
                               response:
                                 type: string
             components:
-              schemas: []
+              schemas: {  }
             security: []
             tags:
               -

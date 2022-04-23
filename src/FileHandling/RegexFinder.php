@@ -8,8 +8,8 @@ use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIterator;
 use RecursiveIteratorIterator;
+use Traversable;
 
-use function array_values;
 use function iterator_to_array;
 use function preg_match;
 use function sprintf;
@@ -29,6 +29,7 @@ class RegexFinder implements Finder
             RecursiveDirectoryIterator::CURRENT_AS_PATHNAME | RecursiveDirectoryIterator::SKIP_DOTS
         );
 
+        /** @var RecursiveCallbackFilterIterator<string,string, RecursiveDirectoryIterator> $regexIterator */
         $regexIterator = new RecursiveCallbackFilterIterator(
             $directoryIterator,
             static function (
@@ -52,8 +53,9 @@ class RegexFinder implements Finder
             }
         );
 
+        /** @var Traversable<string> $recursiveIterator */
         $recursiveIterator = new RecursiveIteratorIterator($regexIterator);
 
-        return array_values(iterator_to_array($recursiveIterator));
+        return iterator_to_array($recursiveIterator, false);
     }
 }

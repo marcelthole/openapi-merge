@@ -44,7 +44,7 @@ class MergeCommandTest extends TestCase
 
         $output = new TrimmedBufferOutput(1024);
 
-        self::expectExceptionMessage('Invalid arguments given');
+        $this->expectExceptionMessage('Invalid arguments given');
         $sut->run($input, $output);
     }
 
@@ -64,6 +64,36 @@ class MergeCommandTest extends TestCase
             new ArrayInput([
                 'basefile' => 'basefile.yml',
                 'additionalFiles' => [],
+            ]),
+        ];
+
+        yield 'additionalFiles not a array' => [
+            new ArrayInput([
+                'basefile' => 'basefile.yml',
+                'additionalFiles' => null,
+            ]),
+        ];
+
+        yield 'additionalFiles is a string key based array' => [
+            new ArrayInput([
+                'basefile' => 'basefile.yml',
+                'additionalFiles' => ['foo' => 'secondfile.yml'],
+            ]),
+        ];
+
+        yield 'match is a no a array' => [
+            new ArrayInput([
+                'basefile' => 'basefile.yml',
+                'additionalFiles' => [],
+                '--match' => null,
+            ]),
+        ];
+
+        yield 'match is a no a string based array' => [
+            new ArrayInput([
+                'basefile' => 'basefile.yml',
+                'additionalFiles' => [],
+                '--match' => [false, 0],
             ]),
         ];
     }

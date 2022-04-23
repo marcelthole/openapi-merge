@@ -83,7 +83,7 @@ class ReferenceNormalizer
     {
         $matches       = [];
         $referenceFile = $reference->getReference();
-        if (preg_match('~^(?<referenceFile>.*)(?<referenceString>#/.*)~', $referenceFile, $matches) === 1) {
+        if (preg_match('~(?<referenceFile>.*)(?<referenceString>#/.*)~', $referenceFile, $matches) === 1) {
             $refFile = $matches['referenceFile'];
 
             $refFileCollection[] = $refFile;

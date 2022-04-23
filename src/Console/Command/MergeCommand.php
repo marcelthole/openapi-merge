@@ -17,8 +17,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function array_map;
+use function array_values;
 use function count;
 use function file_put_contents;
+use function is_array;
 use function is_string;
 use function sprintf;
 use function touch;
@@ -62,8 +64,10 @@ final class MergeCommand extends Command
                 'match',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Use a RegEx pattern to determine the additionalFiles. '
-                . 'If this option is set the additionalFiles could be omitted'
+                <<<HELP
+                Use a RegEx pattern to determine the additionalFiles. If this option is set the additionalFiles
+                could be omitted
+                HELP
             )
             ->addOption(
                 'resolve-references',
@@ -84,9 +88,18 @@ final class MergeCommand extends Command
     {
         $baseFile        = $input->getArgument('basefile');
         $additionalFiles = $input->getArgument('additionalFiles');
+        if (! is_array($additionalFiles) || $additionalFiles !== array_values($additionalFiles)) {
+            throw new Exception('Invalid arguments given');
+        }
 
-        if (count($additionalFiles) === 0) {
-            foreach ($input->getOption('match') as $regex) {
+        $regexMatches = $input->getOption('match');
+
+        if (count($additionalFiles) === 0 && is_array($regexMatches)) {
+            if ($regexMatches !== array_map('strval', $regexMatches)) {
+                throw new Exception('Invalid arguments given');
+            }
+
+            foreach ($regexMatches as $regex) {
                 $additionalFiles = [...$additionalFiles, ...$this->fileFinder->find('.', $regex)];
             }
         }

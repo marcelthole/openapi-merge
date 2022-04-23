@@ -8,8 +8,8 @@
   "timeout": 10,
   "logs": {
     "text": "build/infection.log",
-    "badge": {
-      "branch": "main"
+    "stryker": {
+      "badge": "main"
     },
     "github": false
   },
