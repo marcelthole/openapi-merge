@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use function implode;
 use function shell_exec;
 use function sprintf;
+use function version_compare;
+
+use const PHP_VERSION;
 
 /**
  * @coversNothing
@@ -28,97 +31,12 @@ class ApplicationAcceptanceTest extends TestCase
             ])
         ));
 
-        self::assertSame(
-            <<<'EXPECTED_YAML'
-            openapi: 3.0.2
-            info:
-              title: 'Example OpenAPI Definition'
-              description: 'This is the example Description'
-              contact:
-                name: 'Base Author'
-                url: base.example.org
-                email: base-file@example.org
-              license:
-                name: MIT
-                url: 'https://tldrlegal.com/license/mit-license'
-              version: '1.0'
-            servers:
-              -
-                url: 'https://api.base.example.org'
-                description: 'Main Base URL'
-            paths:
-              /ping:
-                get:
-                  tags:
-                    - 'Base Route'
-                  summary: 'Your GET endpoint'
-                  description: 'Description of Ping'
-                  operationId: get-ping
-                  parameters:
-                    -
-                      name: responseWith
-                      in: query
-                      description: 'response with this message'
-                      schema:
-                        maxLength: 20
-                        minLength: 0
-                        type: string
-                  responses:
-                    '200':
-                      description: OK
-                      content:
-                        application/json:
-                          schema:
-                            required:
-                              - response
-                            type: object
-                            properties:
-                              response:
-                                type: string
-                    '400':
-                      description: 'Bad Request'
-                      content:
-                        application/problem+json:
-                          schema:
-                            title: ProblemResponse
-                            required:
-                              - type
-                              - title
-                            type: object
-                            properties:
-                              type:
-                                type: string
-                                description: 'type of the problem'
-                                example: ValidationError
-                              title:
-                                type: string
-                                example: 'Your request parameters didn''t validate.'
-                            description: 'Default Problem Response'
-                post:
-                  summary: 'Your POST endpoint'
-                  description: 'Description of post Ping'
-                  operationId: post-ping
-                  responses:
-                    '200':
-                      description: OK
-                      content:
-                        application/json:
-                          schema:
-                            required:
-                              - response
-                            type: object
-                            properties:
-                              response:
-                                type: string
-            components:
-              schemas: []
-            security: []
-            tags:
-              -
-                name: Base
+        self::assertNotNull($output);
 
-            EXPECTED_YAML,
-            $output
-        );
+        if (version_compare(PHP_VERSION, '8.1.0', '>=')) {
+            self::assertStringEqualsFile(__DIR__ . '/Fixtures/expected_php81.yml', $output);
+        } else {
+            self::assertStringEqualsFile(__DIR__ . '/Fixtures/expected_php80.yml', $output);
+        }
     }
 }
