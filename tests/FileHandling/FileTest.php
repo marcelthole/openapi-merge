@@ -19,9 +19,7 @@ use function str_replace;
  */
 class FileTest extends TestCase
 {
-    /**
-     * @dataProvider fileExtensionProvider
-     */
+    /** @dataProvider fileExtensionProvider */
     public function testGetFileExtension(string $filename, string $expectedExtension): void
     {
         $sut = new File($filename);
@@ -65,18 +63,18 @@ class FileTest extends TestCase
         $filename = str_replace(
             getcwd() ?: '',
             '.',
-            __FILE__
+            __FILE__,
         );
 
         self::assertNotSame(
             __FILE__,
-            $filename
+            $filename,
         );
 
         $sut = new File($filename);
         self::assertSame(
             __FILE__,
-            $sut->getAbsoluteFile()
+            $sut->getAbsoluteFile(),
         );
     }
 

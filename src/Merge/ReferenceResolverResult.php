@@ -9,19 +9,11 @@ use Mthole\OpenApiMerge\FileHandling\File;
 
 final class ReferenceResolverResult
 {
-    private OpenApi $openApiSpecification;
-    /** @var list<File> */
-    private array $foundReferenceFiles;
-
-    /**
-     * @param list<File> $foundReferenceFiles
-     */
+    /** @param list<File> $foundReferenceFiles */
     public function __construct(
-        OpenApi $openApiSpecification,
-        array $foundReferenceFiles
+        private OpenApi $openApiSpecification,
+        private array $foundReferenceFiles,
     ) {
-        $this->openApiSpecification = $openApiSpecification;
-        $this->foundReferenceFiles  = $foundReferenceFiles;
     }
 
     public function getNormalizedDefinition(): OpenApi

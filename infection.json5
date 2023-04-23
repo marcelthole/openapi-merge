@@ -1,0 +1,20 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "minMsi": 80,
+    "timeout": 10,
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "logs": {
+        "text": "build/infection.log",
+        "github": false,
+        "stryker": {
+            "badge": "main"
+        }
+    },
+    "mutators": {
+        "@default": true
+    }
+}

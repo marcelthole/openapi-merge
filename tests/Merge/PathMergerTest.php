@@ -11,9 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 use function array_keys;
 
-/**
- * @covers \Mthole\OpenApiMerge\Merge\PathMerger
- */
+/** @covers \Mthole\OpenApiMerge\Merge\PathMerger */
 class PathMergerTest extends TestCase
 {
     public function testMergeDidNotChangeOriginals(): void
@@ -42,7 +40,7 @@ class PathMergerTest extends TestCase
         Paths $existingPaths,
         Paths $newPaths,
         array $expectedRoutes,
-        array $expectedMethods
+        array $expectedMethods,
     ): void {
         $sut         = new PathMerger();
         $mergedPaths = $sut->mergePaths($existingPaths, $newPaths);
@@ -54,14 +52,12 @@ class PathMergerTest extends TestCase
             self::assertNotNull($pathItem);
             self::assertSame(
                 $expectedRouteMethods,
-                array_keys($pathItem->getOperations())
+                array_keys($pathItem->getOperations()),
             );
         }
     }
 
-    /**
-     * @return iterable<string, list<mixed>>
-     */
+    /** @return iterable<string, list<mixed>> */
     public function pathCombinationDataProvider(): iterable
     {
         yield 'simple routes' => [

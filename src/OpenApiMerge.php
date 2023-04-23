@@ -17,18 +17,13 @@ use function count;
 
 class OpenApiMerge implements OpenApiMergeInterface
 {
-    private FileReader $openApiReader;
-
-    private PathMergerInterface $pathMerger;
     private ReferenceNormalizer $referenceNormalizer;
 
     public function __construct(
-        FileReader $openApiReader,
-        PathMergerInterface $pathMerger,
-        ReferenceNormalizer $referenceResolver
+        private FileReader $openApiReader,
+        private PathMergerInterface $pathMerger,
+        ReferenceNormalizer $referenceResolver,
     ) {
-        $this->openApiReader       = $openApiReader;
-        $this->pathMerger          = $pathMerger;
         $this->referenceNormalizer = $referenceResolver;
     }
 
@@ -44,7 +39,7 @@ class OpenApiMerge implements OpenApiMergeInterface
             if (! $resolveReference) {
                 $resolvedReferenceResult = $this->referenceNormalizer->normalizeInlineReferences(
                     $additionalFile,
-                    $additionalDefinition
+                    $additionalDefinition,
                 );
                 array_push($additionalFiles, ...$resolvedReferenceResult->getFoundReferenceFiles());
                 $additionalDefinition = $resolvedReferenceResult->getNormalizedDefinition();
@@ -52,7 +47,7 @@ class OpenApiMerge implements OpenApiMergeInterface
 
             $mergedOpenApiDefinition->paths = $this->pathMerger->mergePaths(
                 $mergedOpenApiDefinition->paths,
-                $additionalDefinition->paths
+                $additionalDefinition->paths,
             );
 
             if ($additionalDefinition->components === null) {
@@ -65,7 +60,7 @@ class OpenApiMerge implements OpenApiMergeInterface
 
             $mergedOpenApiDefinition->components->schemas = array_merge(
                 $mergedOpenApiDefinition->components->schemas ?? [],
-                $additionalDefinition->components->schemas ?? []
+                $additionalDefinition->components->schemas ?? [],
             );
         }
 
@@ -75,7 +70,7 @@ class OpenApiMerge implements OpenApiMergeInterface
 
         return new SpecificationFile(
             $baseFile,
-            $mergedOpenApiDefinition
+            $mergedOpenApiDefinition,
         );
     }
 }

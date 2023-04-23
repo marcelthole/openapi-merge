@@ -6,8 +6,6 @@ namespace Mthole\OpenApiMerge\FileHandling;
 
 interface Finder
 {
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     public function find(string $baseDirectory, string $searchString): array;
 }

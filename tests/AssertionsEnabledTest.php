@@ -9,9 +9,7 @@ use Throwable;
 
 use function assert;
 
-/**
- * @coversNothing
- */
+/** @coversNothing */
 class AssertionsEnabledTest extends TestCase
 {
     public function testAssertionsWillThrowAnException(): void

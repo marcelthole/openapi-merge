@@ -21,9 +21,7 @@ use PHPUnit\Framework\TestCase;
  */
 class DefinitionWriterTest extends TestCase
 {
-    /**
-     * @dataProvider validSpecificationFiles
-     */
+    /** @dataProvider validSpecificationFiles */
     public function testWrite(SpecificationFile $specificationFile): void
     {
         $sut    = new DefinitionWriter();
@@ -39,21 +37,21 @@ class DefinitionWriterTest extends TestCase
         yield [
             new SpecificationFile(
                 new File('dummy.yml'),
-                $specObject
+                $specObject,
             ),
         ];
 
         yield [
             new SpecificationFile(
                 new File('dummy.yaml'),
-                $specObject
+                $specObject,
             ),
         ];
 
         yield [
             new SpecificationFile(
                 new File('dummy.json'),
-                $specObject
+                $specObject,
             ),
         ];
     }
@@ -62,7 +60,7 @@ class DefinitionWriterTest extends TestCase
     {
         $specificationFile = new SpecificationFile(
             new File('dummy.neon'),
-            new OpenApi([])
+            new OpenApi([]),
         );
 
         $sut = new DefinitionWriter();
@@ -75,7 +73,7 @@ class DefinitionWriterTest extends TestCase
     {
         $specificationFile = new SpecificationFile(
             new File('dummy.json'),
-            new OpenApi(['openapi' => '3.0.0'])
+            new OpenApi(['openapi' => '3.0.0']),
         );
 
         $sut = new DefinitionWriter();
@@ -85,7 +83,7 @@ class DefinitionWriterTest extends TestCase
                 "openapi": "3.0.0"
             }
             JSON,
-            $sut->writeToJson($specificationFile)
+            $sut->writeToJson($specificationFile),
         );
     }
 
@@ -93,7 +91,7 @@ class DefinitionWriterTest extends TestCase
     {
         $specificationFile = new SpecificationFile(
             new File('dummy.yml'),
-            new OpenApi(['openapi' => '3.0.0'])
+            new OpenApi(['openapi' => '3.0.0']),
         );
 
         $sut = new DefinitionWriter();
@@ -102,7 +100,7 @@ class DefinitionWriterTest extends TestCase
             openapi: 3.0.0
 
             YML,
-            $sut->writeToYaml($specificationFile)
+            $sut->writeToYaml($specificationFile),
         );
     }
 }

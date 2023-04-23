@@ -21,7 +21,7 @@ class ReferenceNormalizer
 {
     public function normalizeInlineReferences(
         File $openApiFile,
-        OpenApi $openApiDefinition
+        OpenApi $openApiDefinition,
     ): ReferenceResolverResult {
         $refFileCollection = [];
         foreach ($openApiDefinition->paths as $path) {
@@ -31,7 +31,7 @@ class ReferenceNormalizer
                     if ($response instanceof Reference) {
                         $operation->responses->addResponse(
                             $statusCode,
-                            $this->normalizeReference($response, $refFileCollection)
+                            $this->normalizeReference($response, $refFileCollection),
                         );
                     }
 
@@ -44,7 +44,7 @@ class ReferenceNormalizer
                         if ($responseContent->schema instanceof Reference) {
                             $responseContent->schema = $this->normalizeReference(
                                 $responseContent->schema,
-                                $refFileCollection
+                                $refFileCollection,
                             );
                         }
 
@@ -53,7 +53,7 @@ class ReferenceNormalizer
                             if ($example instanceof Reference) {
                                 $newExamples[$key] = $this->normalizeReference(
                                     $example,
-                                    $refFileCollection
+                                    $refFileCollection,
                                 );
                             } else {
                                 $newExamples[$key] = $example;
@@ -72,13 +72,11 @@ class ReferenceNormalizer
 
         return new ReferenceResolverResult(
             $openApiDefinition,
-            $this->normalizeFilePaths($openApiFile, $refFileCollection)
+            $this->normalizeFilePaths($openApiFile, $refFileCollection),
         );
     }
 
-    /**
-     * @param list<string> $refFileCollection
-     */
+    /** @param list<string> $refFileCollection */
     private function normalizeReference(Reference $reference, array &$refFileCollection): Reference
     {
         $matches       = [];
@@ -103,9 +101,9 @@ class ReferenceNormalizer
     {
         return array_map(
             static fn (string $refFile): File => new File(
-                $openApiFile->getAbsolutePath() . DIRECTORY_SEPARATOR . $refFile
+                $openApiFile->getAbsolutePath() . DIRECTORY_SEPARATOR . $refFile,
             ),
-            $refFileCollection
+            $refFileCollection,
         );
     }
 }

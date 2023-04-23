@@ -16,9 +16,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use function array_filter;
 use function array_map;
 use function count;
 use function file_put_contents;
+use function is_array;
 use function is_string;
 use function sprintf;
 use function touch;
@@ -27,19 +29,12 @@ final class MergeCommand extends Command
 {
     public const COMMAND_NAME = 'openapi:merge';
 
-    private OpenApiMergeInterface $merger;
-    private DefinitionWriterInterface $definitionWriter;
-    private Finder $fileFinder;
-
     public function __construct(
-        OpenApiMergeInterface $openApiMerge,
-        DefinitionWriterInterface $definitionWriter,
-        Finder $fileFinder
+        private OpenApiMergeInterface $merger,
+        private DefinitionWriterInterface $definitionWriter,
+        private Finder $fileFinder,
     ) {
         parent::__construct(self::COMMAND_NAME);
-        $this->merger           = $openApiMerge;
-        $this->definitionWriter = $definitionWriter;
-        $this->fileFinder       = $fileFinder;
     }
 
     protected function configure(): void
@@ -54,29 +49,30 @@ final class MergeCommand extends Command
 
                 Outputformat:
                     The output format is determined by the basefile extension.
-                HELP
-            )
+                HELP)
             ->addArgument('basefile', InputArgument::REQUIRED)
             ->addArgument('additionalFiles', InputArgument::IS_ARRAY | InputArgument::OPTIONAL)
             ->addOption(
                 'match',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Use a RegEx pattern to determine the additionalFiles. '
-                . 'If this option is set the additionalFiles could be omitted'
+                <<<'DESCRIPTION'
+                Use a RegEx pattern to determine the additionalFiles.
+                If this option is set the additionalFiles could be omitted
+                DESCRIPTION,
             )
             ->addOption(
                 'resolve-references',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Resolve the "$refs" in the given files',
-                true
+                true,
             )
             ->addOption(
                 'outputfile',
                 'o',
                 InputOption::VALUE_OPTIONAL,
-                'Defines the output file for the result. Defaults the result will printed to stdout'
+                'Defines the output file for the result. Defaults the result will printed to stdout',
             );
     }
 
@@ -85,8 +81,23 @@ final class MergeCommand extends Command
         $baseFile        = $input->getArgument('basefile');
         $additionalFiles = $input->getArgument('additionalFiles');
 
+        if (
+            ! is_array($additionalFiles) ||
+            array_filter($additionalFiles, static fn (mixed $input): bool => is_string($input)) !== $additionalFiles
+        ) {
+            throw new Exception('Invalid arguments given');
+        }
+
         if (count($additionalFiles) === 0) {
-            foreach ($input->getOption('match') as $regex) {
+            $matches = $input->getOption('match');
+            if (
+                ! is_array($matches) ||
+                array_filter($matches, static fn (mixed $input): bool => is_string($input)) !== $matches
+            ) {
+                throw new Exception('Invalid arguments given');
+            }
+
+            foreach ($matches as $regex) {
                 $additionalFiles = [...$additionalFiles, ...$this->fileFinder->find('.', $regex)];
             }
         }
@@ -101,7 +112,7 @@ final class MergeCommand extends Command
             new File($baseFile),
             array_map(
                 static fn (string $file): File => new File($file),
-                $additionalFiles
+                $additionalFiles,
             ),
             $shouldResolveReferences,
         );
@@ -112,11 +123,11 @@ final class MergeCommand extends Command
             $outputFile        = new File($outputFileName);
             $specificationFile = new SpecificationFile(
                 $outputFile,
-                $mergedResult->getOpenApi()
+                $mergedResult->getOpenApi(),
             );
             file_put_contents(
                 $outputFile->getAbsoluteFile(),
-                $this->definitionWriter->write($specificationFile)
+                $this->definitionWriter->write($specificationFile),
             );
             $output->writeln(sprintf('File successfully written to %s', $outputFile->getAbsoluteFile()));
         } else {
