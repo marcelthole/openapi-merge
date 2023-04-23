@@ -15,7 +15,7 @@ class IOException extends Exception
     public static function createWithNonExistingFile(string $filename): self
     {
         $exception           = new IOException(
-            sprintf('Given file "%s" was not found', $filename)
+            sprintf('Given file "%s" was not found', $filename),
         );
         $exception->filename = $filename;
 

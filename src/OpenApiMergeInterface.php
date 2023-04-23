@@ -13,6 +13,6 @@ interface OpenApiMergeInterface
     public function mergeFiles(
         File $baseFile,
         array $additionalFiles,
-        bool $resolveReference = true
+        bool $resolveReference = true,
     ): SpecificationFile;
 }

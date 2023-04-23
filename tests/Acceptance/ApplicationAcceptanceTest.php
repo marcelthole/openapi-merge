@@ -13,9 +13,7 @@ use function version_compare;
 
 use const PHP_VERSION;
 
-/**
- * @coversNothing
- */
+/** @coversNothing */
 class ApplicationAcceptanceTest extends TestCase
 {
     public function testApplicationRuns(): void
@@ -28,10 +26,11 @@ class ApplicationAcceptanceTest extends TestCase
                 __DIR__ . '/Fixtures/routes.yml',
                 __DIR__ . '/Fixtures/routes_merge.yml',
                 __DIR__ . '/Fixtures/errors.yml',
-            ])
+            ]),
         ));
 
         self::assertNotNull($output);
+        self::assertNotFalse($output);
 
         if (version_compare(PHP_VERSION, '8.1.0', '>=')) {
             self::assertStringEqualsFile(__DIR__ . '/Fixtures/expected_php81.yml', $output);

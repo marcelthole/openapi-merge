@@ -9,7 +9,10 @@ use RecursiveDirectoryIterator;
 use RecursiveIterator;
 use RecursiveIteratorIterator;
 
+use function array_filter;
 use function array_values;
+use function assert;
+use function is_string;
 use function iterator_to_array;
 use function preg_match;
 use function sprintf;
@@ -19,14 +22,12 @@ use function substr;
 
 class RegexFinder implements Finder
 {
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     public function find(string $baseDirectory, string $searchString): array
     {
         $directoryIterator = new RecursiveDirectoryIterator(
             $baseDirectory,
-            RecursiveDirectoryIterator::CURRENT_AS_PATHNAME | RecursiveDirectoryIterator::SKIP_DOTS
+            RecursiveDirectoryIterator::CURRENT_AS_PATHNAME | RecursiveDirectoryIterator::SKIP_DOTS,
         );
 
         $regexIterator = new RecursiveCallbackFilterIterator(
@@ -34,11 +35,11 @@ class RegexFinder implements Finder
             static function (
                 string $current,
                 string $key,
-                RecursiveIterator $iterator
+                RecursiveIterator $iterator,
             ) use (
                 $baseDirectory,
-                $searchString
-            ) {
+                $searchString,
+            ): bool {
                 if ($iterator->hasChildren()) {
                     return true;
                 }
@@ -47,13 +48,19 @@ class RegexFinder implements Finder
 
                 return preg_match(
                     sprintf('~%s~i', str_replace('~', '\~', $searchString)),
-                    $relativeFileName
+                    $relativeFileName,
                 ) === 1;
-            }
+            },
         );
 
         $recursiveIterator = new RecursiveIteratorIterator($regexIterator);
 
-        return array_values(iterator_to_array($recursiveIterator));
+        $matches = array_values(iterator_to_array($recursiveIterator));
+
+        assert(
+            array_filter($matches, static fn (mixed $input): bool => is_string($input)) === $matches,
+        );
+
+        return $matches;
     }
 }

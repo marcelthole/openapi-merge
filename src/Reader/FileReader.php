@@ -13,7 +13,7 @@ final class FileReader
 {
     private OpenApiReaderWrapper $openApiReader;
 
-    public function __construct(?OpenApiReaderWrapper $openApiReader = null)
+    public function __construct(OpenApiReaderWrapper|null $openApiReader = null)
     {
         $this->openApiReader = $openApiReader ?? new OpenApiReaderWrapper();
     }
@@ -26,14 +26,14 @@ final class FileReader
                 $spec = $this->openApiReader->readFromYamlFile(
                     $inputFile->getAbsoluteFile(),
                     OpenApi::class,
-                    $resolveReferences
+                    $resolveReferences,
                 );
                 break;
             case 'json':
                 $spec = $this->openApiReader->readFromJsonFile(
                     $inputFile->getAbsoluteFile(),
                     OpenApi::class,
-                    $resolveReferences
+                    $resolveReferences,
                 );
                 break;
             default:
@@ -42,7 +42,7 @@ final class FileReader
 
         return new SpecificationFile(
             $inputFile,
-            $spec
+            $spec,
         );
     }
 }

@@ -9,9 +9,7 @@ use cebe\openapi\SpecObjectInterface;
 use Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper
- */
+/** @covers \Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper */
 class OpenApiReaderWrapperTest extends TestCase
 {
     public function testCall(): void
@@ -22,16 +20,16 @@ class OpenApiReaderWrapperTest extends TestCase
             $sut->readFromJsonFile(
                 __DIR__ . '/Fixtures/valid-openapi.json',
                 OpenApi::class,
-                true
-            )
+                true,
+            ),
         );
         self::assertInstanceOf(
             SpecObjectInterface::class,
             $sut->readFromYamlFile(
                 __DIR__ . '/Fixtures/valid-openapi.yml',
                 OpenApi::class,
-                true
-            )
+                true,
+            ),
         );
     }
 }

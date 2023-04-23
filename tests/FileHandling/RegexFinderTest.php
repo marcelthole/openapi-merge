@@ -9,14 +9,10 @@ use PHPUnit\Framework\TestCase;
 
 use function array_keys;
 
-/**
- * @covers \Mthole\OpenApiMerge\FileHandling\RegexFinder
- */
+/** @covers \Mthole\OpenApiMerge\FileHandling\RegexFinder */
 class RegexFinderTest extends TestCase
 {
-    /**
-     * @dataProvider findStringDataProvider
-     */
+    /** @dataProvider findStringDataProvider */
     public function testFind(string $search, int $expectedFilesCount): void
     {
         $sut   = new RegexFinder();
@@ -27,9 +23,7 @@ class RegexFinderTest extends TestCase
         }
     }
 
-    /**
-     * @return array<string, array<string|int>>
-     */
+    /** @return array<string, array<string|int>> */
     public function findStringDataProvider(): iterable
     {
         yield 'all a.txt' => ['.*a.txt', 2];

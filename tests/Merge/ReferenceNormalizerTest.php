@@ -31,27 +31,27 @@ class ReferenceNormalizerTest extends TestCase
 
         $specificationResult = $sut->normalizeInlineReferences(
             $file,
-            $openApi
+            $openApi,
         );
 
         self::assertStringEqualsFile(
             __DIR__ . '/Fixtures/expected/openapi-normalized.json',
-            Writer::writeToJson($specificationResult->getNormalizedDefinition())
+            Writer::writeToJson($specificationResult->getNormalizedDefinition()),
         );
 
         $foundRefFiles = $specificationResult->getFoundReferenceFiles();
         self::assertCount(3, $foundRefFiles);
         self::assertSame(
             __DIR__ . '/Fixtures/responseModel.json',
-            $foundRefFiles[0]->getAbsoluteFile()
+            $foundRefFiles[0]->getAbsoluteFile(),
         );
         self::assertSame(
             __DIR__ . '/Fixtures/referenceModel.json',
-            $foundRefFiles[1]->getAbsoluteFile()
+            $foundRefFiles[1]->getAbsoluteFile(),
         );
         self::assertSame(
             __DIR__ . '/Fixtures/sub/examples/referenceModel.json',
-            $foundRefFiles[2]->getAbsoluteFile()
+            $foundRefFiles[2]->getAbsoluteFile(),
         );
     }
 }

@@ -7,9 +7,7 @@ namespace Mthole\OpenApiMerge\Tests\FileHandling\Exception;
 use Mthole\OpenApiMerge\FileHandling\Exception\IOException;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Mthole\OpenApiMerge\FileHandling\Exception\IOException
- */
+/** @covers \Mthole\OpenApiMerge\FileHandling\Exception\IOException */
 class IOExceptionTest extends TestCase
 {
     public function testCreateException(): void

@@ -22,9 +22,7 @@ use PHPUnit\Framework\TestCase;
  */
 class FileReaderTest extends TestCase
 {
-    /**
-     * @dataProvider validFilesDataProvider
-     */
+    /** @dataProvider validFilesDataProvider */
     public function testValidFiles(string $filename): void
     {
         $file          = new File($filename);
