@@ -9,6 +9,9 @@
           "100": {
             "$ref": "./responseModel.json#/components/responses/reference-100"
           },
+          "101": {
+            "$ref": "#/components/responses/reference-101"
+          },
           "200": {
             "description": "OK",
             "content": {
@@ -38,6 +41,13 @@
             }
           }
         }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "reference-101": {
+        "description": "OK"
       }
     }
   }
