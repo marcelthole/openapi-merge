@@ -7,6 +7,7 @@ namespace Mthole\OpenApiMerge\Tests;
 use cebe\openapi\spec\Components;
 use cebe\openapi\spec\OpenApi;
 use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\Merge\ComponentsMerger;
 use Mthole\OpenApiMerge\Merge\PathMerger;
 use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
 use Mthole\OpenApiMerge\Merge\ReferenceResolverResult;
@@ -24,6 +25,8 @@ use function assert;
  * @uses \Mthole\OpenApiMerge\Merge\PathMerger
  * @uses \Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper
  * @uses \Mthole\OpenApiMerge\Merge\ReferenceResolverResult
+ * @uses \Mthole\OpenApiMerge\Merge\ComponentsMerger
+ * @uses \Mthole\OpenApiMerge\Util\Json
  *
  * @covers \Mthole\OpenApiMerge\OpenApiMerge
  */
@@ -33,7 +36,10 @@ class OpenApiMergeTest extends TestCase
     {
         $sut = new OpenApiMerge(
             new FileReader(),
-            new PathMerger(),
+            [
+                new PathMerger(),
+                new ComponentsMerger(),
+            ],
             new ReferenceNormalizer(),
         );
 
@@ -56,7 +62,10 @@ class OpenApiMergeTest extends TestCase
     {
         $sut = new OpenApiMerge(
             new FileReader(),
-            new PathMerger(),
+            [
+                new PathMerger(),
+                new ComponentsMerger(),
+            ],
             new ReferenceNormalizer(),
         );
 
@@ -91,7 +100,10 @@ class OpenApiMergeTest extends TestCase
 
         $sut = new OpenApiMerge(
             new FileReader(),
-            new PathMerger(),
+            [
+                new PathMerger(),
+                new ComponentsMerger(),
+            ],
             $referenceNormalizer,
         );
 
@@ -122,7 +134,7 @@ class OpenApiMergeTest extends TestCase
 
         $sut = new OpenApiMerge(
             new FileReader(),
-            new PathMerger(),
+            [],
             $referenceNormalizer,
         );
 

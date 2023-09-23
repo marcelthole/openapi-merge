@@ -1,0 +1,13 @@
+openapi: "3.0.2"
+info:
+  version: "1"
+  title: "Issue 26"
+paths: { }
+components:
+  schemas:
+    FirstSchema:
+      title: FirstSchema
+      type: string
+    SecondSchema:
+      title: SecondSchema
+      type: string

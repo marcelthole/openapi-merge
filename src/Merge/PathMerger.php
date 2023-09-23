@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Merge;
 
+use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Paths;
+use Mthole\OpenApiMerge\Util\Json;
 
-class PathMerger implements PathMergerInterface
+class PathMerger implements MergerInterface
 {
     private const MERGE_METHODS = [
         'get',
@@ -19,8 +21,13 @@ class PathMerger implements PathMergerInterface
         'trace',
     ];
 
-    public function mergePaths(Paths $existingPaths, Paths $newPaths): Paths
-    {
+    public function merge(
+        OpenApi $existingSpec,
+        OpenApi $newSpec,
+    ): OpenApi {
+        $existingPaths = $existingSpec->paths;
+        $newPaths      = $newSpec->paths;
+
         $pathCopy = new Paths($existingPaths->getPaths());
         foreach ($newPaths->getPaths() as $pathName => $newPath) {
             $existingPath = $pathCopy->getPath($pathName);
@@ -43,6 +50,10 @@ class PathMerger implements PathMergerInterface
             }
         }
 
-        return $pathCopy;
+        $clonedSpec = new OpenApi(Json::toArray($existingSpec->getSerializableData()));
+
+        $clonedSpec->paths = $pathCopy;
+
+        return $clonedSpec;
     }
 }

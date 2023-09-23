@@ -4,27 +4,23 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge;
 
-use cebe\openapi\spec\Components;
 use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
-use Mthole\OpenApiMerge\Merge\PathMergerInterface;
+use Mthole\OpenApiMerge\Merge\MergerInterface;
 use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
 use Mthole\OpenApiMerge\Reader\FileReader;
 
-use function array_merge;
 use function array_push;
 use function count;
 
 class OpenApiMerge implements OpenApiMergeInterface
 {
-    private ReferenceNormalizer $referenceNormalizer;
-
+    /** @param list<MergerInterface> $merger */
     public function __construct(
         private FileReader $openApiReader,
-        private PathMergerInterface $pathMerger,
-        ReferenceNormalizer $referenceResolver,
+        private array $merger,
+        private ReferenceNormalizer $referenceNormalizer,
     ) {
-        $this->referenceNormalizer = $referenceResolver;
     }
 
     /** @param list<File> $additionalFiles */
@@ -45,23 +41,12 @@ class OpenApiMerge implements OpenApiMergeInterface
                 $additionalDefinition = $resolvedReferenceResult->getNormalizedDefinition();
             }
 
-            $mergedOpenApiDefinition->paths = $this->pathMerger->mergePaths(
-                $mergedOpenApiDefinition->paths,
-                $additionalDefinition->paths,
-            );
-
-            if ($additionalDefinition->components === null) {
-                continue;
+            foreach ($this->merger as $merger) {
+                $mergedOpenApiDefinition = $merger->merge(
+                    $mergedOpenApiDefinition,
+                    $additionalDefinition,
+                );
             }
-
-            if ($mergedOpenApiDefinition->components === null) {
-                $mergedOpenApiDefinition->components = new Components([]);
-            }
-
-            $mergedOpenApiDefinition->components->schemas = array_merge(
-                $mergedOpenApiDefinition->components->schemas ?? [],
-                $additionalDefinition->components->schemas ?? [],
-            );
         }
 
         if ($resolveReference && $mergedOpenApiDefinition->components !== null) {

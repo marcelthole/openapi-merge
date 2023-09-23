@@ -3,7 +3,9 @@
 
 use Mthole\OpenApiMerge\Console\Command\MergeCommand;
 use Mthole\OpenApiMerge\FileHandling\RegexFinder;
+use Mthole\OpenApiMerge\Merge\ComponentsMerger;
 use Mthole\OpenApiMerge\Merge\PathMerger;
+use Mthole\OpenApiMerge\Merge\SecurityPathMerger;
 use Mthole\OpenApiMerge\OpenApiMerge;
 use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
 use Mthole\OpenApiMerge\Reader\FileReader;
@@ -28,7 +30,11 @@ $application = new Application();
 $application->add(new MergeCommand(
     new OpenApiMerge(
         new FileReader(),
-        new PathMerger(),
+        [
+            new PathMerger(),
+            new ComponentsMerger(),
+            new SecurityPathMerger(),
+        ],
         new ReferenceNormalizer()
     ),
     new DefinitionWriter(),

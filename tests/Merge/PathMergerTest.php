@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Tests\Merge;
 
+use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\PathItem;
 use cebe\openapi\spec\Paths;
 use Mthole\OpenApiMerge\Merge\PathMerger;
@@ -11,7 +12,11 @@ use PHPUnit\Framework\TestCase;
 
 use function array_keys;
 
-/** @covers \Mthole\OpenApiMerge\Merge\PathMerger */
+/**
+ * @uses \Mthole\OpenApiMerge\Util\Json
+ *
+ * @covers \Mthole\OpenApiMerge\Merge\PathMerger
+ */
 class PathMergerTest extends TestCase
 {
     public function testMergeDidNotChangeOriginals(): void
@@ -21,11 +26,14 @@ class PathMergerTest extends TestCase
             '/route2' => new PathItem([]),
         ]);
 
-        $sut         = new PathMerger();
-        $mergedPaths = $sut->mergePaths($existingPath, $newPaths);
+        $existingSpec = new OpenApi(['paths' => $existingPath]);
+        $newSpec      = new OpenApi(['paths' => $newPaths]);
+
+        $sut     = new PathMerger();
+        $newSpec = $sut->merge($existingSpec, $newSpec);
         self::assertCount(1, $existingPath);
         self::assertCount(1, $newPaths);
-        self::assertCount(2, $mergedPaths);
+        self::assertCount(2, $newSpec->paths);
     }
 
     /**
@@ -43,12 +51,15 @@ class PathMergerTest extends TestCase
         array $expectedMethods,
     ): void {
         $sut         = new PathMerger();
-        $mergedPaths = $sut->mergePaths($existingPaths, $newPaths);
+        $mergedPaths = $sut->merge(
+            new OpenApi(['paths' => $existingPaths]),
+            new OpenApi(['paths' => $newPaths]),
+        );
 
-        self::assertSame($expectedRoutes, array_keys($mergedPaths->getPaths()));
+        self::assertSame($expectedRoutes, array_keys($mergedPaths->paths->getPaths()));
 
         foreach ($expectedMethods as $routeName => $expectedRouteMethods) {
-            $pathItem = $mergedPaths->getPath($routeName);
+            $pathItem = $mergedPaths->paths->getPath($routeName);
             self::assertNotNull($pathItem);
             self::assertSame(
                 $expectedRouteMethods,
