@@ -20,3 +20,9 @@ paths:
                     type: string
                 required:
                   - response
+security:
+    - BasicAuth: [ ]
+components:
+    securitySchemes:
+        BasicAuth:
+            type: http

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Tests\Acceptance;
 
+use Composer\InstalledVersions;
 use PHPUnit\Framework\TestCase;
 
 use function implode;
 use function shell_exec;
 use function sprintf;
 use function version_compare;
-
-use const PHP_VERSION;
 
 /** @coversNothing */
 class ApplicationAcceptanceTest extends TestCase
@@ -32,10 +31,11 @@ class ApplicationAcceptanceTest extends TestCase
         self::assertNotNull($output);
         self::assertNotFalse($output);
 
-        if (version_compare(PHP_VERSION, '8.1.0', '>=')) {
-            self::assertStringEqualsFile(__DIR__ . '/Fixtures/expected_php81.yml', $output);
+        $yamlVersion = InstalledVersions::getVersion('symfony/yaml') ?? '1.0';
+        if (version_compare($yamlVersion, '6.1.0', '<')) {
+            self::assertStringEqualsFile(__DIR__ . '/Fixtures/expected_yaml610.yml', $output);
         } else {
-            self::assertStringEqualsFile(__DIR__ . '/Fixtures/expected_php80.yml', $output);
+            self::assertStringEqualsFile(__DIR__ . '/Fixtures/expected.yml', $output);
         }
     }
 }

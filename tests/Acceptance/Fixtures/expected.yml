@@ -15,6 +15,14 @@ servers:
     url: 'https://api.base.example.org'
     description: 'Main Base URL'
 paths:
+  /auth:
+    get:
+      responses:
+        '200':
+          description: OK
+      security:
+        -
+          ApiKey: []
   /ping:
     get:
       tags:
@@ -60,8 +68,9 @@ paths:
                     example: ValidationError
                   title:
                     type: string
-                    example: 'Your request parameters didn''t validate.'
+                    example: "Your request parameters didn't validate."
                 description: 'Default Problem Response'
+      security: []
     post:
       summary: 'Your POST endpoint'
       description: 'Description of post Ping'
@@ -78,8 +87,16 @@ paths:
                 properties:
                   response:
                     type: string
+      security:
+        -
+          BasicAuth: []
 components:
   schemas: {  }
+  securitySchemes:
+    ApiKey:
+      type: http
+    BasicAuth:
+      type: http
 security: []
 tags:
   -
