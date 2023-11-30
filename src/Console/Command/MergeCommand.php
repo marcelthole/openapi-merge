@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Mthole\OpenApiMerge\Console\Command;
 
 use Exception;
-use Mthole\OpenApiMerge\Config\Config;
-use Mthole\OpenApiMerge\Config\ConfigAwareInterface;
 use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\Finder;
 use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\Filesystem\DirReader;
 use Mthole\OpenApiMerge\Filesystem\DirReaderInterface;
@@ -19,9 +18,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use function array_filter;
 use function array_map;
 use function array_merge;
 use function array_unique;
+use function count;
 use function file_put_contents;
 use function is_array;
 use function is_string;
@@ -32,25 +33,22 @@ final class MergeCommand extends Command
 {
     public const COMMAND_NAME = 'openapi:merge';
 
-    private OpenApiMergeInterface $merger;
-    private DefinitionWriterInterface $definitionWriter;
-    private DirReaderInterface $dirReader;
-
     public function __construct(
-        OpenApiMergeInterface $openApiMerge,
-        DefinitionWriterInterface $definitionWriter,
-        ?DirReaderInterface $dirReader = null
+        private OpenApiMergeInterface $merger,
+        private DefinitionWriterInterface $definitionWriter,
+        private Finder $fileFinder,
+        private DirReaderInterface|null $dirReader = null,
     ) {
         parent::__construct(self::COMMAND_NAME);
-        $this->merger           = $openApiMerge;
-        $this->definitionWriter = $definitionWriter;
-        $this->dirReader        = $dirReader ?? new DirReader();
+
+        $this->dirReader = $dirReader ?? new DirReader();
     }
 
     protected function configure(): void
     {
         $this->setDescription('Merge multiple OpenAPI definition files into a single file')
-            ->setHelp(<<<'HELP'
+            ->setHelp(
+                <<<'HELP'
                 Usage:
                 basefile.yml additionalFileA.yml additionalFileB.yml [...] > combined.yml
                 basefile.yml additionalFileA.yml --dir /var/www/docs/source1 --dir /var/www/docs/source2 > combined.yml
@@ -60,34 +58,37 @@ final class MergeCommand extends Command
 
                 Outputformat:
                     The output format is determined by the basefile extension.
-                HELP
+                HELP,
             )
             ->addArgument('basefile', InputArgument::REQUIRED)
-            ->addArgument('additionalFiles', InputArgument::IS_ARRAY)
+            ->addArgument('additionalFiles', InputArgument::IS_ARRAY | InputArgument::OPTIONAL)
             ->addOption(
                 'dir',
                 'd',
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-                'A dir to scan for additional files'
+                'A dir to scan for additional files',
             )
             ->addOption(
-                'skip-resolving-references',
+                'match',
                 null,
-                InputOption::VALUE_NONE,
-                'An option to skip resolving of references'
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                <<<'DESCRIPTION'
+                Use a RegEx pattern to determine the additionalFiles.
+                If this option is set the additionalFiles could be omitted
+                DESCRIPTION,
             )
             ->addOption(
-                'reset-components',
+                'resolve-references',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'An option to reset component in the schema',
-                true
+                'Resolve the "$refs" in the given files',
+                true,
             )
             ->addOption(
                 'outputfile',
                 'o',
                 InputOption::VALUE_OPTIONAL,
-                'Defines the output file for the result. Defaults the result will printed to stdout'
+                'Defines the output file for the result. Defaults the result will printed to stdout',
             );
     }
 
@@ -96,33 +97,50 @@ final class MergeCommand extends Command
         $baseFile        = $input->getArgument('basefile');
         $additionalFiles = $input->getArgument('additionalFiles');
 
-        if ($input->hasOption('dir')) {
-            $additionalFiles = (array) ($additionalFiles ?? []);
-            $dirs            = array_unique((array) $input->getOption('dir'));
-
-            foreach ($dirs as $dir) {
-                $additionalFiles = array_merge($additionalFiles, $this->dirReader->getDirContents((string) $dir));
-            }
-        }
-
-        if (! is_string($baseFile) || ! is_array($additionalFiles)) {
+        if (
+            ! is_array($additionalFiles) ||
+            array_filter($additionalFiles, static fn (mixed $input): bool => is_string($input)) !== $additionalFiles
+        ) {
             throw new Exception('Invalid arguments given');
         }
 
-        if ($this->merger instanceof ConfigAwareInterface) {
-            $config = (new Config())
-                ->resetComponents($input->getOption('reset-components') !== 'false')
-                ->skipResolvingReferences((bool) $input->getOption('skip-resolving-references'));
+        if (count($additionalFiles) === 0) {
+            $matches = $input->getOption('match');
+            if (
+                ! is_array($matches) ||
+                array_filter($matches, static fn (mixed $input): bool => is_string($input)) !== $matches
+            ) {
+                throw new Exception('Invalid arguments given');
+            }
 
-            $this->merger->setConfig($config);
+            foreach ($matches as $regex) {
+                $additionalFiles = [...$additionalFiles, ...$this->fileFinder->find('.', $regex)];
+            }
         }
+
+        if ($input->hasOption('dir')) {
+            $additionalFiles = (array) ($additionalFiles ?? []);
+            /** @var string[] $dirs */
+            $dirs = array_unique((array) $input->getOption('dir'));
+
+            foreach ($dirs as $dir) {
+                $additionalFiles = array_merge($additionalFiles, $this->dirReader->getDirContents((string) $dir)); //@phpstan-ignore-line
+            }
+        }
+
+        if (! is_string($baseFile) || count($additionalFiles) === 0) {
+            throw new Exception('Invalid arguments given');
+        }
+
+        $shouldResolveReferences = (bool) $input->getOption('resolve-references');
 
         $mergedResult = $this->merger->mergeFiles(
             new File($baseFile),
-            ...array_map(
+            array_map(
                 static fn (string $file): File => new File($file),
-                $additionalFiles
-            )
+                $additionalFiles,
+            ),
+            $shouldResolveReferences,
         );
 
         $outputFileName = $input->getOption('outputfile');
@@ -131,13 +149,13 @@ final class MergeCommand extends Command
             $outputFile        = new File($outputFileName);
             $specificationFile = new SpecificationFile(
                 $outputFile,
-                $mergedResult->getOpenApi()
+                $mergedResult->getOpenApi(),
             );
             file_put_contents(
-                $outputFile->getAbsolutePath(),
-                $this->definitionWriter->write($specificationFile)
+                $outputFile->getAbsoluteFile(),
+                $this->definitionWriter->write($specificationFile),
             );
-            $output->writeln(sprintf('File successfully written to %s', $outputFile->getAbsolutePath()));
+            $output->writeln(sprintf('File successfully written to %s', $outputFile->getAbsoluteFile()));
         } else {
             $output->write($this->definitionWriter->write($mergedResult));
         }

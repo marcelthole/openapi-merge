@@ -2,3 +2,5 @@
 /vendor/
 /build
 !/build/.gitkeep
+/.php-cs-fixer.cache
+/build/

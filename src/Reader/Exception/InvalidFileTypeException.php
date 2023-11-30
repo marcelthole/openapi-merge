@@ -15,7 +15,7 @@ class InvalidFileTypeException extends Exception
     public static function createFromExtension(string $fileExtension): self
     {
         $exception                = new self(
-            sprintf('Given file has an unsupported file extension "%s"', $fileExtension)
+            sprintf('Given file has an unsupported file extension "%s"', $fileExtension),
         );
         $exception->fileExtension = $fileExtension;
 

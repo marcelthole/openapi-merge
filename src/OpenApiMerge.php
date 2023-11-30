@@ -4,66 +4,59 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge;
 
-use cebe\openapi\spec\PathItem;
-use Mthole\OpenApiMerge\Config\ConfigAwareInterface;
-use Mthole\OpenApiMerge\Config\HasConfig;
 use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
+use Mthole\OpenApiMerge\Merge\MergerInterface;
+use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
 use Mthole\OpenApiMerge\Reader\FileReader;
 
-use function array_merge;
+use function array_push;
+use function count;
 
-class OpenApiMerge implements OpenApiMergeInterface, ConfigAwareInterface
+class OpenApiMerge implements OpenApiMergeInterface
 {
-    use HasConfig;
-
-    private FileReader $openApiReader;
-
-    public function __construct(FileReader $openApiReader)
-    {
-        $this->openApiReader = $openApiReader;
+    /** @param list<MergerInterface> $merger */
+    public function __construct(
+        private FileReader $openApiReader,
+        /** @var MergerInterface[] $merger */
+        private array $merger,
+        private ReferenceNormalizer $referenceNormalizer,
+    ) {
     }
 
-    public function mergeFiles(File $baseFile, File ...$additionalFiles): SpecificationFile
+    /** @param list<File> $additionalFiles */
+    public function mergeFiles(File $baseFile, array $additionalFiles, bool $resolveReference = true): SpecificationFile
     {
-        $this->openApiReader->setConfig($this->getConfig());
-        $mergedOpenApiDefinition = $this->openApiReader->readFile($baseFile)->getOpenApi();
+        $mergedOpenApiDefinition = $this->openApiReader->readFile($baseFile, $resolveReference)->getOpenApi();
 
-        foreach ($additionalFiles as $additionalFile) {
-            $additionalDefinition = $this->openApiReader->readFile($additionalFile)->getOpenApi();
-
-            foreach ($additionalDefinition->paths->getPaths() as $name => $path) {
-                if (null === $mergedOpenApiDefinition->paths) {
-                    $mergedOpenApiDefinition->paths = $additionalDefinition->paths;
-
-                    continue;
-                }
-
-                $mergedPath = $mergedOpenApiDefinition->paths->getPath($name);
-
-                if ($mergedPath === null) {
-                    $mergedOpenApiDefinition->paths->addPath($name, $path);
-
-                    continue;
-                }
-
-                $operations = array_merge(
-                    $mergedPath->getOperations(),
-                    $path->getOperations()
+        // use "for" instead of "foreach" to iterate over new added files
+        for ($i = 0; $i < count($additionalFiles); $i++) {
+            $additionalFile       = $additionalFiles[$i];
+            $additionalDefinition = $this->openApiReader->readFile($additionalFile, $resolveReference)->getOpenApi();
+            if (! $resolveReference) {
+                $resolvedReferenceResult = $this->referenceNormalizer->normalizeInlineReferences(
+                    $additionalFile,
+                    $additionalDefinition,
                 );
+                array_push($additionalFiles, ...$resolvedReferenceResult->getFoundReferenceFiles());
+                $additionalDefinition = $resolvedReferenceResult->getNormalizedDefinition();
+            }
 
-                $mergedOpenApiDefinition->paths->removePath($name);
-                $mergedOpenApiDefinition->paths->addPath($name, new PathItem($operations));
+            foreach ($this->merger as $merger) {
+                $mergedOpenApiDefinition = $merger->merge(
+                    $mergedOpenApiDefinition,
+                    $additionalDefinition,
+                );
             }
         }
 
-        if ($this->getConfig()->isResetComponentsEnabled() && $mergedOpenApiDefinition->components !== null) {
+        if ($resolveReference && $mergedOpenApiDefinition->components !== null) {
             $mergedOpenApiDefinition->components->schemas = [];
         }
 
         return new SpecificationFile(
             $baseFile,
-            $mergedOpenApiDefinition
+            $mergedOpenApiDefinition,
         );
     }
 }

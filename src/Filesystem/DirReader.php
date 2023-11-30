@@ -15,9 +15,7 @@ use const DIRECTORY_SEPARATOR;
 
 final class DirReader implements DirReaderInterface
 {
-    /**
-     * @return string[]
-     */
+    /** @return string[] */
     public function getDirContents(string $dir): array
     {
         return $this->readDirContents($dir);

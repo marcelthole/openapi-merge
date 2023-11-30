@@ -6,7 +6,7 @@ namespace Mthole\OpenApiMerge\FileHandling;
 
 use cebe\openapi\spec\OpenApi;
 
-final class SpecificationFile
+class SpecificationFile
 {
     private File $file;
 

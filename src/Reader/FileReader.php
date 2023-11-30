@@ -4,47 +4,45 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Reader;
 
-use cebe\openapi\Reader;
 use cebe\openapi\spec\OpenApi;
-use Mthole\OpenApiMerge\Config\ConfigAwareInterface;
-use Mthole\OpenApiMerge\Config\HasConfig;
 use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException;
 
-use function assert;
-
-final class FileReader implements ConfigAwareInterface
+final class FileReader
 {
-    use HasConfig;
+    private OpenApiReaderWrapper $openApiReader;
 
-    public function readFile(File $inputFile): SpecificationFile
+    public function __construct(OpenApiReaderWrapper|null $openApiReader = null)
+    {
+        $this->openApiReader = $openApiReader ?? new OpenApiReaderWrapper();
+    }
+
+    public function readFile(File $inputFile, bool $resolveReferences = true): SpecificationFile
     {
         switch ($inputFile->getFileExtension()) {
             case 'yml':
             case 'yaml':
-                $spec = Reader::readFromYamlFile(
-                    $inputFile->getAbsolutePath(),
+                $spec = $this->openApiReader->readFromYamlFile(
+                    $inputFile->getAbsoluteFile(),
                     OpenApi::class,
-                    ! $this->getConfig()->isSkipResolvingReferencesEnabled()
+                    $resolveReferences,
                 );
                 break;
             case 'json':
-                $spec = Reader::readFromJsonFile(
-                    $inputFile->getAbsolutePath(),
+                $spec = $this->openApiReader->readFromJsonFile(
+                    $inputFile->getAbsoluteFile(),
                     OpenApi::class,
-                    ! $this->getConfig()->isSkipResolvingReferencesEnabled()
+                    $resolveReferences,
                 );
                 break;
             default:
                 throw InvalidFileTypeException::createFromExtension($inputFile->getFileExtension());
         }
 
-        assert($spec instanceof OpenApi);
-
         return new SpecificationFile(
             $inputFile,
-            $spec
+            $spec,
         );
     }
 }

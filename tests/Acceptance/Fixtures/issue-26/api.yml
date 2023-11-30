@@ -1,0 +1,10 @@
+openapi: "3.0.2"
+info:
+  version: "1"
+  title: "Issue 26"
+paths:
+  /ping:
+    get:
+      responses:
+        200:
+          $ref: "./schemas.yml#/components/schemas/FirstSchema"

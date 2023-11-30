@@ -1,0 +1,20 @@
+openapi: "3.0.2"
+info:
+  title: "Example OpenAPI Definition"
+  description: "This is the example Description"
+  version: "1.0"
+  contact:
+    email: base-file@example.org
+    name: Base Author
+    url: base.example.org
+  license:
+    name: MIT
+    url: https://tldrlegal.com/license/mit-license
+paths: { }
+components: { }
+security: [ ]
+servers:
+  - url: "https://api.base.example.org"
+    description: "Main Base URL"
+tags:
+  - name: "Base"

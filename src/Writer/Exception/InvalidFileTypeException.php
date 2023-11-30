@@ -15,7 +15,7 @@ class InvalidFileTypeException extends Exception
     public static function createFromExtension(string $fileExtension): self
     {
         $exception                = new self(
-            sprintf('The filetype "%s" is not supported for dumping', $fileExtension)
+            sprintf('The filetype "%s" is not supported for dumping', $fileExtension),
         );
         $exception->fileExtension = $fileExtension;
 
