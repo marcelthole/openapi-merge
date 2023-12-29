@@ -50,7 +50,9 @@ class OpenApiMerge implements OpenApiMergeInterface
         }
 
         if ($resolveReference && $mergedOpenApiDefinition->components !== null) {
-            $mergedOpenApiDefinition->components->schemas = [];
+            $mergedOpenApiDefinition->components->schemas       = [];
+            $mergedOpenApiDefinition->components->responses     = [];
+            $mergedOpenApiDefinition->components->requestBodies = [];
         }
 
         return new SpecificationFile(
