@@ -97,6 +97,8 @@ components:
       type: http
     BasicAuth:
       type: http
+  responses: {  }
+  requestBodies: {  }
 security: []
 tags:
   -

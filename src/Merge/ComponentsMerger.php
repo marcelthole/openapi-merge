@@ -41,6 +41,26 @@ class ComponentsMerger implements MergerInterface
             );
         }
 
+        if (
+            count($existingComponents->requestBodies ?? []) > 0
+            || count($newComponents->requestBodies ?? []) > 0
+        ) {
+            $mergedComponents->requestBodies = array_merge(
+                $existingComponents->requestBodies ?? [],
+                $newComponents->requestBodies ?? [],
+            );
+        }
+
+        if (
+            count($existingComponents->responses ?? []) > 0
+            || count($newComponents->responses ?? []) > 0
+        ) {
+            $mergedComponents->responses = array_merge(
+                $existingComponents->responses ?? [],
+                $newComponents->responses ?? [],
+            );
+        }
+
         $clonedSpec = new OpenApi(Json::toArray($existingSpec->getSerializableData()));
 
         $clonedSpec->components = $mergedComponents;

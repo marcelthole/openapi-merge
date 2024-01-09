@@ -152,5 +152,99 @@ class ComponentsMergerTest extends TestCase
                 ],
             ]),
         ];
+
+        yield 'request bodies first' => [
+            new Components([
+                'requestBodies' => [
+                    'RequestBody' => [],
+                ],
+            ]),
+            null,
+            new Components([
+                'requestBodies' => [
+                    'RequestBody' => [],
+                ],
+            ]),
+        ];
+
+        yield 'request bodies second' => [
+            null,
+            new Components([
+                'requestBodies' => [
+                    'RequestBody' => [],
+                ],
+            ]),
+            new Components([
+                'requestBodies' => [
+                    'RequestBody' => [],
+                ],
+            ]),
+        ];
+
+        yield 'request bodies both' => [
+            new Components([
+                'requestBodies' => [
+                    'RequestBody' => [],
+                ],
+            ]),
+            new Components([
+                'requestBodies' => [
+                    'AnotherRequestBody' => [],
+                ],
+            ]),
+            new Components([
+                'requestBodies' => [
+                    'RequestBody' => [],
+                    'AnotherRequestBody' => [],
+                ],
+            ]),
+        ];
+
+        yield 'responses first' => [
+            new Components([
+                'responses' => [
+                    'ProblemResponse' => [],
+                ],
+            ]),
+            null,
+            new Components([
+                'responses' => [
+                    'ProblemResponse' => [],
+                ],
+            ]),
+        ];
+
+        yield 'responses second' => [
+            null,
+            new Components([
+                'responses' => [
+                    'ProblemResponse' => [],
+                ],
+            ]),
+            new Components([
+                'responses' => [
+                    'ProblemResponse' => [],
+                ],
+            ]),
+        ];
+
+        yield 'responses both' => [
+            new Components([
+                'responses' => [
+                    'ProblemResponse' => [],
+                ],
+            ]),
+            new Components([
+                'responses' => [
+                    'AnotherProblemResponse' => [],
+                ],
+            ]),
+            new Components([
+                'responses' => [
+                    'ProblemResponse' => [],
+                    'AnotherProblemResponse' => [],
+                ],
+            ]),
+        ];
     }
 }
