@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Tests;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
 use function assert;
 
-/** @coversNothing */
+#[CoversNothing]
 class AssertionsEnabledTest extends TestCase
 {
     public function testAssertionsWillThrowAnException(): void

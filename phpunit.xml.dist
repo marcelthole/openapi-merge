@@ -1,41 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="./tests/bootstrap.php"
-         colors="true"
-         defaultTimeLimit="5"
-         executionOrder="random"
-         enforceTimeLimit="true"
-         beStrictAboutCoversAnnotation="true"
-         forceCoversAnnotation="true"
-         cacheResultFile="build/.phpunit.result.cache"
->
-
-    <php>
-        <ini name="assert.exception" value="1" />
-    </php>
-
-    <testsuites>
-        <testsuite name="Unit Test Suite">
-            <directory>./tests</directory>
-            <exclude>./tests/Acceptance</exclude>
-        </testsuite>
-        <testsuite name="Acceptance Test Suite">
-            <directory>./tests/Acceptance</directory>
-        </testsuite>
-    </testsuites>
-
-    <coverage>
-        <include>
-            <directory>./src</directory>
-        </include>
-        <report>
-            <clover outputFile="build/coverage/clover.xml"/>
-            <xml outputDirectory="build/coverage/coverage-xml/"/>
-        </report>
-    </coverage>
-
-    <logging>
-        <junit outputFile="build/coverage/junit.xml"/>
-    </logging>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd" bootstrap="./tests/bootstrap.php" colors="true" defaultTimeLimit="5" executionOrder="random" enforceTimeLimit="true" cacheDirectory=".phpunit.cache" requireCoverageMetadata="true" beStrictAboutCoverageMetadata="true">
+  <php>
+    <ini name="assert.exception" value="1"/>
+  </php>
+  <testsuites>
+    <testsuite name="Unit Test Suite">
+      <directory>./tests</directory>
+      <exclude>./tests/Acceptance</exclude>
+    </testsuite>
+    <testsuite name="Acceptance Test Suite">
+      <directory>./tests/Acceptance</directory>
+    </testsuite>
+  </testsuites>
+  <coverage>
+    <report>
+      <clover outputFile="build/coverage/clover.xml"/>
+      <xml outputDirectory="build/coverage/coverage-xml/"/>
+    </report>
+  </coverage>
+  <logging>
+    <junit outputFile="build/coverage/junit.xml"/>
+  </logging>
+  <source>
+    <include>
+      <directory>./src</directory>
+    </include>
+  </source>
 </phpunit>

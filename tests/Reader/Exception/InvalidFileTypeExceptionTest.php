@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Mthole\OpenApiMerge\Tests\Reader\Exception;
 
 use Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @covers \Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException */
+#[CoversClass(InvalidFileTypeException::class)]
 class InvalidFileTypeExceptionTest extends TestCase
 {
     public function testCreateException(): void

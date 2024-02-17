@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Tests\Merge;
 
-use cebe\openapi\spec\OpenApi;
-use cebe\openapi\spec\PathItem;
-use cebe\openapi\spec\Paths;
 use Mthole\OpenApiMerge\Merge\PathMerger;
+use openapiphp\openapi\spec\OpenApi;
+use openapiphp\openapi\spec\PathItem;
+use openapiphp\openapi\spec\Paths;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function array_keys;
 
-/**
- * @uses \Mthole\OpenApiMerge\Util\Json
- *
- * @covers \Mthole\OpenApiMerge\Merge\PathMerger
- */
+#[CoversClass(PathMerger::class)]
+#[UsesClass('\Mthole\OpenApiMerge\Util\Json')]
 class PathMergerTest extends TestCase
 {
     public function testMergeDidNotChangeOriginals(): void
@@ -41,9 +41,8 @@ class PathMergerTest extends TestCase
      * @param Paths<PathItem>              $newPaths
      * @param array<string>                $expectedRoutes
      * @param array<string, array<string>> $expectedMethods
-     *
-     * @dataProvider pathCombinationDataProvider
      */
+    #[DataProvider('pathCombinationDataProvider')]
     public function testMergePaths(
         Paths $existingPaths,
         Paths $newPaths,
@@ -69,7 +68,7 @@ class PathMergerTest extends TestCase
     }
 
     /** @return iterable<string, list<mixed>> */
-    public function pathCombinationDataProvider(): iterable
+    public static function pathCombinationDataProvider(): iterable
     {
         yield 'simple routes' => [
             new Paths(['/route1' => new PathItem([])]),
@@ -110,7 +109,7 @@ class PathMergerTest extends TestCase
                 ]),
             ]),
             ['/route1'],
-            ['/route1' => ['get','put','post']],
+            ['/route1' => ['get','post','put']],
         ];
 
         yield 'explicit null method' => [

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Reader;
 
-use cebe\openapi\spec\OpenApi;
 use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException;
+use openapiphp\openapi\spec\OpenApi;
 
 final class FileReader
 {

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Tests;
 
-use cebe\openapi\spec\Components;
-use cebe\openapi\spec\OpenApi;
 use Mthole\OpenApiMerge\FileHandling\File;
 use Mthole\OpenApiMerge\Merge\ComponentsMerger;
 use Mthole\OpenApiMerge\Merge\PathMerger;
@@ -13,23 +11,24 @@ use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
 use Mthole\OpenApiMerge\Merge\ReferenceResolverResult;
 use Mthole\OpenApiMerge\OpenApiMerge;
 use Mthole\OpenApiMerge\Reader\FileReader;
+use openapiphp\openapi\spec\Components;
+use openapiphp\openapi\spec\OpenApi;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function array_keys;
 use function assert;
 
-/**
- * @uses \Mthole\OpenApiMerge\FileHandling\File
- * @uses \Mthole\OpenApiMerge\FileHandling\SpecificationFile
- * @uses \Mthole\OpenApiMerge\Reader\FileReader
- * @uses \Mthole\OpenApiMerge\Merge\PathMerger
- * @uses \Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper
- * @uses \Mthole\OpenApiMerge\Merge\ReferenceResolverResult
- * @uses \Mthole\OpenApiMerge\Merge\ComponentsMerger
- * @uses \Mthole\OpenApiMerge\Util\Json
- *
- * @covers \Mthole\OpenApiMerge\OpenApiMerge
- */
+#[CoversClass(OpenApiMerge::class)]
+#[UsesClass('\Mthole\OpenApiMerge\FileHandling\File')]
+#[UsesClass('\Mthole\OpenApiMerge\FileHandling\SpecificationFile')]
+#[UsesClass('\Mthole\OpenApiMerge\Reader\FileReader')]
+#[UsesClass('\Mthole\OpenApiMerge\Merge\PathMerger')]
+#[UsesClass('\Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper')]
+#[UsesClass('\Mthole\OpenApiMerge\Merge\ReferenceResolverResult')]
+#[UsesClass('\Mthole\OpenApiMerge\Merge\ComponentsMerger')]
+#[UsesClass('\Mthole\OpenApiMerge\Util\Json')]
 class OpenApiMergeTest extends TestCase
 {
     public function testMergePaths(): void

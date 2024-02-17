@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Merge;
 
-use cebe\openapi\spec\OpenApi;
-use cebe\openapi\spec\Paths;
 use Mthole\OpenApiMerge\Util\Json;
+use openapiphp\openapi\spec\OpenApi;
+use openapiphp\openapi\spec\Paths;
 
 class PathMerger implements MergerInterface
 {

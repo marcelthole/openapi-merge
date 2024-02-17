@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Tests\Console\Command;
 
-use cebe\openapi\spec\OpenApi;
 use Generator;
 use Mthole\OpenApiMerge\Console\Command\MergeCommand;
 use Mthole\OpenApiMerge\FileHandling\File;
@@ -12,6 +11,10 @@ use Mthole\OpenApiMerge\FileHandling\Finder;
 use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\OpenApiMergeInterface;
 use Mthole\OpenApiMerge\Writer\DefinitionWriterInterface;
+use openapiphp\openapi\spec\OpenApi;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\TrimmedBufferOutput;
@@ -23,15 +26,12 @@ use function unlink;
 
 use const PHP_EOL;
 
-/**
- * @uses \Mthole\OpenApiMerge\FileHandling\File
- * @uses \Mthole\OpenApiMerge\FileHandling\SpecificationFile
- *
- * @covers \Mthole\OpenApiMerge\Console\Command\MergeCommand
- */
+#[CoversClass(MergeCommand::class)]
+#[UsesClass('\Mthole\OpenApiMerge\FileHandling\File')]
+#[UsesClass('\Mthole\OpenApiMerge\FileHandling\SpecificationFile')]
 class MergeCommandTest extends TestCase
 {
-    /** @dataProvider invalidArgumentsDataProvider */
+    #[DataProvider('invalidArgumentsDataProvider')]
     public function testRunWithInvalidArguments(ArrayInput $input): void
     {
         $sut = new MergeCommand(
@@ -47,7 +47,7 @@ class MergeCommandTest extends TestCase
     }
 
     /** @return Generator<list<ArrayInput>> */
-    public function invalidArgumentsDataProvider(): Generator
+    public static function invalidArgumentsDataProvider(): Generator
     {
         yield [
             new ArrayInput([
@@ -101,7 +101,7 @@ class MergeCommandTest extends TestCase
 
         $mergeResultStub = new SpecificationFile(
             new File('dummy'),
-            $this->createStub(OpenApi::class),
+            new OpenApi([]),
         );
 
         $mergeMock = $this->createMock(OpenApiMergeInterface::class);
@@ -181,7 +181,7 @@ class MergeCommandTest extends TestCase
     }
 
     /** @return array<string, list<mixed>> */
-    public function resolveReferenceArgumentDataProvider(): iterable
+    public static function resolveReferenceArgumentDataProvider(): iterable
     {
         yield 'default-param' => [null, true];
         yield 'one as string' => ['1', true];
@@ -190,7 +190,7 @@ class MergeCommandTest extends TestCase
         yield 'false' => [false, false];
     }
 
-    /** @dataProvider resolveReferenceArgumentDataProvider */
+    #[DataProvider('resolveReferenceArgumentDataProvider')]
     public function testResolveReferencesArgument(
         string|bool|null $resolveReferenceValue,
         bool $expectedResolveReferenceValue,
@@ -236,9 +236,8 @@ class MergeCommandTest extends TestCase
     /**
      * @param array<string, list<string>> $arguments
      * @param list<File>                  $expectedFiles
-     *
-     * @dataProvider matchArgumentDataProvider
      */
+    #[DataProvider('matchArgumentDataProvider')]
     public function testMatchArgument(array $arguments, array $expectedFiles): void
     {
         $basefile = 'basefile.yml';
@@ -269,7 +268,7 @@ class MergeCommandTest extends TestCase
     }
 
     /** @return iterable<string, array<string, mixed>> */
-    public function matchArgumentDataProvider(): iterable
+    public static function matchArgumentDataProvider(): iterable
     {
         yield 'given additional files with match should ignore match' => [
             'arguments' => [

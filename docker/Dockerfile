@@ -1,4 +1,4 @@
-FROM php:8.0-cli-alpine
+FROM php:8.3-cli-alpine
 
 RUN php --version
 
@@ -8,6 +8,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN apk add git \
     && rm -rf /var/cache/apk/* /var/tmp/* /tmp/*
+
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions json pcntl
 
 ARG COMPOSER_REQUIRE_VERSION=dev-main
 

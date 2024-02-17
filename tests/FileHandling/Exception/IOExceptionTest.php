@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Mthole\OpenApiMerge\Tests\FileHandling\Exception;
 
 use Mthole\OpenApiMerge\FileHandling\Exception\IOException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @covers \Mthole\OpenApiMerge\FileHandling\Exception\IOException */
+#[CoversClass(IOException::class)]
 class IOExceptionTest extends TestCase
 {
     public function testCreateException(): void

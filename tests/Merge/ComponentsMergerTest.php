@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Merge;
 
-use cebe\openapi\spec\Components;
-use cebe\openapi\spec\OpenApi;
 use Mthole\OpenApiMerge\Merge\ComponentsMerger;
+use openapiphp\openapi\spec\Components;
+use openapiphp\openapi\spec\OpenApi;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @uses \Mthole\OpenApiMerge\Util\Json
- *
- * @covers \Mthole\OpenApiMerge\Merge\ComponentsMerger
- */
+#[CoversClass(ComponentsMerger::class)]
+#[UsesClass('\Mthole\OpenApiMerge\Util\Json')]
 class ComponentsMergerTest extends TestCase
 {
-    /** @dataProvider mergeDataProvider */
+    #[DataProvider('mergeDataProvider')]
     public function testMerge(
         Components|null $existingComponents,
         Components|null $newComponents,
@@ -33,7 +33,7 @@ class ComponentsMergerTest extends TestCase
     }
 
     /** @return iterable<string, list<Components|null>> */
-    public function mergeDataProvider(): iterable
+    public static function mergeDataProvider(): iterable
     {
         yield 'empty' => [
             new Components([]),
