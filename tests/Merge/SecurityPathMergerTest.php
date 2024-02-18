@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Merge;
 
-use cebe\openapi\spec\OpenApi;
 use Mthole\OpenApiMerge\Merge\SecurityPathMerger;
+use openapiphp\openapi\spec\OpenApi;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @uses \Mthole\OpenApiMerge\Util\Json
- *
- * @covers \Mthole\OpenApiMerge\Merge\SecurityPathMerger
- */
+#[CoversClass(SecurityPathMerger::class)]
+#[UsesClass('\Mthole\OpenApiMerge\Util\Json')]
 class SecurityPathMergerTest extends TestCase
 {
-    /** @dataProvider mergeDataProvider */
+    #[DataProvider('mergeDataProvider')]
     public function testMerge(
         OpenApi $existingSpec,
         OpenApi $newSpec,

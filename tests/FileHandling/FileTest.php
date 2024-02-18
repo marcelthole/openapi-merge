@@ -6,20 +6,20 @@ namespace Mthole\OpenApiMerge\Tests\FileHandling;
 
 use Mthole\OpenApiMerge\FileHandling\Exception\IOException;
 use Mthole\OpenApiMerge\FileHandling\File;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function getcwd;
 use function preg_quote;
 use function str_replace;
 
-/**
- * @uses   \Mthole\OpenApiMerge\FileHandling\Exception\IOException
- *
- * @covers \Mthole\OpenApiMerge\FileHandling\File
- */
+#[CoversClass(File::class)]
+#[UsesClass('\Mthole\OpenApiMerge\FileHandling\Exception\IOException')]
 class FileTest extends TestCase
 {
-    /** @dataProvider fileExtensionProvider */
+    #[DataProvider('fileExtensionProvider')]
     public function testGetFileExtension(string $filename, string $expectedExtension): void
     {
         $sut = new File($filename);
@@ -27,7 +27,7 @@ class FileTest extends TestCase
     }
 
     /** @return list<list<string>> */
-    public function fileExtensionProvider(): iterable
+    public static function fileExtensionProvider(): iterable
     {
         yield ['base.yml', 'yml'];
         yield ['base.yaml', 'yaml'];

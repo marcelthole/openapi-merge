@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mthole\OpenApiMerge\Tests\Acceptance;
 
 use Composer\InstalledVersions;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
 use function implode;
@@ -12,7 +13,7 @@ use function shell_exec;
 use function sprintf;
 use function version_compare;
 
-/** @coversNothing */
+#[CoversNothing]
 class ApplicationAcceptanceTest extends TestCase
 {
     public function testApplicationRuns(): void

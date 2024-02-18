@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Mthole\OpenApiMerge\Tests\FileHandling;
 
 use Mthole\OpenApiMerge\FileHandling\RegexFinder;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function array_keys;
 
-/** @covers \Mthole\OpenApiMerge\FileHandling\RegexFinder */
+#[CoversClass(RegexFinder::class)]
 class RegexFinderTest extends TestCase
 {
-    /** @dataProvider findStringDataProvider */
+    #[DataProvider('findStringDataProvider')]
     public function testFind(string $search, int $expectedFilesCount): void
     {
         $sut   = new RegexFinder();
@@ -24,7 +26,7 @@ class RegexFinderTest extends TestCase
     }
 
     /** @return array<string, array<string|int>> */
-    public function findStringDataProvider(): iterable
+    public static function findStringDataProvider(): iterable
     {
         yield 'all a.txt' => ['.*a.txt', 2];
         yield 'all a.txt in B' => ['B/a.txt', 1];

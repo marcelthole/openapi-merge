@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Merge;
 
-use cebe\openapi\spec\Components;
-use cebe\openapi\spec\OpenApi;
 use Mthole\OpenApiMerge\Util\Json;
+use openapiphp\openapi\spec\Components;
+use openapiphp\openapi\spec\OpenApi;
 
 use function array_merge;
 use function count;
