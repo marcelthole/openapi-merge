@@ -37,6 +37,25 @@
                                 }
                             }
                         }
+                    },
+                    "201": {
+                        "description": "created",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "firstType": {
+                                            "type": "string"
+                                        },
+                                        "subObject": {
+                                            "$ref": "#\/components\/schemas\/subObject"
+                                        }
+                                    }
+                                }
+                            },
+                            "application\/pdf": {}
+                        }
                     }
                 }
             }

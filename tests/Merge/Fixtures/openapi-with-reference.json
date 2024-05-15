@@ -1,54 +1,72 @@
 {
-  "openapi": "3.0.0",
-  "info": {},
-  "paths": {
-    "/dummy": {},
-    "/reference": {
-      "get": {
-        "responses": {
-          "100": {
-            "$ref": "./responseModel.json#/components/responses/reference-100"
-          },
-          "101": {
-            "$ref": "#/components/responses/reference-101"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/html": {
-                "schema": {
-
+    "openapi": "3.0.0",
+    "info": {},
+    "paths": {
+        "/dummy": {},
+        "/reference": {
+            "get": {
+                "responses": {
+                    "100": {
+                        "$ref": "./responseModel.json#/components/responses/reference-100"
+                    },
+                    "101": {
+                        "$ref": "#/components/responses/reference-101"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/html": {
+                                "schema": {
+                                }
+                            },
+                            "text/csv": {
+                                "schema": {},
+                                "examples": {
+                                    "csv-1": {
+                                        "value": "foo,bar"
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "./referenceModel.json#/components/schemas/referenceModel"
+                                },
+                                "examples": {
+                                    "example-1": {
+                                        "$ref": "./sub/examples/referenceModel.json#/components/examples/referenceModelExample"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "firstType": {
+                                            "type": "string"
+                                        },
+                                        "subObject": {
+                                            "$ref": "./sub/examples/subType.json#/components/schemas/subObject"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/pdf": {}
+                        }
+                    }
                 }
-              },
-              "text/csv": {
-                "schema": {},
-                "examples": {
-                  "csv-1": {
-                    "value": "foo,bar"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "./referenceModel.json#/components/schemas/referenceModel"
-                },
-                "examples": {
-                  "example-1": {
-                    "$ref": "./sub/examples/referenceModel.json#/components/examples/referenceModelExample"
-                  }
-                }
-              }
             }
-          }
         }
-      }
+    },
+    "components": {
+        "responses": {
+            "reference-101": {
+                "description": "OK"
+            }
+        }
     }
-  },
-  "components": {
-    "responses": {
-      "reference-101": {
-        "description": "OK"
-      }
-    }
-  }
 }

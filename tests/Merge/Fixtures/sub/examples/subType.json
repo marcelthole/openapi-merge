@@ -1,0 +1,27 @@
+{
+    "openapi": "3.0.0",
+    "info": {},
+    "paths": {
+    },
+    "components": {
+        "schemas": {
+            "subObject": {
+                "description": "SubObject",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "propertyA",
+                    "propertyB"
+                ],
+                "properties": {
+                    "propertyA": {
+                        "type": "string"
+                    },
+                    "propertyB": {
+                        "type": "number"
+                    }
+                }
+            }
+        }
+    }
+}
