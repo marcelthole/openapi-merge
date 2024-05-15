@@ -40,7 +40,7 @@ class ReferenceNormalizerTest extends TestCase
         );
 
         $foundRefFiles = $specificationResult->getFoundReferenceFiles();
-        self::assertCount(3, $foundRefFiles);
+        self::assertCount(4, $foundRefFiles);
         self::assertSame(
             __DIR__ . '/Fixtures/responseModel.json',
             $foundRefFiles[0]->getAbsoluteFile(),
@@ -52,6 +52,10 @@ class ReferenceNormalizerTest extends TestCase
         self::assertSame(
             __DIR__ . '/Fixtures/sub/examples/referenceModel.json',
             $foundRefFiles[2]->getAbsoluteFile(),
+        );
+        self::assertSame(
+            __DIR__ . '/Fixtures/sub/examples/subType.json',
+            $foundRefFiles[3]->getAbsoluteFile(),
         );
     }
 }

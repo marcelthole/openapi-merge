@@ -8,7 +8,7 @@ use Mthole\OpenApiMerge\FileHandling\File;
 use openapiphp\openapi\spec\MediaType;
 use openapiphp\openapi\spec\OpenApi;
 use openapiphp\openapi\spec\Reference;
-use openapiphp\openapi\spec\Response;
+use openapiphp\openapi\spec\Schema;
 
 use function array_map;
 use function assert;
@@ -28,14 +28,15 @@ class ReferenceNormalizer
             foreach ($path->getOperations() as $operation) {
                 assert($operation->responses !== null);
                 foreach ($operation->responses->getResponses() as $statusCode => $response) {
+                    if ($response === null) {
+                        continue;
+                    }
+
                     if ($response instanceof Reference) {
                         $operation->responses->addResponse(
                             (string) $statusCode,
                             $this->normalizeReference($response, $refFileCollection),
                         );
-                    }
-
-                    if (! ($response instanceof Response)) {
                         continue;
                     }
 
@@ -46,6 +47,24 @@ class ReferenceNormalizer
                                 $responseContent->schema,
                                 $refFileCollection,
                             );
+                        }
+
+                        if ($responseContent->schema instanceof Schema) {
+                            $schemaProperties = $responseContent->schema->properties ?? [];
+                            foreach ($schemaProperties as $propertyName => $property) {
+                                if (! ($property instanceof Reference)) {
+                                    continue;
+                                }
+
+                                $schemaProperties[$propertyName] = $this->normalizeReference(
+                                    $property,
+                                    $refFileCollection,
+                                );
+                            }
+
+                            if ($schemaProperties !== []) {
+                                $responseContent->schema->properties = $schemaProperties;
+                            }
                         }
 
                         $newExamples = [];
