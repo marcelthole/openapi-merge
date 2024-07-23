@@ -61,6 +61,16 @@ class ComponentsMerger implements MergerInterface
             );
         }
 
+        if (
+            count($existingComponents->examples ?? []) > 0
+            || count($newComponents->examples ?? []) > 0
+        ) {
+            $mergedComponents->examples = array_merge(
+                $existingComponents->examples ?? [],
+                $newComponents->examples ?? [],
+            );
+        }
+
         $clonedSpec = new OpenApi(Json::toArray($existingSpec->getSerializableData()));
 
         $clonedSpec->components = $mergedComponents;

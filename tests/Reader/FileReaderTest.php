@@ -93,4 +93,18 @@ class FileReaderTest extends TestCase
         $sut->readFile(new File($dummyYamlFile), true);
         $sut->readFile(new File($dummyYamlFile), false);
     }
+
+    public function testDefaultParam(): void
+    {
+        $dummyJsonFile = __DIR__ . '/Fixtures/valid-openapi.json';
+
+        $readerMock = $this->createMock(OpenApiReaderWrapper::class);
+        $readerMock->expects(self::once())->method('readFromJsonFile')->with(
+            $dummyJsonFile,
+            OpenApi::class,
+            true,
+        )->willReturn(new OpenApi([]));
+        $sut = new FileReader($readerMock);
+        $sut->readFile(new File($dummyJsonFile));
+    }
 }

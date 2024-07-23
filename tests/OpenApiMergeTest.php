@@ -144,4 +144,34 @@ class OpenApiMergeTest extends TestCase
             ],
         );
     }
+
+    public function testMergeWillNotUseSameFilesAgain(): void
+    {
+        $referenceNormalizer = $this->createMock(ReferenceNormalizer::class);
+        $referenceNormalizer->expects(self::exactly(2))
+            ->method('normalizeInlineReferences')
+            ->willReturn(
+                new ReferenceResolverResult(
+                    new OpenApi([]),
+                    [
+                        new File(__DIR__ . '/Fixtures/errors.yml'),
+                        new File(__DIR__ . '/Fixtures/empty.yml'),
+                    ],
+                ),
+            );
+
+        $sut = new OpenApiMerge(
+            new FileReader(),
+            [],
+            $referenceNormalizer,
+        );
+
+        $sut->mergeFiles(
+            new File(__DIR__ . '/Fixtures/base.yml'),
+            [
+                new File(__DIR__ . '/Fixtures/errors.yml'),
+            ],
+            false,
+        );
+    }
 }

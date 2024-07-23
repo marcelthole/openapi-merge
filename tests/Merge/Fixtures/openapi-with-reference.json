@@ -5,6 +5,34 @@
         "/dummy": {},
         "/reference": {
             "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/schemas/dummyRef"
+                    },
+                    {
+                        "name": "requestParam",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "$ref": "requestParam.json#/components/schemas/requestParam"
+                        }
+                    },
+                    {
+                        "name": "requestParamNullable",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "$ref": "requestParamNullable.json#/components/schemas/requestParamNullable"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "100": {
                         "$ref": "./responseModel.json#/components/responses/reference-100"
@@ -56,6 +84,36 @@
                                 }
                             },
                             "application/pdf": {}
+                        }
+                    }
+                }
+            },
+            "post": {
+                "responses": {
+
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "dummy": {
+                                        "$ref": "./requestBody.json#/components/schemas/requestBody"
+                                    },
+                                    "list": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "./requestBodyListItem.json#/components/schemas/requestBodyListItem"
+                                        }
+                                    },
+                                    "propertyWithAdditionalProperties": {
+                                        "type": "object",
+                                        "additionalProperties": {
+                                            "$ref": "additionalProperties.json#/components/schemas/additionalProperties"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

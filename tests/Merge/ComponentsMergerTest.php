@@ -246,5 +246,52 @@ class ComponentsMergerTest extends TestCase
                 ],
             ]),
         ];
+
+        yield 'examples first' => [
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                ],
+            ]),
+            null,
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                ],
+            ]),
+        ];
+
+        yield 'examples second' => [
+            null,
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                ],
+            ]),
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                ],
+            ]),
+        ];
+
+        yield 'examples both' => [
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                ],
+            ]),
+            new Components([
+                'examples' => [
+                    'example-2' => [],
+                ],
+            ]),
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                    'example-2' => [],
+                ],
+            ]),
+        ];
     }
 }

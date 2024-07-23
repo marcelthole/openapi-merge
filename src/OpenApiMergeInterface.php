@@ -9,7 +9,7 @@ use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 
 interface OpenApiMergeInterface
 {
-    /** @param list<File> $additionalFiles */
+    /** @param array<array-key, File> $additionalFiles */
     public function mergeFiles(
         File $baseFile,
         array $additionalFiles,
