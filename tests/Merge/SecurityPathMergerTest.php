@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Merge;
 
 use Mthole\OpenApiMerge\Merge\SecurityPathMerger;
+use Mthole\OpenApiMerge\Util\Json;
 use openapiphp\openapi\spec\OpenApi;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -12,7 +13,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(SecurityPathMerger::class)]
-#[UsesClass('\Mthole\OpenApiMerge\Util\Json')]
+#[UsesClass(Json::class)]
 class SecurityPathMergerTest extends TestCase
 {
     #[DataProvider('mergeDataProvider')]

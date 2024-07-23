@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(SpecificationFile::class)]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\File')]
+#[UsesClass(File::class)]
 class SpecificationFileTest extends TestCase
 {
     public function testGetter(): void

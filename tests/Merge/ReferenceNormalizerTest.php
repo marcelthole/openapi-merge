@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Tests\Merge;
 
+use Mthole\OpenApiMerge\FileHandling\Exception\IOException;
 use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
 use Mthole\OpenApiMerge\Merge\ReferenceResolverResult;
 use Mthole\OpenApiMerge\Reader\FileReader;
+use Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper;
 use openapiphp\openapi\Writer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -18,11 +21,11 @@ use function count;
 
 #[CoversClass(ReferenceNormalizer::class)]
 #[CoversClass(ReferenceResolverResult::class)]
-#[UsesClass('\Mthole\OpenApiMerge\Reader\FileReader')]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\File')]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\SpecificationFile')]
-#[UsesClass('\Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper')]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\Exception\IOException')]
+#[UsesClass(FileReader::class)]
+#[UsesClass(File::class)]
+#[UsesClass(SpecificationFile::class)]
+#[UsesClass(OpenApiReaderWrapper::class)]
+#[UsesClass(IOException::class)]
 class ReferenceNormalizerTest extends TestCase
 {
     public function testReadFileWithResolvedReference(): void

@@ -16,7 +16,7 @@ use function preg_quote;
 use function str_replace;
 
 #[CoversClass(File::class)]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\Exception\IOException')]
+#[UsesClass(IOException::class)]
 class FileTest extends TestCase
 {
     #[DataProvider('fileExtensionProvider')]

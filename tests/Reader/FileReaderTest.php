@@ -7,6 +7,7 @@ namespace Mthole\OpenApiMerge\Tests\Reader;
 use Generator;
 use InvalidArgumentException;
 use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException;
 use Mthole\OpenApiMerge\Reader\FileReader;
 use Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper;
@@ -17,10 +18,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(FileReader::class)]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\File')]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\SpecificationFile')]
-#[UsesClass('\Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException')]
-#[UsesClass('\Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper')]
+#[UsesClass(File::class)]
+#[UsesClass(SpecificationFile::class)]
+#[UsesClass(InvalidFileTypeException::class)]
+#[UsesClass(OpenApiReaderWrapper::class)]
 class FileReaderTest extends TestCase
 {
     #[DataProvider('validFilesDataProvider')]

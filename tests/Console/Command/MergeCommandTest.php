@@ -27,8 +27,8 @@ use function unlink;
 use const PHP_EOL;
 
 #[CoversClass(MergeCommand::class)]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\File')]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\SpecificationFile')]
+#[UsesClass(File::class)]
+#[UsesClass(SpecificationFile::class)]
 class MergeCommandTest extends TestCase
 {
     #[DataProvider('invalidArgumentsDataProvider')]
