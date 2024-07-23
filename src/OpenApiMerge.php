@@ -10,7 +10,9 @@ use Mthole\OpenApiMerge\Merge\MergerInterface;
 use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
 use Mthole\OpenApiMerge\Reader\FileReader;
 
-use function array_push;
+use function array_flip;
+use function array_key_exists;
+use function array_map;
 use function count;
 
 class OpenApiMerge implements OpenApiMergeInterface
@@ -23,10 +25,17 @@ class OpenApiMerge implements OpenApiMergeInterface
     ) {
     }
 
-    /** @param list<File> $additionalFiles */
+    /** @param array<array-key, File> $additionalFiles */
     public function mergeFiles(File $baseFile, array $additionalFiles, bool $resolveReference = true): SpecificationFile
     {
         $mergedOpenApiDefinition = $this->openApiReader->readFile($baseFile, $resolveReference)->getOpenApi();
+
+        $additionalFileHashMap = array_flip(
+            array_map(
+                static fn (File $file): string => $file->getAbsoluteFile(),
+                $additionalFiles,
+            ),
+        );
 
         // use "for" instead of "foreach" to iterate over new added files
         for ($i = 0; $i < count($additionalFiles); $i++) {
@@ -37,7 +46,16 @@ class OpenApiMerge implements OpenApiMergeInterface
                     $additionalFile,
                     $additionalDefinition,
                 );
-                array_push($additionalFiles, ...$resolvedReferenceResult->getFoundReferenceFiles());
+
+                foreach ($resolvedReferenceResult->getFoundReferenceFiles() as $foundReferenceFile) {
+                    if (array_key_exists($foundReferenceFile->getAbsoluteFile(), $additionalFileHashMap)) {
+                        continue;
+                    }
+
+                    $additionalFiles[]                                             = $foundReferenceFile;
+                    $additionalFileHashMap[$foundReferenceFile->getAbsoluteFile()] = true;
+                }
+
                 $additionalDefinition = $resolvedReferenceResult->getNormalizedDefinition();
             }
 

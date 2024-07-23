@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mthole\OpenApiMerge\Tests\Merge;
 
 use Mthole\OpenApiMerge\Merge\PathMerger;
+use Mthole\OpenApiMerge\Util\Json;
 use openapiphp\openapi\spec\OpenApi;
 use openapiphp\openapi\spec\PathItem;
 use openapiphp\openapi\spec\Paths;
@@ -16,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use function array_keys;
 
 #[CoversClass(PathMerger::class)]
-#[UsesClass('\Mthole\OpenApiMerge\Util\Json')]
+#[UsesClass(Json::class)]
 class PathMergerTest extends TestCase
 {
     public function testMergeDidNotChangeOriginals(): void

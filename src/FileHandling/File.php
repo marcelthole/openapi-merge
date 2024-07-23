@@ -38,6 +38,17 @@ final class File
         return $fullFilename;
     }
 
+    public function exists(): bool
+    {
+        try {
+            $this->getAbsoluteFile();
+
+            return true;
+        } catch (IOException) {
+            return false;
+        }
+    }
+
     public function getAbsolutePath(): string
     {
         return dirname($this->getAbsoluteFile());

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Merge;
 
 use Mthole\OpenApiMerge\Merge\ComponentsMerger;
+use Mthole\OpenApiMerge\Util\Json;
 use openapiphp\openapi\spec\Components;
 use openapiphp\openapi\spec\OpenApi;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -13,7 +14,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ComponentsMerger::class)]
-#[UsesClass('\Mthole\OpenApiMerge\Util\Json')]
+#[UsesClass(Json::class)]
 class ComponentsMergerTest extends TestCase
 {
     #[DataProvider('mergeDataProvider')]
@@ -243,6 +244,53 @@ class ComponentsMergerTest extends TestCase
                 'responses' => [
                     'ProblemResponse' => [],
                     'AnotherProblemResponse' => [],
+                ],
+            ]),
+        ];
+
+        yield 'examples first' => [
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                ],
+            ]),
+            null,
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                ],
+            ]),
+        ];
+
+        yield 'examples second' => [
+            null,
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                ],
+            ]),
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                ],
+            ]),
+        ];
+
+        yield 'examples both' => [
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                ],
+            ]),
+            new Components([
+                'examples' => [
+                    'example-2' => [],
+                ],
+            ]),
+            new Components([
+                'examples' => [
+                    'example-1' => [],
+                    'example-2' => [],
                 ],
             ]),
         ];

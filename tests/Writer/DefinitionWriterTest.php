@@ -16,9 +16,9 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(DefinitionWriter::class)]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\File')]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\SpecificationFile')]
-#[UsesClass('\Mthole\OpenApiMerge\Writer\Exception\InvalidFileTypeException')]
+#[UsesClass(File::class)]
+#[UsesClass(SpecificationFile::class)]
+#[UsesClass(InvalidFileTypeException::class)]
 class DefinitionWriterTest extends TestCase
 {
     #[DataProvider('validSpecificationFiles')]

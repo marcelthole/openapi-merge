@@ -7,6 +7,7 @@ namespace Mthole\OpenApiMerge\Tests\Reader;
 use Generator;
 use InvalidArgumentException;
 use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException;
 use Mthole\OpenApiMerge\Reader\FileReader;
 use Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper;
@@ -17,10 +18,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(FileReader::class)]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\File')]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\SpecificationFile')]
-#[UsesClass('\Mthole\OpenApiMerge\Reader\Exception\InvalidFileTypeException')]
-#[UsesClass('\Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper')]
+#[UsesClass(File::class)]
+#[UsesClass(SpecificationFile::class)]
+#[UsesClass(InvalidFileTypeException::class)]
+#[UsesClass(OpenApiReaderWrapper::class)]
 class FileReaderTest extends TestCase
 {
     #[DataProvider('validFilesDataProvider')]
@@ -92,5 +93,19 @@ class FileReaderTest extends TestCase
         $sut->readFile(new File($dummyYamlFile));
         $sut->readFile(new File($dummyYamlFile), true);
         $sut->readFile(new File($dummyYamlFile), false);
+    }
+
+    public function testDefaultParam(): void
+    {
+        $dummyJsonFile = __DIR__ . '/Fixtures/valid-openapi.json';
+
+        $readerMock = $this->createMock(OpenApiReaderWrapper::class);
+        $readerMock->expects(self::once())->method('readFromJsonFile')->with(
+            $dummyJsonFile,
+            OpenApi::class,
+            true,
+        )->willReturn(new OpenApi([]));
+        $sut = new FileReader($readerMock);
+        $sut->readFile(new File($dummyJsonFile));
     }
 }

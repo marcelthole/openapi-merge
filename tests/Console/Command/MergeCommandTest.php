@@ -27,8 +27,8 @@ use function unlink;
 use const PHP_EOL;
 
 #[CoversClass(MergeCommand::class)]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\File')]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\SpecificationFile')]
+#[UsesClass(File::class)]
+#[UsesClass(SpecificationFile::class)]
 class MergeCommandTest extends TestCase
 {
     #[DataProvider('invalidArgumentsDataProvider')]
@@ -141,7 +141,7 @@ class MergeCommandTest extends TestCase
             }
         };
         $openApiMergeInterface = new class implements OpenApiMergeInterface {
-            /** @param list<File> $additionalFiles */
+            /** @param array<array-key, File> $additionalFiles */
             public function mergeFiles(
                 File $baseFile,
                 array $additionalFiles,

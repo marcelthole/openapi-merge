@@ -16,7 +16,7 @@ use function preg_quote;
 use function str_replace;
 
 #[CoversClass(File::class)]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\Exception\IOException')]
+#[UsesClass(IOException::class)]
 class FileTest extends TestCase
 {
     #[DataProvider('fileExtensionProvider')]
@@ -52,6 +52,7 @@ class FileTest extends TestCase
         $invalidFilename = __FILE__ . '-nonexisting.dat';
         $sut             = new File($invalidFilename);
 
+        self::assertFalse($sut->exists());
         $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches('~"' . preg_quote($invalidFilename, '~') . '"~');
 
@@ -81,6 +82,7 @@ class FileTest extends TestCase
     public function testGetAbsolutePath(): void
     {
         $sut = new File(__FILE__);
+        self::assertTrue($sut->exists());
         self::assertSame(__DIR__, $sut->getAbsolutePath());
     }
 }

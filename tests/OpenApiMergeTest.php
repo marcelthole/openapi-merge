@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Mthole\OpenApiMerge\Tests;
 
 use Mthole\OpenApiMerge\FileHandling\File;
+use Mthole\OpenApiMerge\FileHandling\SpecificationFile;
 use Mthole\OpenApiMerge\Merge\ComponentsMerger;
 use Mthole\OpenApiMerge\Merge\PathMerger;
 use Mthole\OpenApiMerge\Merge\ReferenceNormalizer;
 use Mthole\OpenApiMerge\Merge\ReferenceResolverResult;
 use Mthole\OpenApiMerge\OpenApiMerge;
 use Mthole\OpenApiMerge\Reader\FileReader;
+use Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper;
+use Mthole\OpenApiMerge\Util\Json;
 use openapiphp\openapi\spec\Components;
 use openapiphp\openapi\spec\OpenApi;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -21,14 +24,14 @@ use function array_keys;
 use function assert;
 
 #[CoversClass(OpenApiMerge::class)]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\File')]
-#[UsesClass('\Mthole\OpenApiMerge\FileHandling\SpecificationFile')]
-#[UsesClass('\Mthole\OpenApiMerge\Reader\FileReader')]
-#[UsesClass('\Mthole\OpenApiMerge\Merge\PathMerger')]
-#[UsesClass('\Mthole\OpenApiMerge\Reader\OpenApiReaderWrapper')]
-#[UsesClass('\Mthole\OpenApiMerge\Merge\ReferenceResolverResult')]
-#[UsesClass('\Mthole\OpenApiMerge\Merge\ComponentsMerger')]
-#[UsesClass('\Mthole\OpenApiMerge\Util\Json')]
+#[UsesClass(File::class)]
+#[UsesClass(SpecificationFile::class)]
+#[UsesClass(FileReader::class)]
+#[UsesClass(PathMerger::class)]
+#[UsesClass(OpenApiReaderWrapper::class)]
+#[UsesClass(ReferenceResolverResult::class)]
+#[UsesClass(ComponentsMerger::class)]
+#[UsesClass(Json::class)]
 class OpenApiMergeTest extends TestCase
 {
     public function testMergePaths(): void
@@ -142,6 +145,36 @@ class OpenApiMergeTest extends TestCase
             [
                 new File(__DIR__ . '/Fixtures/errors.yml'),
             ],
+        );
+    }
+
+    public function testMergeWillNotUseSameFilesAgain(): void
+    {
+        $referenceNormalizer = $this->createMock(ReferenceNormalizer::class);
+        $referenceNormalizer->expects(self::exactly(2))
+            ->method('normalizeInlineReferences')
+            ->willReturn(
+                new ReferenceResolverResult(
+                    new OpenApi([]),
+                    [
+                        new File(__DIR__ . '/Fixtures/errors.yml'),
+                        new File(__DIR__ . '/Fixtures/empty.yml'),
+                    ],
+                ),
+            );
+
+        $sut = new OpenApiMerge(
+            new FileReader(),
+            [],
+            $referenceNormalizer,
+        );
+
+        $sut->mergeFiles(
+            new File(__DIR__ . '/Fixtures/base.yml'),
+            [
+                new File(__DIR__ . '/Fixtures/errors.yml'),
+            ],
+            false,
         );
     }
 }
