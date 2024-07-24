@@ -3,6 +3,28 @@
     "info": {},
     "paths": {
         "\/dummy": {},
+        "\/path\/{id}\/{id2}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                {
+                    "$ref": "#\/components\/schemas\/pathOutsideOperation"
+                }
+            ]
+        },
         "\/reference": {
             "get": {
                 "parameters": [

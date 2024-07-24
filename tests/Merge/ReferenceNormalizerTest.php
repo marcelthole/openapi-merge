@@ -48,6 +48,7 @@ class ReferenceNormalizerTest extends TestCase
 
         $foundRefFiles    = $specificationResult->getFoundReferenceFiles();
         $expectedRefFiles = [
+            __DIR__ . '/Fixtures/pathOutsideOperation.json',
             __DIR__ . '/Fixtures/requestParam.json',
             __DIR__ . '/Fixtures/requestParamNullable.json',
             __DIR__ . '/Fixtures/responseModel.json',
