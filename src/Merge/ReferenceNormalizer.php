@@ -30,6 +30,17 @@ class ReferenceNormalizer
     ): ReferenceResolverResult {
         $refFileCollection = [];
         foreach ($openApiDefinition->paths as $path) {
+            foreach ($path->parameters as $parameterIndex => $parameter) {
+                $allParameters = $path->parameters;
+                if ($parameter instanceof Reference) {
+                    $allParameters[$parameterIndex] = $this->normalizeReference($parameter, $refFileCollection);
+                } else {
+                    $allParameters[$parameterIndex] = $this->normalizeParameters($parameter, $refFileCollection);
+                }
+
+                $path->parameters = $allParameters;
+            }
+
             foreach ($path->getOperations() as $operation) {
                 foreach (($operation->parameters ?? []) as $parameterIndex => $parameter) {
                     if (! $parameter instanceof Parameter) {
@@ -37,20 +48,8 @@ class ReferenceNormalizer
                     }
 
                     /** @var array<int, Parameter> $allParameters */
-                    $allParameters = $operation->parameters;
-                    if ($parameter->schema instanceof Reference) {
-                        $allParameters[$parameterIndex]->schema = $this->normalizeReference(
-                            $parameter->schema,
-                            $refFileCollection,
-                        );
-                    }
-
-                    if ($parameter->schema instanceof Schema) {
-                        $allParameters[$parameterIndex]->schema = $this->normalizeProperties(
-                            $parameter->schema,
-                            $refFileCollection,
-                        );
-                    }
+                    $allParameters                  = $operation->parameters;
+                    $allParameters[$parameterIndex] = $this->normalizeParameters($parameter, $refFileCollection);
 
                     $operation->parameters = $allParameters;
                 }
@@ -264,5 +263,25 @@ class ReferenceNormalizer
         }
 
         return $property;
+    }
+
+    /** @param array<string, string> $refFileCollection */
+    public function normalizeParameters(Parameter $parameter, array &$refFileCollection): Parameter
+    {
+        if ($parameter->schema instanceof Reference) {
+            $parameter->schema = $this->normalizeReference(
+                $parameter->schema,
+                $refFileCollection,
+            );
+        }
+
+        if ($parameter->schema instanceof Schema) {
+            $parameter->schema = $this->normalizeProperties(
+                $parameter->schema,
+                $refFileCollection,
+            );
+        }
+
+        return $parameter;
     }
 }
