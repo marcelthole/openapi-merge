@@ -44,9 +44,25 @@
                         "in": "query",
                         "required": false,
                         "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#\/components\/schemas\/requestParamNullableAllOf"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "oneOf": [
+                                {
+                                    "$ref": "#\/components\/schemas\/requestParamNullableOneOf"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
                             "anyOf": [
                                 {
-                                    "$ref": "#\/components\/schemas\/requestParamNullable"
+                                    "$ref": "#\/components\/schemas\/requestParamNullableAnyOf"
                                 },
                                 {
                                     "type": "null"
