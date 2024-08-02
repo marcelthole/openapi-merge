@@ -46,7 +46,23 @@
                         "schema": {
                             "anyOf": [
                                 {
-                                    "$ref": "requestParamNullable.json#/components/schemas/requestParamNullable"
+                                    "$ref": "requestParamNullable.json#/components/schemas/requestParamNullableAnyOf"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "allOf": [
+                                {
+                                    "$ref": "requestParamNullable.json#/components/schemas/requestParamNullableAllOf"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "oneOf": [
+                                {
+                                    "$ref": "requestParamNullable.json#/components/schemas/requestParamNullableOneOf"
                                 },
                                 {
                                     "type": "null"

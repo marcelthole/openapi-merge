@@ -262,6 +262,18 @@ class ReferenceNormalizer
             $property->anyOf = $anyOfs;
         }
 
+        foreach (($property->allOf ?? []) as $index => $allOf) {
+            $allOfs          = $property->allOf;
+            $allOfs[$index]  = $this->normalizeProperty($allOf, $refFileCollection);
+            $property->allOf = $allOfs;
+        }
+
+        foreach (($property->oneOf ?? []) as $index => $oneOf) {
+            $oneOfs          = $property->oneOf;
+            $oneOfs[$index]  = $this->normalizeProperty($oneOf, $refFileCollection);
+            $property->oneOf = $oneOfs;
+        }
+
         return $property;
     }
 
