@@ -11,7 +11,7 @@
         "text": "build/infection.log",
         "github": false,
         "stryker": {
-            "badge": "main"
+            "report": "main"
         }
     },
     "mutators": {

@@ -112,7 +112,7 @@ jobs:
 
       - name: "Run CI with coverage"
         env:
-          INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
         run: "composer run-script ci-coverage"
 
       - name: Codecov
@@ -121,10 +121,10 @@ jobs:
           directory: ./build/coverage/
 
       - name: Run Infection for added files
-        if: ${{ github.base_ref != '' }}
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
           git fetch --depth=1 origin $GITHUB_BASE_REF
-          composer run-script infection -- --git-diff-filter=AM --git-diff-base=origin/$GITHUB_BASE_REF --logger-github --ignore-msi-with-no-mutations --only-covered
+          composer run-script infection -- --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered
 
       - name: Run PHPStan
         run: composer run-script phpstan -- --error-format=github
