@@ -161,7 +161,28 @@
     "components": {
         "responses": {
             "reference-101": {
-                "description": "OK"
+                "description": "OK",
+                "content": {
+                    "text/json": {
+                        "schema": {
+                            "properties": {
+                                "dummyJSON": {
+                                    "$ref": "./requestBody.json#/components/schemas/requestBody"
+                                }
+                            }
+                        }
+                    },
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+
+                                "dummyApplicationJSON": {
+                                    "$ref": "./requestBody.json#/components/schemas/requestBody"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
