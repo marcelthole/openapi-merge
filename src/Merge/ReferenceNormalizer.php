@@ -148,17 +148,20 @@ class ReferenceNormalizer
                 }
 
                 /** @var array<string, Response> $allSchemas */
-                $allSchemas = $openApiDefinition->components->responses;
+                $allSchemas  = $openApiDefinition->components->responses;
+                $allContents = $allSchemas[$key]->content;
                 foreach ($response->content as $contentKey => $content) {
                     if (! $content->schema instanceof Schema) {
                         continue;
                     }
 
-                    $allSchemas[$key]->content[$contentKey]->schema = $this->normalizeProperties(
+                    $allContents[$contentKey]->schema = $this->normalizeProperties(
                         $content->schema,
                         $refFileCollection,
                     );
                 }
+
+                $allSchemas[$key]->content = $allContents;
 
                 $openApiDefinition->components->responses = $allSchemas;
             }

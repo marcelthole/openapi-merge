@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd" bootstrap="./tests/bootstrap.php" colors="true" defaultTimeLimit="5" executionOrder="random" enforceTimeLimit="true" cacheDirectory=".phpunit.cache" requireCoverageMetadata="true" beStrictAboutCoverageMetadata="true">
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    bootstrap="./tests/bootstrap.php"
+    colors="true"
+    defaultTimeLimit="5"
+    executionOrder="random"
+    enforceTimeLimit="true"
+    cacheDirectory=".phpunit.cache"
+    requireCoverageMetadata="true"
+    beStrictAboutCoverageMetadata="true"
+    failOnNotice="true"
+    displayDetailsOnTestsThatTriggerNotices="true"
+    failOnDeprecation="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
+    failOnWarning="true"
+    displayDetailsOnTestsThatTriggerWarnings="true"
+    beStrictAboutOutputDuringTests="true"
+    displayDetailsOnTestsThatTriggerErrors="true"
+>
   <php>
     <ini name="assert.exception" value="1"/>
   </php>
