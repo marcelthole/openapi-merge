@@ -28,7 +28,7 @@ jobs:
             composer-deps: latest
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v4"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -44,7 +44,7 @@ jobs:
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: "Cache dependencies"
-        uses: "actions/cache@v2"
+        uses: "actions/cache@v4"
         with:
           path: "~/.composer/cache"
           key: "php-${{ matrix.php-version }}-composer-${{ matrix.composer-deps }}-${{ hashFiles('**/composer.json') }}"
@@ -80,7 +80,7 @@ jobs:
           - "8.3"
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v4"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -97,7 +97,7 @@ jobs:
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: "Cache dependencies"
-        uses: "actions/cache@v2"
+        uses: "actions/cache@v4"
         with:
           path: "~/.composer/cache"
           key: "php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}"
@@ -136,7 +136,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Test Dockerfile
         uses: ./.github/actions/validate-dockerfile
