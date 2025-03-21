@@ -13,6 +13,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+use function count;
+use function get_object_vars;
+
 #[CoversClass(ComponentsMerger::class)]
 #[UsesClass(Json::class)]
 class ComponentsMergerTest extends TestCase
@@ -28,9 +31,12 @@ class ComponentsMergerTest extends TestCase
         $newSpec      = new OpenApi(['components' => $newComponents]);
         $expectedSpec = new OpenApi(['components' => $expectedComponents]);
 
-        $stateBefore = $existingSpec->getSerializableData();
-        self::assertEquals($expectedSpec, $sut->merge($existingSpec, $newSpec));
-        self::assertEquals($stateBefore, $existingSpec->getSerializableData());
+        if ($newComponents !== null && count(get_object_vars($newComponents->getSerializableData())) > 0) {
+            self::assertNotEquals($expectedSpec, $existingSpec);
+        }
+
+        $sut->merge($existingSpec, $newSpec);
+        self::assertEquals($expectedSpec, $existingSpec);
     }
 
     /** @return iterable<string, list<Components|null>> */

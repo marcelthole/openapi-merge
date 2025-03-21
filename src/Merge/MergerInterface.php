@@ -9,7 +9,7 @@ use openapiphp\openapi\spec\OpenApi;
 interface MergerInterface
 {
     public function merge(
-        OpenApi $existingSpec,
+        OpenApi $mergedSpec,
         OpenApi $newSpec,
-    ): OpenApi;
+    ): void;
 }

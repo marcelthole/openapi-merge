@@ -24,13 +24,13 @@ class SecurityPathMergerTest extends TestCase
     ): void {
         $sut = new SecurityPathMerger();
 
-        $result = $sut->merge(
+        $sut->merge(
             $existingSpec,
             $newSpec,
         );
 
         $stateBefore = $existingSpec->getSerializableData();
-        self::assertEquals($expectedSpec, $result);
+        self::assertEquals($expectedSpec, $existingSpec);
         self::assertEquals($stateBefore, $existingSpec->getSerializableData());
     }
 
