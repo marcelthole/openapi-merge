@@ -60,7 +60,7 @@ class OpenApiMerge implements OpenApiMergeInterface
             }
 
             foreach ($this->merger as $merger) {
-                $mergedOpenApiDefinition = $merger->merge(
+                $merger->merge(
                     $mergedOpenApiDefinition,
                     $additionalDefinition,
                 );

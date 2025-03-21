@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Merge;
 
-use Mthole\OpenApiMerge\Util\Json;
 use openapiphp\openapi\spec\OpenApi;
 
 use function count;
@@ -12,14 +11,12 @@ use function count;
 class SecurityPathMerger implements MergerInterface
 {
     public function merge(
-        OpenApi $existingSpec,
+        OpenApi $mergedSpec,
         OpenApi $newSpec,
-    ): OpenApi {
+    ): void {
         if (count($newSpec->security ?? []) === 0) {
-            return $existingSpec;
+            return;
         }
-
-        $clonedSpec = new OpenApi(Json::toArray($existingSpec->getSerializableData()));
 
         foreach ($newSpec->paths->getPaths() as $pathName => $path) {
             foreach ($path->getOperations() as $method => $operation) {
@@ -27,7 +24,7 @@ class SecurityPathMerger implements MergerInterface
                     continue;
                 }
 
-                $path = $clonedSpec->paths->getPath($pathName);
+                $path = $mergedSpec->paths->getPath($pathName);
                 if (! isset($path->{$method}) || $path->{$method} === null) {
                     continue;
                 }
@@ -35,7 +32,5 @@ class SecurityPathMerger implements MergerInterface
                 $path->{$method}->security = $newSpec->security;
             }
         }
-
-        return $clonedSpec;
     }
 }

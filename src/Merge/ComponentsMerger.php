@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Mthole\OpenApiMerge\Merge;
 
-use Mthole\OpenApiMerge\Util\Json;
 use openapiphp\openapi\spec\Components;
 use openapiphp\openapi\spec\OpenApi;
 
@@ -14,11 +13,11 @@ use function count;
 class ComponentsMerger implements MergerInterface
 {
     public function merge(
-        OpenApi $existingSpec,
+        OpenApi $mergedSpec,
         OpenApi $newSpec,
-    ): OpenApi {
+    ): void {
         $mergedComponents   = new Components([]);
-        $existingComponents = $existingSpec->components;
+        $existingComponents = $mergedSpec->components;
         $newComponents      = $newSpec->components;
 
         if (
@@ -71,10 +70,6 @@ class ComponentsMerger implements MergerInterface
             );
         }
 
-        $clonedSpec = new OpenApi(Json::toArray($existingSpec->getSerializableData()));
-
-        $clonedSpec->components = $mergedComponents;
-
-        return $clonedSpec;
+        $mergedSpec->components = $mergedComponents;
     }
 }

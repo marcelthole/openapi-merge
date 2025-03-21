@@ -30,11 +30,11 @@ class PathMergerTest extends TestCase
         $existingSpec = new OpenApi(['paths' => $existingPath]);
         $newSpec      = new OpenApi(['paths' => $newPaths]);
 
-        $sut     = new PathMerger();
-        $newSpec = $sut->merge($existingSpec, $newSpec);
+        $sut = new PathMerger();
+        $sut->merge($existingSpec, $newSpec);
         self::assertCount(1, $existingPath);
         self::assertCount(1, $newPaths);
-        self::assertCount(2, $newSpec->paths);
+        self::assertCount(2, $existingSpec->paths);
     }
 
     /**
@@ -50,16 +50,17 @@ class PathMergerTest extends TestCase
         array $expectedRoutes,
         array $expectedMethods,
     ): void {
-        $sut         = new PathMerger();
-        $mergedPaths = $sut->merge(
-            new OpenApi(['paths' => $existingPaths]),
+        $sut          = new PathMerger();
+        $existingSpec = new OpenApi(['paths' => $existingPaths]);
+        $sut->merge(
+            $existingSpec,
             new OpenApi(['paths' => $newPaths]),
         );
 
-        self::assertSame($expectedRoutes, array_keys($mergedPaths->paths->getPaths()));
+        self::assertSame($expectedRoutes, array_keys($existingSpec->paths->getPaths()));
 
         foreach ($expectedMethods as $routeName => $expectedRouteMethods) {
-            $pathItem = $mergedPaths->paths->getPath($routeName);
+            $pathItem = $existingSpec->paths->getPath($routeName);
             self::assertNotNull($pathItem);
             self::assertSame(
                 $expectedRouteMethods,
