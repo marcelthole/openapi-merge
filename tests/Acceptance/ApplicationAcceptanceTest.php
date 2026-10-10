@@ -33,7 +33,9 @@ class ApplicationAcceptanceTest extends TestCase
         self::assertNotFalse($output);
 
         $yamlVersion = InstalledVersions::getVersion('symfony/yaml') ?? '1.0';
-        if (version_compare($yamlVersion, '6.1.0', '<')) {
+        if (version_compare($yamlVersion, '8.0.0', '>=')) {
+            self::assertStringEqualsFile(__DIR__ . '/Fixtures/expected_yaml80.yml', $output);
+        } elseif (version_compare($yamlVersion, '6.1.0', '<')) {
             self::assertStringEqualsFile(__DIR__ . '/Fixtures/expected_yaml610.yml', $output);
         } else {
             self::assertStringEqualsFile(__DIR__ . '/Fixtures/expected.yml', $output);

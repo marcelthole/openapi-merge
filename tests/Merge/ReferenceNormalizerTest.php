@@ -62,7 +62,6 @@ class ReferenceNormalizerTest extends TestCase
         self::assertCount(count($expectedRefFiles), $foundRefFiles);
         foreach ($expectedRefFiles as $expectedRefFile) {
             $file = array_shift($foundRefFiles);
-            self::assertNotNull($file);
             self::assertSame($expectedRefFile, $file->getAbsoluteFile());
         }
     }

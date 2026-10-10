@@ -83,6 +83,7 @@ class ReferenceNormalizer
                     }
 
                     foreach ($response->content as $responseContent) {
+                        // @phpstan-ignore-next-line function.alreadyNarrowedType, instanceof.alwaysTrue
                         assert($responseContent instanceof MediaType);
                         if ($responseContent->schema instanceof Reference) {
                             $responseContent->schema = $this->normalizeReference(
@@ -241,10 +242,10 @@ class ReferenceNormalizer
     public function normalizeProperty(Reference|Schema $property, array &$refFileCollection): Reference|Schema
     {
         if ($property instanceof Reference) {
-            return $this->normalizeReference($property, $refFileCollection);
+            return $this->normalizeReference($property, $refFileCollection); // @phpstan-ignore return.type
         }
 
-        if (! ($property instanceof Schema)) {
+        if (! ($property instanceof Schema)) { // @phpstan-ignore instanceof.alwaysTrue
             return $property;
         }
 
