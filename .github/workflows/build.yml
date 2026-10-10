@@ -128,7 +128,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           git fetch --depth=1 origin $GITHUB_BASE_REF
-          composer run-script infection -- --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered
+          composer run-script infection -- --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations
 
       - name: Run PHPStan
         run: composer run-script phpstan -- --error-format=github
