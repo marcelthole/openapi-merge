@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\TrimmedBufferOutput;
 
 use function array_merge;
+use function realpath;
 use function sprintf;
 use function sys_get_temp_dir;
 use function unlink;
@@ -160,7 +161,9 @@ class MergeCommandTest extends TestCase
             $this->createStub(Finder::class),
         );
 
-        $tmpFile = sys_get_temp_dir() . '/merge-result.json';
+        $tmpDir = realpath(sys_get_temp_dir());
+        self::assertNotFalse($tmpDir);
+        $tmpFile = $tmpDir . '/merge-result.json';
         try {
             $input  = new ArrayInput([
                 'basefile'        => 'basefile.yml',
@@ -180,7 +183,7 @@ class MergeCommandTest extends TestCase
         }
     }
 
-    /** @return array<string, list<mixed>> */
+    /** @return iterable<string, list<mixed>> */
     public static function resolveReferenceArgumentDataProvider(): iterable
     {
         yield 'default-param' => [null, true];

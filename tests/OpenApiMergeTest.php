@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function array_keys;
-use function assert;
 
 #[CoversClass(OpenApiMerge::class)]
 #[UsesClass(File::class)]
@@ -53,11 +52,9 @@ class OpenApiMergeTest extends TestCase
                 new File(__DIR__ . '/Fixtures/errors.yml'),
             ],
         )->getOpenApi();
-        assert($result instanceof OpenApi);
 
         self::assertCount(1, $result->paths->getPaths());
         self::assertNotNull($result->components);
-        self::assertIsArray($result->components->schemas);
     }
 
     public function testMergeFileWithoutComponents(): void
@@ -75,7 +72,6 @@ class OpenApiMergeTest extends TestCase
             new File(__DIR__ . '/Fixtures/base-without-components.yml'),
             [],
         )->getOpenApi();
-        assert($result instanceof OpenApi);
 
         self::assertNull($result->components);
     }

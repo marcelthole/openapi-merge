@@ -27,7 +27,7 @@ use Symfony\Component\Console\Application;
 
 
 $application = new Application();
-$application->add(new MergeCommand(
+$application->addCommands([new MergeCommand(
     new OpenApiMerge(
         new FileReader(),
         [
@@ -39,6 +39,6 @@ $application->add(new MergeCommand(
     ),
     new DefinitionWriter(),
     new RegexFinder()
-));
+)]);
 $application->setDefaultCommand(MergeCommand::COMMAND_NAME, true);
 $application->run();
